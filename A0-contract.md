@@ -53,6 +53,6 @@ Student Number:
 
 Team Member #4:
 
-Name:
+Name: Lu Chen
 
-Student Number:
+Student Number: 20164422
