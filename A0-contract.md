@@ -14,8 +14,8 @@ We provide GitHub templates for either case; however, we strongly recommend you 
 You don't have to make the decision right now.
 
 #### Assignment #0
-You are to form a small independent software company that will contract to produce a high-quality software product to meet the requirements of the project. You will be marked as a team, and all teammates will receive the same mark for assignments, with adjustments based on individual performance/contribution. For now, the only thing you have to do is to form your company team,  choose a company name, and choose a license.  
 
+You are to form a small independent software company that will contract to produce a high-quality software product to meet the requirements of the project. You will be marked as a team, and all teammates will receive the same mark for assignments, with adjustments based on individual performance/contribution. For now, the only thing you have to do is to form your company team, choose a company name, and choose a license.
 
 ##### :fire: Fill out this form.
 
@@ -35,10 +35,9 @@ We each promise to make our best effort to ensure that the team works together a
 
 Team Member #1:
 
-Name:Huilin Xu
+Name:
 
-Student Number:	20151379
-
+Student Number:
 
 Team Member #2:
 
@@ -46,13 +45,11 @@ Name:
 
 Student Number:
 
-
 Team Member #3:
 
 Name:
 
 Student Number:
-
 
 Team Member #4:
 
