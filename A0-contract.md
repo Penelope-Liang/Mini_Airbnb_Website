@@ -47,9 +47,9 @@ Student Number: 20152562
 
 Team Member #3:
 
-Name:
+Name: Ximing Yu
 
-Student Number:
+Student Number: 20232361
 
 Team Member #4:
 
