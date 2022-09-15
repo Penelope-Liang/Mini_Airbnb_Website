@@ -41,9 +41,9 @@ Student Number:
 
 Team Member #2:
 
-Name:
+Name: Yuanqi Liang
 
-Student Number:
+Student Number: 20152562
 
 Team Member #3:
 
