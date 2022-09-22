@@ -1,3 +1,7 @@
 src/backend/__pycache__
+src/backend/models/__pycache__
+src/backend/resources/__pycache__
+src/backend/tests/__pycache__
+src/backend/tests/generator/__pycache__
 src/backend/data.db
 src/backend/venv
