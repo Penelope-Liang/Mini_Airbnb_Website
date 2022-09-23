@@ -33,8 +33,9 @@ class UserModel(db.Model):
     profile_photo = db.Column(db.String(120))
     about = db.Column(db.String(300))
 
-    def __init__(self, user_id, review_id, comment_id, tsc_id, property_id, acc_name,
-                 first_name, last_name, password, email, balance, profile_photo, about) -> None:
+    def __init__(self, user_id, review_id, comment_id, tsc_id,
+                 property_id, acc_name, first_name, last_name,
+                 password, email, balance, profile_photo, about) -> None:
         '''
         This function is the User class constructor.
         '''
