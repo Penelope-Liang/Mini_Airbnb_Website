@@ -1,9 +1,15 @@
+'''
+This file stores the Review Model.
+'''
 from db import db
 
-class ReviewModel(db.Model):
 
+class ReviewModel(db.Model):
+  '''
+  This class defines the Review Model
+  and contains Review's attributes.
+  '''
   __tablename__ = 'Reviews'
-  
   review_id  = db.Column(db.String(100), primary_key=True)
   user_id = db.Column(db.String(100), db.ForeignKey('Users.user_id'))
   comment_id = db.Column(db.String(100), db.ForeignKey('Comments.comment_id'))
@@ -12,10 +18,12 @@ class ReviewModel(db.Model):
   title = db.Column(db.Text)
   review_text = db.Column(db.Text)
 
-  
   def __init__(self, review_id, user_id, 
                comment_id, rating, review_date, 
                title, review_text) -> None:
+    '''
+    This class initialize Review's attributes
+    '''
     self.review_id  = review_id
     self.user_id = user_id
     self.comment_id = comment_id
@@ -25,4 +33,7 @@ class ReviewModel(db.Model):
     self.review_text = review_text
     
   def __repr__(self) -> str:
-    return super().__repr__()
+    '''
+    This class returns a string as a representation of the Review.
+    '''
+    return '<Review %r>' % self.review_id

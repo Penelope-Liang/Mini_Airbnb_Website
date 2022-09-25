@@ -19,10 +19,10 @@ class UserModel(db.Model):
         "Comments.comment_id"), unique=True)
     # id of the transaction, if a user has any
     tsc_id = db.Column(db.Integer, db.ForeignKey(
-        "Transactions.transaction_id"), unique=True)
+        "Transactions.tsc_id"), unique=True)
     # id of property posted, if a user has any
     property_id = db.Column(db.Integer, db.ForeignKey(
-        "Properties.property_id"))
+        "Properties.prop_id"))
     # user's account name
     acc_name = db.Column(db.String(80), nullable=False)
     first_name = db.Column(db.String(80), nullable=False)

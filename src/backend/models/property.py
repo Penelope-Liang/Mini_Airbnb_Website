@@ -11,9 +11,9 @@ class PropertyModel(db.Model):
     # set property id as primary key and String
     prop_id = db.Column(db.String(100), primary_key=True)
     # user_id and availability_id is foreign key
-    user_id = db.Column(db.String(100), db.ForeignKey("User.user_id"))
+    user_id = db.Column(db.String(100), db.ForeignKey("Users.user_id"))
     availability_id = db.Column(db.String(100),
-                                db.ForeignKey("Availability.availability_id"))
+                                db.ForeignKey("Availabilities.ava_id"))
     posted_date = db.Column(db.DateTime, nullable=False)
     title = db.Column(db.String(30), nullable=False)
     description = db.Column(db.String(500), nullable=False)
