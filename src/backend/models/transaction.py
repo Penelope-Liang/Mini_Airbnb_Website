@@ -1,5 +1,5 @@
 '''
-This file stores the Transactions model.
+This file stores the Transactions Model.
 '''
 from db import db
 
@@ -9,6 +9,7 @@ class TscModel(db.Model):
     This class defines the Transactions model
     and contains Transaction's attributes.
     '''
+
     __tablename__ = 'Transactions'
     tsc_id = db.Column(db.String(100), primary_key=True)
     user_id = db.Column(db.String(100), db.ForeignKey('Users.user_id'))
@@ -20,10 +21,11 @@ class TscModel(db.Model):
     check_out_date = db.Column(db.DateTime)
     guest_number = db.Column(db.Integer)
 
-    def __init__(self, tsc_id, user_id, property_id, tsc_data, tsc_price,
-                 check_in_date, check_out_date, guest_number) -> None:
+    def __init__(self, tsc_id, user_id, property_id, tsc_data,
+                 tsc_price, check_in_date, check_out_date,
+                 guest_number) -> None:
         '''
-        This class initialize Transaction's attributes
+        This class initialize Transaction's attributes.
         '''
         self.tsc_id = tsc_id
         self.user_id = user_id

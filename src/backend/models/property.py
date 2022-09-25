@@ -1,11 +1,14 @@
 '''
-This file contains sql model for property class
+This file stores the Propety model
 '''
 
 from db import db
 
 
 class PropertyModel(db.Model):
+    '''
+    The class defines the Property model and contains Property attributes.
+    '''
     __tablename__ = 'Properties'
 
     # set property id as primary key and String
@@ -24,6 +27,9 @@ class PropertyModel(db.Model):
 
     def __init__(self, prop_id, user_id, availability_id, posted_date,
                  title, description, image, price, address, capacoity) -> None:
+        '''
+        This class initialize Property attributes.
+        '''
         self.prop_id = prop_id
         self.user_id = user_id
         self.availability_id = availability_id
