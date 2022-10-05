@@ -4,3 +4,7 @@ src/backend/*/*/__pycache__
 src/backend/*/*/*/__pycache__
 # src/backend/data.db
 src/backend/venv
+src/backend/.DS_Store
+src/backend/*/.DS_Store
+src/backend/*/*/.DS_Store
+src/backend/*/*/*/.DS_Store
