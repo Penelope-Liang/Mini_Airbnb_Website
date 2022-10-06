@@ -1,14 +1,22 @@
 '''
 R1-1: Email cannot be empty. password cannot be empty.
-R1-2: A user is uniquely identified by his/her user id - automatically generated.
-R1-3: The email has to follow addr-spec defined in RFC 5322 (see https://en.wikipedia.org/wiki/Email_address for a human-friendly explanation). You can use external libraries/imports.
-R1-4: Password has to meet the required complexity: minimum length 6, at least one upper case, at least one lower case, and at least one special character.
-R1-5: User name has to be non-empty, alphanumeric-only, and space allowed only if it is not as the prefix or suffix.
+R1-2: A user is uniquely identified by
+        his/her user id - automatically generated.
+R1-3: The email has to follow addr-spec defined in RFC 5322
+        (see https://en.wikipedia.org/wiki/Email_address for
+        a human-friendly explanation).
+        You can use external libraries/imports.
+R1-4: Password has to meet the required complexity: minimum length 6,
+        at least one upper case, at least one lower case,
+        and at least one special character.
+R1-5: User name has to be non-empty, alphanumeric-only, and space
+        allowed only if it is not as the prefix or suffix.
 R1-6: User name has to be longer than 2 characters and less than 20 characters.
 R1-7: If the email has been used, the operation failed.
 R1-8: Shipping address is empty at the time of registration.
 R1-9: Postal code is empty at the time of registration.
-R1-10: Balance should be initialized as 100 at the time of registration. (free $100 dollar signup bonus).
+R1-10: Balance should be initialized as 100 at the time of registration.
+       (free $100 dollar signup bonus).
 '''
 
 import json
@@ -29,7 +37,7 @@ def register_format_checker(reg_user) -> None:
      R1-1
      R1-3
      R1-4
-     R1-5 
+     R1-5
      R1-6
      R1-8
      R1-9
@@ -135,7 +143,7 @@ if __name__ == '__main__':
         "last_name": "Mcgill",
         "password": "Best_lawer123",
         "email": "JimmyMcgill@SGA.com",
-        "profile_photo": "https://en.wikipedia.org/wiki/Saul_Goodman#/media/File:Jimmy_McGill_BCS_S3.png",
+        "profile_photo": "Jimmy_McGill_BCS_S3.png",
         "about": "Hi. I'm Saul Goodman. Did you know that you have rights?",
     }
     user2 = {
@@ -144,7 +152,7 @@ if __name__ == '__main__':
         "last_name": "Wexler",
         "password": "Kim$$123321",
         "email": "KimKim@HHM.com",
-        "profile_photo": "https://en.wikipedia.org/wiki/Kim_Wexler#/media/File:Kim_Wexler_BCS_S5.png",
+        "profile_photo": "Kim_Wexler_BCS_S5.png",
         "about": "Hello, I am Kim!",
     }
 

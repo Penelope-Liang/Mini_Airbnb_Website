@@ -10,3 +10,7 @@ src/backend/.DS_Store
 src/backend/*/.DS_Store
 src/backend/*/*/.DS_Store
 src/backend/*/*/*/.DS_Store
+src/backend/.pytest_cache
+src/backend/*/.pytest_cache
+src/backend/*/*/.pytest_cache
+src/backend/*/*/*/.pytest_cache
