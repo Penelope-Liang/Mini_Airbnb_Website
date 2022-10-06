@@ -99,9 +99,9 @@ def register_saving(reg_user) -> dict:
     R1-9
     '''
     import os
-    path = os.path.abspath(os.getcwd())
-    print("this is the os path " + path)
-    connection = sqlite3.connect(path + "/data.db")
+    path = os.path.dirname(os.path.abspath(__file__))
+    print("this is the os path " + path + "/../../data.db")
+    connection = sqlite3.connect(path + "/../../data.db")
     cursor = connection.cursor()
 
     # R1-7
