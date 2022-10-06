@@ -1,5 +1,5 @@
 from db import db
-from flask import Flask
+from flask import Flask, render_template
 from flask_smorest import Api
 from models import UserModel
 from models import PropertyModel
@@ -11,7 +11,7 @@ from resources.userRegister import blp as RegisterBluePrint
 
 
 def create_app(db_url=None):
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="../frontend")
     app.config["API_TITLE"] = "Stores REST API"
     app.config["API_VERSION"] = "v1"
     app.config["OPENAPI_VERSION"] = "3.0.3"
@@ -36,4 +36,9 @@ def create_app(db_url=None):
         db.create_all()
 
     api.register_blueprint(RegisterBluePrint)
+
+    @app.route('/')
+    def home():
+        return render_template('index.html')
+
     return app

@@ -20,7 +20,8 @@ class ReviewModel(db.Model):
     title = db.Column(db.Text)
     review_text = db.Column(db.Text)
 
-    def _init_(self, review_id, user_id, comment_id,
+    def _init_(self, review_id, 
+               user_id, comment_id,
                rating, review_date,
                title, review_text) -> None:
         self.review_id = review_id

@@ -4,6 +4,7 @@ from resources import InvaildRegister
 
 def test_register_format_checker_with_valid_format():
     print("testing")
+
     user = {
         "acc_name": "Saul Goodman",
         "first_name": "Jimmy",
@@ -18,7 +19,3 @@ def test_register_format_checker_with_valid_format():
         register_format_checker(user)
     except InvaildRegister as IR:
         assert False, "The account saul goodman should be valid, something wrong: " + IR.case
-
-
-# def test_dummy_mistake():
-#     1/0

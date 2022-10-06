@@ -1,6 +1,6 @@
 from db import db
 from models import UserModel
-from flask import request
+from flask import request, render_template
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from resources.tools.register import register_format_checker, register_saving

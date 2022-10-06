@@ -13,7 +13,6 @@ class CommentModel(db.Model):
 
     __tablename__ = 'Comments'
     comment_id = db.Column(db.String(100), primary_key=True)
-    # review_id = db.Column(db.String(100), db.ForeignKey('Reviews.review_id'))
     comment_date = db.Column(db.DateTime)
     comment_text = db.Column(db.Text)
 
@@ -23,11 +22,10 @@ class CommentModel(db.Model):
         This class initialize Comment's attributes.
         '''
         self.comment_id = comment_id
-        # self.review_id = review_id
         self.comment_date = comment_date
         self.comment_text = comment_text
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         '''
         This class returns a string as a
         representation of the Comment.

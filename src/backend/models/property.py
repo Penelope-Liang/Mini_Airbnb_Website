@@ -13,10 +13,7 @@ class PropertyModel(db.Model):
 
     # set property id as primary key and String
     prop_id = db.Column(db.String(100), primary_key=True)
-    # user_id and availability_id is foreign key
     user_id = db.Column(db.String(100), db.ForeignKey("Users.user_id"))
-    # availability_id = db.Column(db.String(100),
-    #                             db.ForeignKey("Availabilities.ava_id"))
     posted_date = db.Column(db.DateTime, nullable=False)
     title = db.Column(db.String(30), nullable=False)
     description = db.Column(db.String(500), nullable=False)
@@ -32,7 +29,6 @@ class PropertyModel(db.Model):
         '''
         self.prop_id = prop_id
         self.user_id = user_id
-        # self.availability_id = availability_id
         self.posted_date = posted_date
         self.title = title
         self.description = description
@@ -41,5 +37,5 @@ class PropertyModel(db.Model):
         self.capacity = capacity
         self.address = address
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '<Property %r>' % self.title
