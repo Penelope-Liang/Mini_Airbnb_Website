@@ -25,22 +25,15 @@ import re
 import sqlite3
 
 
-# if __name__ != "__main__":
-#     from .regexRepo import emailReg, AccNameReg, passwordReg
-#     from .exceptions import InvaildRegister
-
-
 def register_format_checker(reg_user) -> None:
     print("===testing register format checker========")
 
     '''
-     R1-1
-     R1-3
-     R1-4
-     R1-5
-     R1-6
-     R1-8
-     R1-9
+    This function is used to do the format checking of the register
+    data, the following rules will be checked:
+            R1-1, R1-3, R1-4, R1-5, R1-6, R1-8, R1-9
+    You can take look of the comment above to find out what is each if
+    testing about
     '''
 
     # R1-1
@@ -64,7 +57,7 @@ def register_format_checker(reg_user) -> None:
     # R1-3
     if (not re.fullmatch(emailReg, reg_user["email"])):
         raise InvaildRegister(
-            "The email has to follow addr-spec"
+            "The email has to follow addr-spec" +
             " defined in RFC 5322(aaa@ccc.xxx) ",
             "Email-Format")
     # R1-4
@@ -110,7 +103,7 @@ def register_saving(reg_user) -> dict:
     rows = cursor.fetchone()
     connection.close()
 
-    if (rows != None):
+    if (rows is not None):
         raise InvaildRegister("Email has been used!", "Email-used")
 
     # R1-2
@@ -131,8 +124,8 @@ def register_saving(reg_user) -> dict:
 
 if __name__ == '__main__':
 
-    from regexRepo import *
-    from exceptions import *
+    from regexRepo import emailReg, AccNameReg, passwordReg
+    from exceptions import InvaildRegister
     import os
     import sys
     path = os.path.abspath(os.getcwd())

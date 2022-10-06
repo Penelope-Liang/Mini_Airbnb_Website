@@ -1,6 +1,6 @@
 import pytest
-from resources import register_format_checker, register_saving
-from resources import InvaildRegister
+from resources.tools.register import register_format_checker, register_saving
+from resources.tools.exceptions import InvaildRegister
 
 
 def test_register_format_checker_with_valid_format():

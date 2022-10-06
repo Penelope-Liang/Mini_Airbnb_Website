@@ -23,7 +23,7 @@ class UserModel(db.Model):
     postal_code = db.Column(db.String(10))
 
     def __init__(self, user_id, acc_name, first_name, last_name,
-                 password, email, balance, profile_photo, about, 
+                 password, email, balance, profile_photo, about,
                  address, postal_code) -> None:
         '''
         This function is the User class constructor.

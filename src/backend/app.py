@@ -1,12 +1,12 @@
 from db import db
 from flask import Flask, render_template
 from flask_smorest import Api
-from models import UserModel
-from models import PropertyModel
-from models import TscModel
-from models import ReviewModel
-from models import CommentModel
-from models import AvaModel
+from models.user import UserModel
+from models.property import PropertyModel
+from models.transaction import TscModel
+from models.review import ReviewModel
+from models.comment import CommentModel
+from models.availability import AvaModel
 from resources.userRegister import blp as RegisterBluePrint
 
 
