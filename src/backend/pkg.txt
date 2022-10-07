@@ -5,3 +5,4 @@ sqlalchemy
 flask-sqlalchemy
 autopep8
 pytest
+flake8

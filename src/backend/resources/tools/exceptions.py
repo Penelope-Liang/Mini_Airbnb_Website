@@ -1,7 +1,6 @@
 '''
 define you excpetions classes here
 '''
-from ast import Str
 
 
 class InvaildRegister(Exception):
@@ -9,7 +8,7 @@ class InvaildRegister(Exception):
         self.message = message
         self.case = case
 
-    def message(self) -> Str:
+    def message(self) -> str:
         return self.message
 
 
