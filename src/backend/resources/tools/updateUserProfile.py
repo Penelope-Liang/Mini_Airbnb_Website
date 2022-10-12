@@ -1,35 +1,98 @@
-'''
-R3-1: A user is only able to update his/her user name, user email, billing address, and postal code.
-R3-2: postal code should be non-empty, alphanumeric-only, and no special characters such as !.
-R3-3: Postal code has to be a valid Canadian postal code.
-R3-4: User name follows the requirements above.
-'''
+import json
+import uuid
+import re
+import sqlite3
+from resources.tools.exceptions import InvalidUserUpdate
 
-'''
-define your function here, and feed them with the data
-call function inside the if __name__ == "__main__":
-'''
-
-if __name__ == "__main__":
-    from regexRepo import *
-    from exceptions import *
+def update_user_checker(update_user: dict) -> None:
+    print("===testing update user format checker========")
 
     '''
-    attention, this function requires some pre-stored data
-    in the database, you can run command [in the directory of backend]
-    py ./resources/tools/register.py 
+    This function is used to do the format checking of the update user
+    data, the following rules will be checked:
+            R3-2, R3-3, R3-4
+    You can take look of the comment above to find out what is each if
+    testing about
     '''
+    # R3-4
+    # Check user name, if none, then pop the value so it won't update
+    if update_user["acc_name"] is None:
+        update_user.pop("acc_name")
 
-    # this user wants to update his address and postal code
-    user_update1 = {
-        "acc_name": "Saul Goodman",
-        "first_name": "Jimmy",
-        "last_name": "Mcgill",
-        "email": "JimmyMcgill@SGA.com",
-        "address": "9800 Montgomery Blvd NE, Albuquerque, New Mexico",
-        "postal_code": "L3S4V8"
-    }
+    # Check user name format
+    elif not len(update_user["acc_name"]) > 2 and len(update_user["acc_name"]) < 20:
+        raise InvalidUserUpdate(
+            "User name has to be longer than "
+            "2 characters and less than 20 characters.",
+            "account-length")
+    # R3-4
+    # Check user name format
+    elif not re.fullmatch(r'^\w+( +\w+)*$', update_user["acc_name"]):
+        raise InvalidUserUpdate(
+            "User name has to be non-empty, alphanumeric-only, " +
+            "and space allowed only if it is not as the " +
+            "prefix or suffix.", "account")
 
-else:
-    from .regexRepo import *
-    from .exceptions import *
+    # Check email, if none, then pop the value so it won't update
+    if update_user["email"] is None:
+        update_user.pop("email")
+
+    # Check email format
+    elif "email" not in update_user or len(update_user["email"]) == 0:
+        raise InvalidUserUpdate(
+            "Email cannot be empty.", "Email-Zero")
+
+    # Check email format
+    elif not re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', update_user["email"]):
+        raise InvalidUserUpdate(
+            "The email has to follow addr-spec" +
+            " defined in RFC 5322(aaa@ccc.xxx) ",
+            "Email-Format")
+
+    # Check postal code, if none, then pop the value so it won't update
+    if update_user["postal_code"] is None:
+        update_user.pop("postal_code")
+
+    # R3-2, R3-3
+    # Check postal code format
+    elif not re.fullmatch(r'^([A-Za-z]\d[A-Za-z][-]?\d[A-Za-z]\d)',
+                          update_user["postal_code"]):
+        raise InvalidUserUpdate(
+            "Postal code has to meet the required complexity:" +
+            "non-empty, alphanumeric-only," +
+            "has to be a valid Canadian postal code", "Invalid-Postal-Code")
+
+    # Check address, if none, then pop the value so it won't update
+    if update_user["address"] is None:
+        update_user.pop("address")
+
+    print("ALL-pass")
+
+
+def update_user_saving(update_user, rows0: tuple) -> dict:
+    """
+    R2-1
+    """
+    # Create SQL code
+    sql_update = "UPDATE Users "
+    sql_where = "WHERE User_id = " + rows0[0] + " "  # Fetch the user id
+    sql_set = "SET "
+
+    # Set is where attribute + index, ex Name : Alex, so it can update the name to Alex
+    for i in update_user.keys():
+        sql_set += (i + " = " + update_user[i] + ', ')
+    sql_set = sql_set[:-2]
+
+    # Combine to form a complete SQL code
+    sql = sql_update + sql_set + sql_where
+
+    # connect the database
+    import os
+    path = os.path.dirname(os.path.abspath(__file__))
+    print(path)
+    connection = sqlite3.connect(path + "/../data.db")
+    cursor = connection.cursor()
+
+    # execute the sql = sql_update + sql_set + sql_where code
+    cursor.execute(sql)
+    connection.close()
