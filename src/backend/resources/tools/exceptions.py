@@ -16,3 +16,9 @@ class InvalidLogin(Exception):
     def __init__(self, message) -> None:
         self.message = message
         # self.case = case
+
+
+class InvalidListing(Exception):
+    def __init__(self, message) -> None:
+        self.message = message
+        
