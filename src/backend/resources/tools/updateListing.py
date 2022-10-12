@@ -1,12 +1,13 @@
 '''
-R5-1: One can update all attributes of the listing, except owner_id and last_modified_date.
+R5-1: One can update all attributes of the listing,
+except owner_id and last_modified_date.
 R5-2: Price can be only increased but cannot be decreased :)
-R5-3: last_modified_date should be updated when the update operation is successful.
-R5-4: When updating an attribute, one has to make sure that it follows the same requirements as above.
+R5-3: last_modified_date should be updated when the update
+operation is successful.
+R5-4: When updating an attribute, one has to make sure that
+it follows the same requirements as above.
 '''
 from datetime import date
-import json
-import uuid
 import re
 import sqlite3
 
@@ -24,7 +25,8 @@ def updating_data(proerpty_1) -> dict:
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT price FROM Properties WHERE user_id = (?)", (proerpty_1["user_id"],))
+        "SELECT price FROM Properties WHERE user_id = (?)",
+        (proerpty_1["user_id"],))
 
     (price) = cursor.fetchone()
 
@@ -64,20 +66,19 @@ def update_listing_format_checker_2(proerpty_1):
 
 
 if __name__ == "__main__":
-    from regexRepo import emailReg, AccNameReg, passwordReg
+    from regexRepo import AccNameReg
     from exceptions import InvalidUpdateListing
     import os
     import sys
     path = os.path.abspath(os.getcwd())
     sys.path.append(path)
-    from models.property import PropertyModel
-    from db import db
+    # from models.property import PropertyModel
+    # from db import db
 
     '''
     attention, this function requires some pre-stored data
     in the database, you can run command [in the directory of backend]
-    
-    py ./resources/tools/register.py 
+    py ./resources/tools/register.py
     '''
 
     # we don't have last_modify date, but I think you can use posted_date
@@ -114,6 +115,6 @@ if __name__ == "__main__":
 
 
 else:
-    from .regexRepo import emailReg, AccNameReg, passwordReg
+    from .regexRepo import AccNameReg
     from .exceptions import InvalidUpdateListing
     import os

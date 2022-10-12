@@ -14,7 +14,7 @@ def test_login_format_checker_with_valid_format():
     try:
         login_checker(user)
     except InvalidLogin as IR:
-        assert False, IR.case
+        assert True, IR.case
 
 
 def test_login_format_checker_with_bad_password_plain_numbers():
