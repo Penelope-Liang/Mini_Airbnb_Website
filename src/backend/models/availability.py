@@ -22,7 +22,7 @@ class AvaModel(db.Model):
         self.start_date = start_date
         self.end_date = end_date
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         '''
         This class returns a string as a representation of the Availability.
         '''
