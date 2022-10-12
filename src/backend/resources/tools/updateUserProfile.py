@@ -1,8 +1,7 @@
-import json
-import uuid
 import re
 import sqlite3
 from resources.tools.exceptions import InvalidUserUpdate
+
 
 def update_user_checker(update_user: dict) -> None:
     print("===testing update user format checker========")
@@ -20,7 +19,8 @@ def update_user_checker(update_user: dict) -> None:
         update_user.pop("acc_name")
 
     # Check user name format
-    elif not len(update_user["acc_name"]) > 2 and len(update_user["acc_name"]) < 20:
+    elif not len(update_user["acc_name"]) > 2\
+            and len(update_user["acc_name"]) < 20:
         raise InvalidUserUpdate(
             "User name has to be longer than "
             "2 characters and less than 20 characters.",
@@ -43,7 +43,9 @@ def update_user_checker(update_user: dict) -> None:
             "Email cannot be empty.", "Email-Zero")
 
     # Check email format
-    elif not re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', update_user["email"]):
+    elif not re.fullmatch(
+            r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b',
+            update_user["email"]):
         raise InvalidUserUpdate(
             "The email has to follow addr-spec" +
             " defined in RFC 5322(aaa@ccc.xxx) ",
@@ -78,7 +80,8 @@ def update_user_saving(update_user, rows0: tuple) -> dict:
     sql_where = "WHERE User_id = " + rows0[0] + " "  # Fetch the user id
     sql_set = "SET "
 
-    # Set is where attribute + index, ex Name : Alex, so it can update the name to Alex
+    # Set is where attribute + index,
+    # ex Name : Alex, so it can update the name to Alex
     for i in update_user.keys():
         sql_set += (i + " = " + update_user[i] + ', ')
     sql_set = sql_set[:-2]

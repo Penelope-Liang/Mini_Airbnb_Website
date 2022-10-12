@@ -1,14 +1,13 @@
 """
 R2-1: A user can log in using her/his email address and the password.
-R2-2: The login function should check if the supplied inputs meet the same email/password requirements as above, before checking the database.
+R2-2: The login function should check if the supplied inputs meet the
+same email/password requirements as above, before checking the database.
 """
-import json
-import uuid
 import re
 import sqlite3
 
 '''
-Disclaimer: 
+Disclaimer:
 You dont need to use the functions I defined,
 you can create you owe structure, but the following datatype
 is the one you should use!
@@ -21,7 +20,7 @@ def login_checker(login_user) -> None:
     '''
     This function is used to do the format checking of the login
     data, the following rules will be checked:
-            R2-2 
+            R2-2
     You can take look of the comment above to find out what is each if
     testing about
     '''
@@ -37,15 +36,18 @@ def login_checker(login_user) -> None:
             "password cannot be empty.", "password")
     # R2-2
     # Check email format
-    if not re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', login_user["email"]):
+    if not re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b',
+                        login_user["email"]):
         raise InvalidLogin(
             "The email has to follow addr-spec" +
             " defined in RFC 5322(aaa@ccc.xxx) ",
             "Email-Format")
     # R2-2
     # Check password format
-    if not re.fullmatch(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&()_])[A-Za-z\d#@$!%*?&()_]{6,}$',
-                        login_user["password"]):
+    if not re.fullmatch(
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&()_])\
+        [A-Za-z\d#@$!%*?&()_]{6,}$',
+            login_user["password"]):
         raise InvalidLogin(
             "Password has to meet the required complexity:" +
             " minimum length 6, at least one upper case," +
@@ -82,8 +84,8 @@ def login_saving(login_user) -> dict:
 
 
 if __name__ == "__main__":
-    from regexRepo import *
-    from exceptions import *
+    # from regexRepo import *
+    from exceptions import InvalidLogin
     user_login1 = {
         "email": "JimmyMcgill@SGA.com",
         "password": "Best_lawer123"
@@ -99,5 +101,4 @@ if __name__ == "__main__":
     login_saving(user_login1)
 
 else:
-    from .regexRepo import *
-    from .exceptions import *
+    from .exceptions import InvalidLogin
