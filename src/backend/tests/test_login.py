@@ -159,4 +159,3 @@ def test_login_format_checker_with_empty_password():
         }
 
         login_checker(user)
-

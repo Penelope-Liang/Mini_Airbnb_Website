@@ -13,13 +13,18 @@ import sqlite3
 
 
 def update_listing_format_checker_1(proerpty_1):
-
+    '''
+    Check update_lising prop_id format
+    '''
     if ("prop_id" in proerpty_1 or "posted_date" in proerpty_1):
         raise InvalidUpdateListing(
             "prop_id or posted date should not be in side the ")
 
 
 def updating_data(proerpty_1) -> dict:
+    '''
+    Update property data
+    '''
     path = os.path.dirname(os.path.abspath(__file__))
     connection = sqlite3.connect(path + "/../../data.db")
     cursor = connection.cursor()
@@ -43,7 +48,11 @@ def updating_data(proerpty_1) -> dict:
 
 
 def update_listing_format_checker_2(proerpty_1):
-
+    '''
+    Check the format of update items including
+    title, description, price
+    Check email is not empty
+    '''
     if (not re.fullmatch(AccNameReg, proerpty_1["title"])):
         raise InvalidUpdateListing("No title name")
 

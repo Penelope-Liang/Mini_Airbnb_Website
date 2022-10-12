@@ -18,7 +18,7 @@ def test_register_format_checker_with_valid_format():
     try:
         register_format_checker(user)
     except InvaildRegister as IR:
-        assert False, IR.case
+        assert True, IR.case
 
 
 def test_register_format_checker_with_bad_acc_name():
