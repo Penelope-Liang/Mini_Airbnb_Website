@@ -15,6 +15,8 @@ class ReviewModel(db.Model):
     user_id = db.Column(db.String(100), db.ForeignKey('Users.user_id'))
     comment_id = db.Column(db.String(100),
                            db.ForeignKey('Comments.comment_id'))
+    property_id = db.Column(db.String(100),
+                            db.ForeignKey('Properties.prop_id'))
     rating = db.Column(db.Float(precision=2))
     review_date = db.Column(db.DateTime)
     title = db.Column(db.Text)
@@ -22,11 +24,13 @@ class ReviewModel(db.Model):
 
     def _init_(self, review_id,
                user_id, comment_id,
+               property_id,
                rating, review_date,
                title, review_text) -> None:
         self.review_id = review_id
         self.user_id = user_id
         self.comment_id = comment_id
+        self.property_id = property_id
         self.rating = rating
         self.review_date = review_date
         self.title = title
