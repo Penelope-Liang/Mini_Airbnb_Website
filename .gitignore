@@ -1,2 +1,5 @@
 .DS_store
-__pychace__
+__pycache__
+.venv
+.idea
+.pytest_cache
