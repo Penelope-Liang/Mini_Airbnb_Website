@@ -2,9 +2,10 @@ from qbay import app
 from flask import render_template, request, session, redirect, url_for
 from qbay.models import Users
 from qbay.login import login_checker, login_saving
-from qbay.register import register_format_checker, register_saving
+from qbay.register import register, register_format_checker, register_saving
 from qbay.updateUserProfile import update_user_checker, update_user_saving
 from qbay.exceptions import InvalidLogin
+from qbay.db import db
 import sqlite3
 
 
@@ -31,7 +32,8 @@ def authenticate(inner_function):
                 path = os.path.dirname(os.path.abspath(__file__))
                 connection = sqlite3.connect(path + "/data.db")
                 cursor = connection.cursor()
-                row = cursor.execute("SELECT email FROM 'Users' WHERE email = email")
+                row = cursor.execute(
+                    "SELECT email FROM 'Users' WHERE email = email")
                 user = cursor.fetchone()
                 connection.close()
                 if user:
@@ -99,10 +101,40 @@ def register_get():
 @app.route('/register', methods=['POST'])
 def register_post():
     email = request.form.get('email')
-    name = request.form.get('name')
+    acc_name = request.form.get('name')
+    first_name = request.form.get('first_name')
+    last_name = request.form.get('last_name')
     password = request.form.get('password')
     password2 = request.form.get('password2')
     error_message = None
+
+    # if two passwords do not match, set error msg
+    if password != password2:
+        error_message = "The passwords do not match"
+    else:
+        user = {
+            "acc_name": acc_name,
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "password": password
+        }
+        # find a way to displat the exception msg?
+        register_format_checker(user)
+        reg_user = register_saving(user)
+        print(reg_user)
+        try:
+            # query to check if user already exists?
+            register(reg_user)
+            print("yes")
+        except:
+            error_message = "Registration failed:("
+    # if there is any error messages when registering new user
+    # at the backend, go back to the register page.
+    if error_message:
+        return render_template('register.html', message=error_message)
+    else:
+        return redirect('/login')
 
 
 """
@@ -177,7 +209,8 @@ def update_user_save():
         path = os.path.dirname(os.path.abspath(__file__))
         connection = sqlite3.connect(path + "/data.db")
         cursor = connection.cursor()
-        row = cursor.execute("SELECT * FROM 'Users' WHERE user_id = (?)", (id,))
+        row = cursor.execute(
+            "SELECT * FROM 'Users' WHERE user_id = (?)", (id,))
         user = cursor.fetchone()
         connection.close()
         print(user)

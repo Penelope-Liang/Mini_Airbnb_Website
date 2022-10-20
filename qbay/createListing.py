@@ -59,7 +59,7 @@ def listing_saving(listing) -> dict:
     '''
     import os
     path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/../../data.db")
+    connection = sqlite3.connect(path + "/data.db")
     cursor = connection.cursor()
 
     cursor.execute("SELECT email, user_id FROM Users WHERE email = (?)",
@@ -140,7 +140,7 @@ if __name__ == "__main__":
         create_listing_format_checker(proerpty_1)
         proerpty_1 = listing_saving(proerpty_1)
         path = os.path.dirname(os.path.abspath(__file__))
-        connection = sqlite3.connect(path + "/../../data.db")
+        connection = sqlite3.connect(path + "/data.db")
         cursor = connection.cursor()
         cursor.execute("INSERT INTO Properties \
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
