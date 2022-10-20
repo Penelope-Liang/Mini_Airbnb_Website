@@ -1,4 +1,5 @@
 from qbay import *
+from qbay import app
 from qbay.controllers import *
 
 """
