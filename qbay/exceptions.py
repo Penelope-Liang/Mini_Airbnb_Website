@@ -3,13 +3,13 @@ define you excpetions classes here
 """
 
 
-class InvaildRegister(Exception):
+class InvalidRegister(Exception):
     def __init__(self, message, case) -> None:
         self.message = message
         self.case = case
 
-    def message(self) -> str:
-        return self.message
+    # def message(self) -> str:
+    #     return self.message
 
 
 class InvalidLogin(Exception):

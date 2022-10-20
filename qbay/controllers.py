@@ -1,10 +1,9 @@
 from qbay import app
-from flask import render_template, request, session, redirect, url_for
-from qbay.models import Users
+from flask import render_template, request, session, redirect
 from qbay.login import login_checker, login_saving
 from qbay.register import register, register_format_checker, register_saving
 from qbay.updateUserProfile import update_user_checker, update_user_saving
-from qbay.exceptions import InvaildRegister, InvalidLogin
+from qbay.exceptions import InvaildRegister, InvalidLogin, InvalidUserUpdate
 from qbay.db import db
 import sqlite3
 
@@ -27,13 +26,17 @@ def authenticate(inner_function):
         # check did we store the key in the session
         if 'logged_in' in session:
             email = session['logged_in']
+            print(email)  # for testing
             try:
+                # link the database to select user's email
                 import os
                 path = os.path.dirname(os.path.abspath(__file__))
                 connection = sqlite3.connect(path + "/data.db")
                 cursor = connection.cursor()
-                row = cursor.execute(
-                    "SELECT email FROM 'Users' WHERE email = email")
+                row = cursor.execute("SELECT email FROM 'Users' "
+                                     "WHERE email = email")
+                print(row)  # for testing
+                # if found the email, store into user
                 user = cursor.fetchone()
                 connection.close()
                 if user:
@@ -51,30 +54,42 @@ def authenticate(inner_function):
     return wrapped_inner
 
 
+# This function is used to connect the login.html
 @app.route('/login', methods=['GET'])
 def login_get():
     return render_template('login.html', message='Please login')
 
 
+# This function is used to get user information on the web
+# check if the user can login based on the database
 @app.route('/login', methods=['POST'])
 def login_post():
+    # get email and password
     email = request.form.get('email')
     password = request.form.get('password')
+
+    # login checker input -> dic
     user = {
         "email": email,
         "password": password
     }
-    try:
 
-        login_checker(user)
+    # if info enter by user pass all the test below, user log in, else, fail
+    try:
+        login_checker(user)  # check the format
+
+        # store the user email and password in row if find
         row = login_saving(user)
-        if row:
+        if row != "None":
+            # set the session logged_in to user's email
             session['logged_in'] = row[0]
         return redirect('/', code=303)
-    except:
-        return render_template('login.html', message='login failed')
+    except InvalidLogin as IL:
+        return render_template('login.html',
+                               message=IL.message)
 
 
+# this function is used to show the home page once user log in
 @app.route('/', endpoint='home')
 @authenticate
 def home(user):
@@ -156,47 +171,69 @@ def register_post():
         return render_template('register.html', message=error_message)
     else:
         return redirect('/login')
-
 """
 
 
 @app.route('/update_user', methods=['GET'])
 def update_user_get():
-    print("hello")
-    email = session['logged_in']
+    """
+    This function is used to find all the information of a user
+    and shows on update_user.html
+    """
+
+    email = session['logged_in']  # get the email from session stored above
+    print(email)  # for testing
+    # connect the database
     import os
     path = os.path.dirname(os.path.abspath(__file__))
     connection = sqlite3.connect(path + "/data.db")
     cursor = connection.cursor()
+
+    # select all the info of the user
     row = cursor.execute("SELECT * FROM 'Users' WHERE email = email")
+    print(row)  # for testing
     user = cursor.fetchone()
     connection.close()
     print(user)
+
+    # store another session which is id
     session['id'] = user[0]
+
+    # if fetch success, return user info on the web
     if user:
-        return render_template('update_user.html', user=user, message='connect')
+        return render_template('update_user.html',
+                               user=user, message='connect')
     else:
-        return render_template('update_user.html', message='failed')
+        return render_template('update_user.html',
+                               message='failed')
 
 
+# This function is to connect user
+# to update_user_save.html if they click on update
 @app.route('/update_user_save', methods=['GET'])
 def update_user_get2():
     # templates are stored in the templates folder
-    return render_template('update_user_save.html', message='Please Enter Info')
+    return render_template('update_user_save.html',
+                           message='Please Enter Info')
+
+
+"""
+This function is used to update all the information user entered 
+and re-shows everything update to them
+"""
 
 
 @app.route('/update_user_save', methods=['POST'])
 def update_user_save():
     # templates are stored in the templates folder
-    print("Yes")
+    # get all the info enter from web
     Email = request.form.get('email')
-    if Email == "":
-        print("dum dum")
     Password = request.form.get('password')
     Name = request.form.get('name')
     Billing_Address = request.form.get('billing_address')
     Postal_Code = request.form.get('Postal_Code')
-    print("Yes2")
+
+    # store in a dic so it can be used as input
     user = {
         "acc_name": Name,
         "email": Email,
@@ -205,26 +242,33 @@ def update_user_save():
         "postal_code": Postal_Code
     }
     id = session['id']
-    try:
 
-        update_user_checker(user)
-        update_user_saving(user, id)
-        print("Yes3")
+    # if update success, return back to update_user.html, else, fail
+    try:
+        update_user_checker(user)  # check the format
+        update_user_saving(user, id)  # check the database
+
+        # connect the database
         import os
         path = os.path.dirname(os.path.abspath(__file__))
         connection = sqlite3.connect(path + "/data.db")
         cursor = connection.cursor()
-        row = cursor.execute(
-            "SELECT * FROM 'Users' WHERE user_id = (?)", (id,))
-        user = cursor.fetchone()
+
+        # select all the info based on user id
+        row = cursor.execute("SELECT * FROM 'Users' "
+                             "WHERE user_id = (?)", (id,))
+        print(row)  # for testing
+        user = cursor.fetchone()  # store info fetch into user
         connection.close()
-        print(user)
         if user:
-            return render_template('update_user.html', user=user, message='connect')
-    except:
-        return render_template('update_user_save.html', message='login failed')
+            return render_template('update_user.html', user=user,
+                                   message='Hi!Below is your Information')
+    except InvalidUserUpdate as IUU:
+        return render_template('update_user_save.html',
+                               message=IUU.message)
 
 
+# log out of the web
 @app.route('/logout')
 def logout():
     if 'logged_in' in session:

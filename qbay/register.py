@@ -39,44 +39,46 @@ def register_format_checker(reg_user) -> None:
 
     # R1-1
     if "email" not in reg_user or len(reg_user["email"]) == 0:
-        raise InvaildRegister(
+        raise InvalidRegister(
             "Email cannot be empty.", "Email-Zero")
     # R1-1
     if ("password" not in reg_user or len(reg_user["password"]) == 0):
-        raise InvaildRegister(
+        raise InvalidRegister(
             "password cannot be empty.", "password")
     # R1-8
     if ("address" in reg_user):
-        raise InvaildRegister(
+        raise InvalidRegister(
             "Shipping address is empty at the time of registration.",
             "address")
     # R1-9
     if ("postal_code" in reg_user):
-        raise InvaildRegister(
+        raise InvalidRegister(
             "Postal code is empty at the time of registration.",
             "address")
     # R1-3
     if (not re.fullmatch(emailReg, reg_user["email"])):
-        raise InvaildRegister(
+        raise InvalidRegister(
             "The email has to follow addr-spec" +
             " defined in RFC 5322(aaa@ccc.xxx) ",
             "Email-Format")
     # R1-4
     if (not re.fullmatch(passwordReg, reg_user["password"])):
-        raise InvaildRegister(
+        print(reg_user["password"])
+        print(not re.fullmatch(passwordReg, reg_user["password"]))
+        raise InvalidRegister(
             "Password has to meet the required complexity:" +
             " minimum length 6, at least one upper case," +
             "at least one lower case, and at least" +
             " one special character.", "Invalid-password")
     # R1-5 R1-6
     if (not len(reg_user["acc_name"]) > 2 and len(reg_user["acc_name"]) < 20):
-        raise InvaildRegister(
+        raise InvalidRegister(
             "User name has to be longer than "
             "2 characters and less than 20 characters.",
             "account-length")
     # R1-5
     if (not re.fullmatch(AccNameReg, reg_user["acc_name"])):
-        raise InvaildRegister(
+        raise InvalidRegister(
             "User name has to be non-empty, alphanumeric-only, " +
             "and space allowed only if it is not as the " +
             "prefix or suffix.", "account")
@@ -104,7 +106,7 @@ def register_saving(reg_user) -> dict:
     connection.close()
 
     if (rows is not None):
-        raise InvaildRegister("Email has been used!", "Email-used")
+        raise InvalidRegister("Email has been used!", "Email-used")
 
     # R1-2
     reg_user["user_id"] = uuid.uuid4().hex
@@ -163,7 +165,7 @@ def register(saveble_user):
 if __name__ == '__main__':
 
     from regexRepo import emailReg, AccNameReg, passwordReg
-    from exceptions import InvaildRegister
+    from exceptions import InvalidRegister
     import os
     import sys
     path = os.path.abspath(os.getcwd())

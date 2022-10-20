@@ -1,7 +1,6 @@
 import os
 import pytest
 import time
-import tempfile
 import threading
 from werkzeug.serving import make_server
 from qbay import app
@@ -38,7 +37,7 @@ class ServerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         # import necessary routes
-        from qbay import controllers
+
         self.srv = make_server('127.0.0.1', 8080, app)
         self.ctx = app.app_context()
         self.ctx.push()
@@ -61,4 +60,3 @@ def server():
     yield
     server.shutdown()
     time.sleep(2)
-
