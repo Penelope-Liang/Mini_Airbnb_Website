@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="utf-8" />
@@ -10,14 +10,45 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Ubuntu:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@800&display=swap" rel="stylesheet">
 </head>
 
 <style>
     .login_image {
-        height: 600px;
-        width: 1000px;
+        height: 630px;
+        top: 30px;
+
+        width: 850px;
         float: left;
-        padding-left: 100px;
+        top: 30px;
+        padding-left: 80px;
+    }
+
+    #email, #password {
+      width: 80%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: none;
+      border-bottom: 1px solid #CCC;
+    }
+
+    .form-group{
+        position:absolute;
+        top: 30%;
+        left: 68%;
+        padding: 16px;
+        margin: auto;
+        padding: auto;
+    }
+
+    .register{
+        position:absolute;
+        top: 65%;
+        left: 69%;
     }
 
     nav {
@@ -28,11 +59,30 @@
         padding: auto;
     }
 
+
+    button {
+      background-color: #DEB887;
+      color: white;
+      top:5px;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 70%;
+      border-radius: 10px;
+      margin: auto;
+      padding: auto;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
     nav a {
         text-decoration: none;
         letter-spacing: 4px;
         font-size: 20px;
-        color: cornflowerblue;
+        color: #D2691E;
         padding: 25px 10px;
         margin: 0 1px;
         text-align: center;
@@ -86,20 +136,31 @@
 
     * {
         font-family: 'Noto Sans', sans-serif;
+        margin: auto;
+        padding: auto;
     }
-    
+
     .message {
         position: absolute;
-        width: 50%;
-        text-align: center;
+        top: 61%;
+        left: 69%;
     }
-    
-    h1 {
-        left: 300px;
-        width: 50%;
-        text-align: center;
+
+    .signin {
+        position: absolute;
+        top: 20%;
+        left: 78%;
     }
-    
+
+    .Slogan {
+        position: absolute;
+        top: 70%;
+        font-size: 60px;
+        left:7%;
+        font-family: 'Noto Sans', sans-serif;
+        color:white;
+    }
+
     input {
         border: 0;
         outline: 0;

@@ -9,26 +9,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Update_user_save</title>
 </head>
-
+{% extends 'update_user_style.html' %}
 {% block header %}
 <h1>{% block title %}Update User{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
+<img class="user_image" src="https://images.unsplash.com/photo-1522444195799-478538b28823?ixlib=rb-4.0.3&ixid=MnwxMjAfGNvenklMjBob21lfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60">
 <h4 id='message'>{{message}}</h4>
 <form method="post">
   <div class="form-group">
-    <label for="name">Name</label>
-    <input class="form-control" name="name" id="name">
-    <label for="password">Password</label>
-    <input class="form-control" name="password" id="password">
-    <label for="email">Email</label>
-    <input class="form-control" type="email" name="email" id="email">
-    <label for="billing_address">Billing address</label>
-    <input class="form-control" name="billing_address" id="billing_address">
-    <label for="Postal_Code">Postal Code</label>
-    <input class="form-control" name="Postal_Code" id="Postal_Code">
-    <input class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Save">
+      <div class="Name">
+          <div>
+              <label for="name">Name</label>
+          </div>
+          <div>
+              <input class="form-control" name="name" id="name">
+          </div>
+      </div>
+
+      <div class="password">
+          <div>
+              <label for="password">Password</label>
+          </div>
+          <div>
+              <input class="form-control" name="password" id="password">
+          </div>
+      </div>
+
+      <div class="Email">
+          <div>
+              <label for="email">Email</label>
+          </div>
+          <div>
+              <input class="form-control" name="email" id="email">
+          </div>
+      </div>
+
+      <div class="Billing_Address">
+          <div>
+              <label for="billing_address">Billing Address</label>
+          </div>
+          <div>
+              <input class="form-control" name="billing_address" id="billing_address">
+          </div>
+      </div>
+
+      <div class="Postal_Code">
+          <div>
+              <label for="Postal_Code">Postal Code</label>
+          </div>
+          <div>
+              <input class="form-control" name="Postal_Code" id="Postal_Code">
+          </div>
+      </div>
+
+    <button class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Save">Save</button>
   </div>
 </form>
 {% endblock %}

@@ -68,7 +68,8 @@ def update_user_checker(update_user: dict) -> None:
         update_user.pop("password")
 
     elif not re.fullmatch(
-            r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&()_])[A-Za-z\d#@$!%*?&()_]{6,}$',
+            (r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)"
+             r"(?=.*[#@$!%*?&()_])[A-Za-z\d#@$!%*?&()_]{6,}$"),
             update_user["password"]):
         raise InvalidUserUpdate(
             "Password has to meet the required complexity:" +
@@ -79,29 +80,27 @@ def update_user_checker(update_user: dict) -> None:
     # Check address, if none, then pop the value so it won't update
     if update_user["address"] == "":
         update_user.pop("address")
-
-
-
     print("ALL-pass")
 
 
-def update_user_saving(update_user, id) -> dict:
+def update_user_saving(update_user, id) -> None:
     """
     R2-1
     """
     # Create SQL code
+    # Test if user didn't change anything
     if update_user == {}:
         print("dictionary is empty")
         return None
-    print("Yes?")
+
+    # form the sql update instruction
     sql_update = "UPDATE \'Users\' "
     sql_where = " WHERE user_id = " + "\"" + id + "\""  # Fetch the user id
     sql_set = "SET "
-    print("Yes??")
+
     # Set is where attribute + index,
     # ex Name : Alex, so it can update the name to Alex
     for i in update_user.keys():
-        print("Yes!!!!!")
         sql_set += (i + " = " + '\"' + update_user[i] + '\"' + ', ')
     sql_set = sql_set[:-2]
 
@@ -113,10 +112,8 @@ def update_user_saving(update_user, id) -> dict:
     path = os.path.dirname(os.path.abspath(__file__))
     connection = sqlite3.connect(path + "/data.db")
     cursor = connection.cursor()
-    print("Xuhuilin connected !!!!!")
 
     # execute the sql = sql_update + sql_set + sql_where code
     cursor.executescript(sql)
     connection.commit()
-    print("Xuhuilin dumdum")
     connection.close()

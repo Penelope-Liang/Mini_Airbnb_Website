@@ -46,7 +46,8 @@ def login_checker(login_user) -> None:
     # R2-2
     # Check password format
     if not re.fullmatch(
-            r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&()_])[A-Za-z\d#@$!%*?&()_]{6,}$',
+            (r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)"
+             r"(?=.*[#@$!%*?&()_])[A-Za-z\d#@$!%*?&()_]{6,}$"),
             login_user["password"]):
         raise InvalidLogin(
             "Password has to meet the required complexity:" +
@@ -62,9 +63,9 @@ def login_saving(login_user) -> dict:
     """
     # Connection with database
     print("===testing login saving checker========")
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/data.db")
+    import pathlib
+    path = pathlib.Path().resolve()
+    connection = sqlite3.connect(path.__str__() + "/qbay/data.db")
     cursor = connection.cursor()
     # R1-7
     # Select email from user, if found, fetch

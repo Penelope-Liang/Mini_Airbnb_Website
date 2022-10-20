@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Title{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+</head>
+
+
+<style>
+    *{
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+
+    p {
+        font-size: 22px;
+        left:20%;
+    }
+    .user_image{
+        width: 40%;
+        position: absolute;
+        right: 100px;
+        top: 0px;
+        height: 100%;
+    }
+
+    .Name, .Email, .id, .Balance, .Billing_Address, .Postal_Code, .password{
+        margin-bottom: 14px;
+        padding-left: 1px;
+        padding-right: 1px;
+        display: block;
+        width:600px;
+        margin-inline-start: 2px;
+        margin-inline-end: 2px;
+        padding-block-start: 0.5px;
+        padding-inline-start: 0.75em;
+        padding-inline-end: 0.75em;
+        padding-block-end: 0.625em;
+        min-inline-size: min-content;
+        background-color: #f4f4f4;
+        line-height: 1.5;
+        letter-spacing: 0.13px;
+    }
+
+    button {
+      background-color: #DEB887;
+      color: white;
+      top:5px;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 44%;
+      border-radius: 10px;
+      margin: auto;
+      padding: auto;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    #message{
+        font-size: 22px;
+        left:20%;
+    }
+
+</style>
+
+{% block content %}{% endblock %}
+</html>
