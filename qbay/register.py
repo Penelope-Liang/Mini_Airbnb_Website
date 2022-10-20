@@ -243,4 +243,4 @@ if __name__ == '__main__':
 # not equal to __main__
 else:
     from qbay.regexRepo import emailReg, AccNameReg, passwordReg
-    from qbay.exceptions import InvaildRegister
+    from qbay.exceptions import InvalidRegister
