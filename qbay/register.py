@@ -130,31 +130,34 @@ def register_saving(reg_user) -> dict:
 
 
 def register(saveble_user):
-    import os
-    # saveble_user = register_saving(user)
-    print("hellllooooo")
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/data.db")
-    print("connection failed")
-    cursor = connection.cursor()
-    print("here")
-    cursor.execute("INSERT INTO Users \
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                   (saveble_user["user_id"],
-                    saveble_user["acc_name"],
-                    saveble_user["first_name"],
-                    saveble_user["last_name"],
-                    saveble_user["password"],
-                    saveble_user["email"],
-                    saveble_user["balance"],
-                    saveble_user["profile_photo"],
-                    saveble_user["about"],
-                    saveble_user["address"],
-                    saveble_user["postal_code"]))
-    print("before commit")
-    connection.commit()
-    print("commit complete")
-    connection.close()
+    try:
+        import os
+        # saveble_user = register_saving(user)
+        print("hellllooooo")
+        path = os.path.dirname(os.path.abspath(__file__))
+        connection = sqlite3.connect(path + "/data.db")
+        print("connection failed")
+        cursor = connection.cursor()
+        print("here")
+        cursor.execute("INSERT INTO Users \
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                       (saveble_user["user_id"],
+                        saveble_user["acc_name"],
+                        saveble_user["first_name"],
+                        saveble_user["last_name"],
+                        saveble_user["password"],
+                        saveble_user["email"],
+                        saveble_user["balance"],
+                        saveble_user["profile_photo"],
+                        saveble_user["about"],
+                        saveble_user["address"],
+                        saveble_user["postal_code"]))
+        print("before commit")
+        connection.commit()
+        print("commit complete")
+        connection.close()
+    except:
+        raise InvaildRegister("Registration failed:(", "fail to commit")
 
 
 if __name__ == '__main__':

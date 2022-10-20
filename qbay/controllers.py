@@ -4,7 +4,7 @@ from qbay.models import Users
 from qbay.login import login_checker, login_saving
 from qbay.register import register, register_format_checker, register_saving
 from qbay.updateUserProfile import update_user_checker, update_user_saving
-from qbay.exceptions import InvalidLogin
+from qbay.exceptions import InvaildRegister, InvalidLogin
 from qbay.db import db
 import sqlite3
 
@@ -120,15 +120,20 @@ def register_post():
             "password": password
         }
         # find a way to displat the exception msg?
-        register_format_checker(user)
-        reg_user = register_saving(user)
-        print(reg_user)
         try:
-            # query to check if user already exists?
+            register_format_checker(user)
+            reg_user = register_saving(user)
+            print(reg_user)
             register(reg_user)
             print("yes")
-        except:
-            error_message = "Registration failed:("
+        except InvaildRegister as err:
+            error_message = f"{err.message}"
+        # try:
+        #     # query to check if user already exists?
+        #     register(reg_user)
+        #     print("yes")
+        # except:
+        #     error_message = "Registration failed:("
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
     if error_message:
