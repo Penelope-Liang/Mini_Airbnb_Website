@@ -1,11 +1,11 @@
-from email import message
+# from email import message
 from qbay import app
 from flask import render_template, request, session, redirect
 from qbay.login import login_checker, login_saving
 from qbay.register import register, register_format_checker, register_saving
 from qbay.updateUserProfile import update_user_checker, update_user_saving
 from qbay.exceptions import InvalidRegister, InvalidLogin, InvalidUserUpdate
-from qbay.db import db
+# from qbay.db import db
 import sqlite3
 
 
@@ -34,8 +34,8 @@ def authenticate(inner_function):
                 path = os.path.dirname(os.path.abspath(__file__))
                 connection = sqlite3.connect(path + "/data.db")
                 cursor = connection.cursor()
-                row = cursor.execute("SELECT * FROM 'Users' "
-                                     "WHERE email = email")
+                cursor.execute("SELECT * FROM 'Users' "
+                               "WHERE email = (?)", (email, ))
                 # print(row)  # for testing
                 # if found the email, store into user
                 user = cursor.fetchone()
@@ -90,16 +90,12 @@ def login_post():
                                message=IL.message)
 
 
-# this function is used to show the home page once user log in
 @app.route('/', endpoint='home')
 @authenticate
 def home(user):
-    # authentication is done in the wrapper function
-    # see above.
-    # by using @authenticate, we don't need to re-write
-    # the login checking code all the time for other
-    # front-end portals
-
+    '''
+    This function is used to show the home page once user log in
+    '''
     try:
         # link the database to fetch all properties
         import os
@@ -108,26 +104,30 @@ def home(user):
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM 'Properties';")
         all_prod = cursor.fetchall()
-        # print(type(all_prod)) # for testing
-        # print("it better fetched all") # for testing
-        for prod in all_prod:
-            print(prod)
         connection.close()
-        return render_template('index.html', user=user, products=all_prod, message="")
+        return render_template('index.html', user=user,
+                               products=all_prod, message="")
     except Exception:
-        # if there has been error loading properties, display err msg
+        # if there has been any error loading properties, display err msg
         return render_template('index.html', user=user, products=[],
-                               message="Soory! There has been an error loading the products")
+                               message="Soory! There has been \
+                                an error loading the products")
 
 
 @app.route('/register', methods=['GET'])
 def register_get():
-    # templates are stored in the templates folder
+    '''
+    This function is to get the register page for display
+    '''
     return render_template('register.html', message='')
 
 
 @app.route('/register', methods=['POST'])
 def register_post():
+    '''
+    This function is to handle the post action on the register page
+    '''
+    # get all user inputs
     email = request.form.get('email')
     acc_name = request.form.get('name')
     first_name = request.form.get('first_name')
@@ -147,21 +147,16 @@ def register_post():
             "email": email,
             "password": password
         }
-        # find a way to displat the exception msg?
         try:
+            # check if inputs have any format error
             register_format_checker(user)
             reg_user = register_saving(user)
-            print(reg_user)
+            # register the new user to the database
             register(reg_user)
-            print("yes")
+        # pass the customized exception err massage to var error_message
+        # if there is any
         except InvalidRegister as err:
             error_message = f"{err.message}"
-        # try:
-        #     # query to check if user already exists?
-        #     register(reg_user)
-        #     print("yes")
-        # except:
-        #     error_message = "Registration failed:("
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
     if error_message:
@@ -214,7 +209,7 @@ def update_user_get2():
 
 
 """
-This function is used to update all the information user entered 
+This function is used to update all the information user entered
 and re-shows everything update to them
 """
 

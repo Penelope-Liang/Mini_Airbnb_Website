@@ -19,7 +19,6 @@ R1-10: Balance should be initialized as 100 at the time of registration.
        (free $100 dollar signup bonus).
 """
 
-from doctest import testsource
 import json
 import uuid
 import re
@@ -158,8 +157,8 @@ def register(saveble_user):
         connection.commit()
         print("commit complete")
         connection.close()
-    except:
-        raise InvaildRegister("Registration failed:(", "fail to commit")
+    except InvalidRegister:
+        raise InvalidRegister("Registration failed:(", "fail to commit")
 
 
 if __name__ == '__main__':
@@ -170,8 +169,8 @@ if __name__ == '__main__':
     import sys
     path = os.path.abspath(os.getcwd())
     sys.path.append(path)
-    from qbay.models import Users
-    from qbay.db import db
+    # from qbay.models import Users
+    # from qbay.db import db
 
     # user2 = {
     #     "acc_name": "Saul Goodman",
