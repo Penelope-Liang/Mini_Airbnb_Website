@@ -40,7 +40,7 @@ def create_listing_format_checker(listing):
     if not (len(listing["description"]) > len(listing["title"])):
         raise InvalidListing("description have to be longer than title")
     # R4-5
-    if (not (listing["price"] > 10 and listing["price"] < 10000)):
+    if (not (int(listing["price"]) > 10 and int(listing["price"]) < 10000)):
         raise InvalidListing("price must between 10 and 10000")
     # R4-6
     if (listing["posted_date"] < date(2021, 1, 2) or
@@ -90,6 +90,34 @@ def listing_saving(listing) -> dict:
     del listing["email"]
 
     return listing
+
+
+def createlisting(listing_save):
+    try:
+        import os
+        print("success")
+        path = os.path.dirname(os.path.abspath(__file__))
+        connection = sqlite3.connect(path + "/data.db")
+        print("connection failed")
+        cursor = connection.cursor()
+        print("here")
+
+        cursor.execute("INSERT INTO Properties \
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (listing_save["prop_id"],
+                                                  listing_save["user_id"],
+                                                  listing_save["posted_date"],
+                                                  listing_save["title"],
+                                                  listing_save["description"],
+                                                  listing_save["img"],
+                                                  listing_save["price"],
+                                                  listing_save["address"],
+                                                  listing_save["capacity"]))
+        print("before commit")
+        connection.commit()
+        print("commit complete")
+        connection.close()
+    except Exception:
+        print("Error")
 
 
 if __name__ == "__main__":

@@ -1,10 +1,15 @@
-# from email import message
+from datetime import date
 from qbay import app
 from flask import render_template, request, session, redirect
+from qbay.exceptions import InvalidLogin, InvalidRegister, InvalidUserUpdate
+# flask.url_for
+# from qbay.models import Users
 from qbay.login import login_checker, login_saving
 from qbay.register import register, register_format_checker, register_saving
 from qbay.updateUserProfile import update_user_checker, update_user_saving
-from qbay.exceptions import InvalidRegister, InvalidLogin, InvalidUserUpdate
+# from qbay.exceptions import InvaildRegister  # InvalidLogin
+from qbay.createListing import create_listing_format_checker, createlisting
+from qbay.createListing import listing_saving
 # from qbay.db import db
 import sqlite3
 
@@ -265,3 +270,113 @@ def logout():
     if 'logged_in' in session:
         session.pop('logged_in', None)
     return redirect('/')
+
+
+@app.route('/create', methods=['GET'])
+def createlisting_get():
+    return render_template('create.html',
+                           message='Let\'s Start Creating Listing')
+
+
+@app.route('/create', methods=['POST'])
+def createlisting_post():
+    email = session['logged_in']
+    prop_id = request.form.get('prop_id')
+    user_id = request.form.get('user_id')
+    # posted_date = request.form.get('date')
+    title = request.form.get('title')
+    description = request.form.get('description')
+    img = request.form.get('img')
+    price = request.form.get('price')
+    address = request.form.get('address')
+    capacity = request.form.get('capacity')
+
+    listing = {
+        "email": email,
+        "prop_id": prop_id,
+        "user_id": user_id,
+        "posted_date": date.today(),
+        "title": title,
+        "description": description,
+        "img": img,
+        "price": price,
+        "address": address,
+        "capacity": capacity
+    }
+
+    create_listing_format_checker(listing)
+    new_listing = listing_saving(listing)
+    # createlisting(new_listing)
+    print(new_listing)
+    try:
+        createlisting(new_listing)
+        print("okOK")
+        return render_template(request, '/createlisting_post.html',
+                               message='Create listing fail')
+    except Exception:
+        return render_template('createlisting_post.html', data=listing)
+
+
+@app.route('/create', methods=['POST'])
+def upload_file():
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        uploaded_file.save(uploaded_file.filename)
+    return render_template(request, '/createlisting_post.html',
+                           message='Create picture')
+
+
+@app.route('/updatelisting', methods=['GET'])
+def updatelisting_get():
+    return render_template('updatelisting.html',
+                           message='Let\'s Start Update Listing')
+
+
+@app.route('/updatelisting', methods=['POST'])
+def updatelisting_post():
+
+    email = session['logged_in']
+    prop_id = request.form.get('prop_id')
+    user_id = request.form.get('user_id')
+    # posted_date = request.form.get('date')
+    title = request.form.get('title')
+    description = request.form.get('description')
+    img = request.form.get('img')
+    price = request.form.get('price')
+    address = request.form.get('address')
+    capacity = request.form.get('capacity')
+
+    updatelisting = {
+        "email": email,
+        "prop_id": prop_id,
+        "user_id": user_id,
+        "posted_date": date.today(),
+        "title": title,
+        "description": description,
+        "img": img,
+        "price": price,
+        "address": address,
+        "capacity": capacity
+    }
+
+    create_listing_format_checker(updatelisting)
+    new_listing = listing_saving(updatelisting)
+    print(new_listing)
+    try:
+        createlisting(new_listing)
+        print("okOK")
+        return render_template(request, '/updatelisting_save.html',
+                               message='Update listing fail')
+    except Exception:
+        return render_template('updatelisting_save.html', data=updatelisting)
+
+
+'''
+@app.route('/updatelisting', methods=['POST'])
+def upload_file_update():
+    uploaded_file_update = request.files['file']
+    if uploaded_file_update.filename != '':
+        uploaded_file_update.save(uploaded_file_update.filename)
+    return render_template(request, '/updatelisting_save.html',
+                           message='Update picture')
+'''

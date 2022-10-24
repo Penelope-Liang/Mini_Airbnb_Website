@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web form</title>
+</head>
+
+{% block header %}
+<h1>{% block title %}Create Listing{% endblock %}</h1>
+{% endblock %}
+
+{% block update %}
+<h4 id='message'>{{message}}</h4>
+
+
+  <div class="form-group">
+    <h4>Post Date: {{ data.posted_date }} </h4>
+    <h4>Title: {{ data.title }} </h4>
+    <h4>Description: {{ data.description }} </h4>
+    <h4>Image: {{ data.img }} </h4>
+    <h4>Address: {{ data.address }} </h4>   
+    <h4>Capacity: {{ data.capacity }} </h4>                     
+  </div>
+
+  <!--go back to user homepage-->
+  <a href="/"><input class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Homepage"></a>
+
+
+   
+{% endblock %}
