@@ -4,6 +4,9 @@ from qbay.exceptions import InvalidUserUpdate
 
 
 def test_user_update_format_checker_with_bad_acc_name():
+    '''
+    R3-2
+    '''
     with pytest.raises(InvalidUserUpdate):
         user = {
             "acc_name": "  !",
@@ -18,6 +21,9 @@ def test_user_update_format_checker_with_bad_acc_name():
 
 
 def test_user_update_format_checker_with_bad_email_no_At_sign():
+    '''
+    R3-4
+    '''
     with pytest.raises(InvalidUserUpdate):
         user = {
             "acc_name": "Saul Goodman",
@@ -32,6 +38,9 @@ def test_user_update_format_checker_with_bad_email_no_At_sign():
 
 
 def test_user_update_format_checker_with_bad_email_no_dot_com():
+    '''
+    R3-4
+    '''
     with pytest.raises(InvalidUserUpdate):
         user = {
             "acc_name": "Saul Goodman",
@@ -46,6 +55,9 @@ def test_user_update_format_checker_with_bad_email_no_dot_com():
 
 
 def test_user_update_format_checker_with_bad_email_no_prefix():
+    '''
+    R3-4
+    '''
     with pytest.raises(InvalidUserUpdate):
         user = {
             "acc_name": "Saul Goodman",
@@ -60,6 +72,9 @@ def test_user_update_format_checker_with_bad_email_no_prefix():
 
 
 def test_user_update_format_checker_with_bad_email_no_suffix():
+    '''
+    R3-4
+    '''
     with pytest.raises(InvalidUserUpdate):
         user = {
             "acc_name": "Saul Goodman",
@@ -74,6 +89,9 @@ def test_user_update_format_checker_with_bad_email_no_suffix():
 
 
 def test_user_update_format_checker_with_special_characters():
+    '''
+    R3-2
+    '''
     with pytest.raises(InvalidUserUpdate):
         user = {
             "acc_name": "Saul Goodman",
@@ -88,6 +106,9 @@ def test_user_update_format_checker_with_special_characters():
 
 
 def test_user_update_format_checker_is_all_number_Canada_postal_code():
+    '''
+    R3-3
+    '''
     with pytest.raises(InvalidUserUpdate):
         user = {
             "acc_name": "Saul Goodman",
@@ -102,6 +123,9 @@ def test_user_update_format_checker_is_all_number_Canada_postal_code():
 
 
 def test_user_update_format_checker_is_all_letters_Canada_postal_code():
+    '''
+    R3-3
+    '''
     with pytest.raises(InvalidUserUpdate):
         user = {
             "acc_name": "Saul Goodman",

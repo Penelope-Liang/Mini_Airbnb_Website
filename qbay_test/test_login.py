@@ -4,6 +4,9 @@ from qbay.exceptions import InvalidLogin
 
 
 def test_login_format_checker_with_valid_format():
+    '''
+    Normal case, no requirement
+    '''
 
     user = {
         "password": "Best_lawyer123",
@@ -17,6 +20,10 @@ def test_login_format_checker_with_valid_format():
 
 
 def test_login_format_checker_with_bad_password_plain_numbers():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -29,6 +36,10 @@ def test_login_format_checker_with_bad_password_plain_numbers():
 
 
 def test_login_format_checker_with_bad_password_plain_characters():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -41,6 +52,10 @@ def test_login_format_checker_with_bad_password_plain_characters():
 
 
 def test_login_format_checker_with_bad_password_no_special_ctrs():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -53,6 +68,10 @@ def test_login_format_checker_with_bad_password_no_special_ctrs():
 
 
 def test_login_format_checker_with_bad_password_no_uppercase():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -65,6 +84,10 @@ def test_login_format_checker_with_bad_password_no_uppercase():
 
 
 def test_login_format_checker_with_bad_password_all_uppercase():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -77,6 +100,10 @@ def test_login_format_checker_with_bad_password_all_uppercase():
 
 
 def test_login_format_checker_with_bad_password_all_lowercase():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -89,6 +116,10 @@ def test_login_format_checker_with_bad_password_all_lowercase():
 
 
 def test_login_format_checker_with_bad_email_no_At_sign():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -101,6 +132,10 @@ def test_login_format_checker_with_bad_email_no_At_sign():
 
 
 def test_login_format_checker_with_bad_email_no_dot_com():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -113,6 +148,10 @@ def test_login_format_checker_with_bad_email_no_dot_com():
 
 
 def test_login_format_checker_with_bad_email_no_prefix():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -125,6 +164,10 @@ def test_login_format_checker_with_bad_email_no_prefix():
 
 
 def test_login_format_checker_with_bad_email_no_suffix():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -137,6 +180,10 @@ def test_login_format_checker_with_bad_email_no_suffix():
 
 
 def test_login_format_checker_with_empty_email():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 
@@ -149,6 +196,10 @@ def test_login_format_checker_with_empty_email():
 
 
 def test_login_format_checker_with_empty_password():
+    '''
+    R2-2: The login function should check if the supplied inputs meet the
+    same email/password requirements as above, before checking the database.
+    '''
 
     with pytest.raises(InvalidLogin):
 

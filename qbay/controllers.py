@@ -101,13 +101,15 @@ def home(user):
     '''
     This function is used to show the home page once user log in
     '''
+    print(user)
     try:
         # link the database to fetch all properties
         import os
         path = os.path.dirname(os.path.abspath(__file__))
         connection = sqlite3.connect(path + "/data.db")
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM 'Properties';")
+        cursor.execute(
+            "SELECT * FROM 'Properties' WHERE user_id = (?);", (user[0],))
         all_prod = cursor.fetchall()
         connection.close()
         return render_template('index.html', user=user,
