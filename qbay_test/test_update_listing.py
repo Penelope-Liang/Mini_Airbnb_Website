@@ -7,6 +7,10 @@ from qbay.updateListing\
 
 
 def test_updatelisting_update_title():
+    '''
+    R5-1: One can update all attributes of the listing,
+    except owner_id and last_modified_date.
+    '''
     with pytest.raises(InvalidUpdateListing):
         update = {
             "title": "Treehouse hosted by Christopher",
@@ -24,6 +28,10 @@ def test_updatelisting_update_title():
 
 
 def test_updatelisting_update_description():
+    '''
+    R5-1: One can update all attributes of the listing,
+    except owner_id and last_modified_date.
+    '''
     with pytest.raises(InvalidUpdateListing):
         update = {
             "title": "Garbage room",
@@ -41,6 +49,10 @@ def test_updatelisting_update_description():
 
 
 def test_updatelisting_update_price():
+    '''
+    R5-1: One can update all attributes of the listing,
+    except owner_id and last_modified_date.
+    '''
     with pytest.raises(InvalidUpdateListing):
         update = {
             "title": "Garbage room",
@@ -58,6 +70,10 @@ def test_updatelisting_update_price():
 
 
 def test_updatelisting_not_update_title():
+    '''
+    R5-1: One can update all attributes of the listing,
+    except owner_id and last_modified_date.
+    '''
     with pytest.raises(InvalidUpdateListing):
         update = {
             "title": "Garbage room",
@@ -75,6 +91,10 @@ def test_updatelisting_not_update_title():
 
 
 def test_updatelisting_not_update_description():
+    '''
+    R5-1: One can update all attributes of the listing,
+    except owner_id and last_modified_date.
+    '''
     with pytest.raises(InvalidUpdateListing):
         update = {
             "title": "Garbage room",
@@ -92,6 +112,10 @@ def test_updatelisting_not_update_description():
 
 
 def test_updatelisting_not_update_address():
+    '''
+    R5-4: When updating an attribute, one has to make sure that
+    it follows the same requirements as above.
+    '''
     with pytest.raises(InvalidUpdateListing):
         update = {
             "title": "Garbage room",
@@ -109,6 +133,10 @@ def test_updatelisting_not_update_address():
 
 
 def test_updatelisting_not_update_price():
+    '''
+    R5-3: last_modified_date should be updated when the update
+    operation is successful.
+    '''
     with pytest.raises(InvalidUpdateListing):
         update = {
             "title": "Garbage room",
