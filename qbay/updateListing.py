@@ -25,8 +25,9 @@ def updating_data(proerpty_1) -> dict:
     '''
     Update property data
     '''
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/../../data.db")
+    import pathlib
+    path = pathlib.Path(__file__).parent.joinpath("data.db")
+    connection = sqlite3.connect(path)
     cursor = connection.cursor()
 
     cursor.execute(

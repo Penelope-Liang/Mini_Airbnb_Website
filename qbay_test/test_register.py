@@ -1,6 +1,6 @@
 import pytest
 from qbay.register import register_format_checker, register_saving
-from qbay.exceptions import *
+# from qbay.exceptions import *
 
 
 def test_register_format_checker_with_valid_format():
