@@ -399,9 +399,8 @@ def myProperties():
         connection = sqlite3.connect(path + "/data.db")
         cursor = connection.cursor()
 
-        sql = 'select * from Users where email="%s"'%(email)
+        sql = 'select * from Users where email = "%s"' % (email)
         cursor.execute(sql)
-        
         user = cursor.fetchone()
         print(user)
         user_id = user[0]
@@ -410,11 +409,9 @@ def myProperties():
         # use user_id to check properties
         connection = sqlite3.connect(path + "/data.db")
         cursor = connection.cursor()
-        
-        sql ='select * from Properties where user_id="%s"'%(user_id)
+        sql = 'select * from Properties where user_id="%s"' % (user_id)
         cursor.execute(sql)
         all_prod = cursor.fetchall()
-      
         connection.close()
         return render_template('mine.html', user=user,
                                products=all_prod, message="")
