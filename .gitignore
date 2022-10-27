@@ -1,16 +1,6 @@
-src/backend/__pycache__
-src/backend/*/__pycache__
-src/backend/*/*/__pycache__
-src/backend/*/*/*/__pycache__
-# src/backend/data.db
-src/backend/venv
-src/backend/.venv
-src/.DS_Store
-src/backend/.DS_Store
-src/backend/*/.DS_Store
-src/backend/*/*/.DS_Store
-src/backend/*/*/*/.DS_Store
-src/backend/.pytest_cache
-src/backend/*/.pytest_cache
-src/backend/*/*/.pytest_cache
-src/backend/*/*/*/.pytest_cache
+.DS_store
+__pycache__
+.venv
+.idea
+.pytest_cache
+./qbay/__pycache__

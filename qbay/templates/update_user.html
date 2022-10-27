@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update_User</title>
+</head>
+{% extends 'update_user_style.html' %}
+{% block header %}
+<h1>{% block title %}Update User{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<p>Profile</p>
+<img class="user_image" src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80">
+  <div class="form-group">
+      <div class="Name">
+          <div>
+              <h4>Name:</h4>
+          </div>
+          <div>
+              <span>{{ user[1] }}</span>
+          </div>
+      </div>
+
+      <div class="Email">
+          <div>
+              <h4>Email:</h4>
+          </div>
+          <div>
+              <span>{{ user[5] }}</span>
+          </div>
+      </div>
+
+      <div class="id">
+          <div>
+              <h4>ID:</h4>
+          </div>
+          <div>
+              <span>{{ user[0] }}</span>
+          </div>
+      </div>
+
+      <div class="Balance">
+          <div>
+              <h4>Balance:</h4>
+          </div>
+          <div>
+              <span>{{ user[6] }}</span>
+          </div>
+      </div>
+
+      <div class="Billing_Address">
+          <div>
+              <h4>Billing Address:</h4>
+          </div>
+          <div>
+              <span>{{ user[9] }}</span>
+          </div>
+      </div>
+
+      <div class="Postal_Code">
+          <div>
+              <h4>Postal Code:</h4>
+          </div>
+          <div>
+              <span>{{ user[10] }}</span>
+        </div>
+      </div>
+
+    <a href='/update_user_save' class="btn btn-primary" id="btn-submit" >Update</a>
+  </div>
+
+{% endblock %}
