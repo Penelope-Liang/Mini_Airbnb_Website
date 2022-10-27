@@ -348,17 +348,17 @@ def updatelisting_post():
     capacity = request.form.get('capacity')
 
     updatelisting = {
-            "email": email,
-            "prop_id": prop_id,
-            "user_id": user_id,
-            "posted_date": date.today(),
-            "title": title,
-            "description": description,
-            "img": img,
-            "price": price,
-            "address": address,
-            "capacity": capacity,
-        }
+        "email": email,
+        "prop_id": prop_id,
+        "user_id": user_id,
+        "posted_date": date.today(),
+        "title": title,
+        "description": description,
+        "img": img,
+        "price": price,
+        "address": address,
+        "capacity": capacity,
+    }
 
     if prop_id:
         create_listing_format_checker(updatelisting)
