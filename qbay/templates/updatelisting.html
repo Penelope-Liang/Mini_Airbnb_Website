@@ -82,10 +82,12 @@
 
 {% block update %}
     <div class="book">
-
+        
     <form  method="post" action="updatelisting" id="updatelisting" class="addlisting">
+       <div>{{data}}</div>
     <ul>
-    <!-- <li><input class="form-control" id="email" name="email"  placeholder="Email:" required></li>-->
+
+    <li><input class="form-control" id="prop_id" placeholder="Prop id: " name="prop_id" value="{{data}}" required></li>
 
     <li><input class="form-control" type="date" id="posted_date" placeholder="Posted Date:" name="date" required></li>
         

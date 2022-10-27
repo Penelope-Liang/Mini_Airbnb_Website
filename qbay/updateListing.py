@@ -75,6 +75,36 @@ def update_listing_format_checker_2(proerpty_1):
         raise InvalidUpdateListing("email can not be empty")
 
 
+def updateInfo(listing_save):
+    try:
+        import os
+        path = os.path.dirname(os.path.abspath(__file__))
+        connection = sqlite3.connect(path + "/data.db")
+        cursor = connection.cursor()
+
+        print("data: {}".format(listing_save))
+
+        update_sql = 'update Properties set posted_date=?,' \
+                     'title=?,description=?,' \
+                     'image=?, price=?,address=?,capacity=? where prop_id=?'
+
+        cursor.execute(update_sql, (
+            listing_save["posted_date"],
+            listing_save["title"],
+            listing_save["description"],
+            listing_save["img"],
+            listing_save["price"],
+            listing_save["address"],
+            listing_save["capacity"],
+            listing_save["prop_id"]
+        ))
+
+        connection.commit()
+        connection.close()
+    except Exception:
+        print("Error")
+
+
 if __name__ == "__main__":
     from regexRepo import AccNameReg
     from exceptions import InvalidUpdateListing

@@ -3,4 +3,4 @@ __pycache__
 .venv
 .idea
 .pytest_cache
-./qbay/__pycache__
+__pycache__

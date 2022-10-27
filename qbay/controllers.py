@@ -6,6 +6,7 @@ from qbay.exceptions import InvalidLogin, InvalidRegister, InvalidUserUpdate
 # from qbay.models import Users
 from qbay.login import login_checker, login_saving
 from qbay.register import register, register_format_checker, register_saving
+from qbay.updateListing import updateInfo
 from qbay.updateUserProfile import update_user_checker, update_user_saving
 # from qbay.exceptions import InvaildRegister  # InvalidLogin
 from qbay.createListing import create_listing_format_checker, createlisting
@@ -86,6 +87,7 @@ def login_post():
 
         # store the user email and password in row if find
         row = login_saving(user)
+        print('denglu {}'.format(row))
         if row != "None":
             # set the session logged_in to user's email
             session['logged_in'] = row[0]
@@ -188,7 +190,7 @@ def update_user_get():
     cursor = connection.cursor()
 
     # select all the info of the user
-    row = cursor.execute("SELECT * FROM 'Users' WHERE email = email")
+    row = cursor.execute("SELECT * FROM 'Users' WHERE email = (?)", (email,))
     print(row)  # for testing
     user = cursor.fetchone()
     connection.close()
@@ -308,11 +310,8 @@ def createlisting_post():
 
     create_listing_format_checker(listing)
     new_listing = listing_saving(listing)
-    # createlisting(new_listing)
-    print(new_listing)
     try:
         createlisting(new_listing)
-        print("okOK")
         return render_template(request, '/createlisting_post.html',
                                message='Create listing fail')
     except Exception:
@@ -330,7 +329,8 @@ def upload_file():
 
 @app.route('/updatelisting', methods=['GET'])
 def updatelisting_get():
-    return render_template('updatelisting.html',
+    prop_id = request.args.get('prop_id')
+    return render_template('updatelisting.html', data=prop_id,
                            message='Let\'s Start Update Listing')
 
 
@@ -340,7 +340,6 @@ def updatelisting_post():
     email = session['logged_in']
     prop_id = request.form.get('prop_id')
     user_id = request.form.get('user_id')
-    # posted_date = request.form.get('date')
     title = request.form.get('title')
     description = request.form.get('description')
     img = request.form.get('img')
@@ -358,27 +357,68 @@ def updatelisting_post():
         "img": img,
         "price": price,
         "address": address,
-        "capacity": capacity
+        "capacity": capacity,
     }
 
-    create_listing_format_checker(updatelisting)
-    new_listing = listing_saving(updatelisting)
-    print(new_listing)
+    if prop_id:
+        create_listing_format_checker(updatelisting)
+        print("update")
+        try:
+            updateInfo(updatelisting)
+            return render_template('updatelisting_save.html',
+                                   data=updatelisting)
+
+        except Exception:
+            return render_template(request, '/updatelisting_save.html',
+                                   message='Update listing fail')
+
+    else:
+        print("insert")
+        create_listing_format_checker(updatelisting)
+        new_listing = listing_saving(updatelisting)
+        try:
+            createlisting(new_listing)
+            return render_template('updatelisting_save.html',
+                                   data=updatelisting)
+
+        except Exception:
+            return render_template(request, '/updatelisting_save.html',
+                                   message='Update listing fail')
+
+
+@app.route('/mine', methods=['GET'])
+def myProperties():
     try:
-        createlisting(new_listing)
-        print("okOK")
-        return render_template(request, '/updatelisting_save.html',
-                               message='Update listing fail')
-    except Exception:
-        return render_template('updatelisting_save.html', data=updatelisting)
+        # check the user
+        email = session['logged_in']
+        print('current_user {}'.format(email))
+        # get the email from session stored above
+        # connect the database
+        import os
+        path = os.path.dirname(os.path.abspath(__file__))
+        connection = sqlite3.connect(path + "/data.db")
+        cursor = connection.cursor()
 
+        sql = 'select * from Users where email = "%s"' % (email)
+        cursor.execute(sql)
+        user = cursor.fetchone()
+        print(user)
+        user_id = user[0]
+        connection.close()
 
-'''
-@app.route('/updatelisting', methods=['POST'])
-def upload_file_update():
-    uploaded_file_update = request.files['file']
-    if uploaded_file_update.filename != '':
-        uploaded_file_update.save(uploaded_file_update.filename)
-    return render_template(request, '/updatelisting_save.html',
-                           message='Update picture')
-'''
+        # use user_id to check properties
+        connection = sqlite3.connect(path + "/data.db")
+        cursor = connection.cursor()
+        sql = 'select * from Properties where user_id="%s"' % (user_id)
+        cursor.execute(sql)
+        all_prod = cursor.fetchall()
+        connection.close()
+        return render_template('mine.html', user=user,
+                               products=all_prod, message="")
+
+    except Exception as e:
+        print(e)
+        # if there has been any error loading properties, display err msg
+        return render_template('index.html', user=user, products=[],
+                               message="Soory! There has been \
+                                an error loading the products")

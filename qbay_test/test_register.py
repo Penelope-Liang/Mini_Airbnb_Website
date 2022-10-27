@@ -412,7 +412,7 @@ def test_register_saving_with_used_email():
             "first_name": "Jimmy",
             "last_name": "Mcgill",
             "password": "Best_lawer123",
-            "email": "JimmyMcgill@SGA.com",
+            "email": "DimDim@HHM.com",
             "profile_photo": "Jimmy_McGill_BCS_S3.png",
             "about": "Hi, I am saul",
             "address": "9800 Montgomery Blvd NE, Albuquerque, New Mexico",
