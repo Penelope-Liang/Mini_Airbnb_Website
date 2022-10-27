@@ -190,7 +190,7 @@ def update_user_get():
     cursor = connection.cursor()
 
     # select all the info of the user
-    row = cursor.execute("SELECT * FROM 'Users' WHERE email = email")
+    row = cursor.execute("SELECT * FROM 'Users' WHERE email = (?)", (email,))
     print(row)  # for testing
     user = cursor.fetchone()
     connection.close()
