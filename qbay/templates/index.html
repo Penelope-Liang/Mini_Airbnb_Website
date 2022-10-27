@@ -106,7 +106,7 @@
 
 {% block content %}
 <div class="container text-center">
-    <h2 class="welcome" id="welcome-header">Welcome {{ user[1] }} ! <a href='/logout' class="link">logout</a></h2><a href='/update_user'>update</a> <a href="/create">create listing</a> <a href="/updatelisting">update listing</a></h2>
+    <h2 class="welcome" id="welcome-header">Welcome {{ user[1] }} ! <a href='/logout' class="link">logout</a></h2><a href='/update_user'>update</a> <a href="/create">create listing</a></h2>
     <a href='/update_user' class="link">Update your profile</a>
     <h2>Here are all available products</h2>
     <a href='' class="link">create product</a>
@@ -114,6 +114,7 @@
 
 
 <h4 id='message'>{{message}}</h4>
+<a href="/mine">My Properties</a >
 <div id="products">
     <!-- <ul class="grid"> -->
         {% for product in products %}
@@ -131,7 +132,7 @@
                 </div>
                 <div class="card-footer">
                     <div class="wcf-left"><span class="price">${{ product[6] }} CAD</span></div>
-                    <div class="wcf-right"><a href="" class="link">Update</a></div>
+                    <div class="wcf-right">Update Listing Please Go To My Properties</div>
                 </div>
             </div>
         </div>
