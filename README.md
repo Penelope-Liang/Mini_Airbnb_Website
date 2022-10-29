@@ -1,17 +1,5 @@
 # CISC327 - Group Project
 
-## Directory Structure for Assignment 2
+![Examples tested with pytest-readme](https://img.shields.io/badge/pytest-passed-green)
 
-```
-├───.github
-│   └───workflows
-├───.vscode
-└───src
-    ├───backend
-    │   ├───.vscode
-    │   ├───models      *database files
-    │   ├───resources   *routing files
-    │   │   └───tools   *Assn-2 Code is here (request handlers)
-    │   └───tests       *Assn-2 Code is here (pytest code)
-    └───frontend
-```
+![Examples tested with pytest-readme](https://img.shields.io/badge/style-passed-green)
