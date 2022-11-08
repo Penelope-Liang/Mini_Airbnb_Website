@@ -89,15 +89,15 @@
 
     <li><input class="form-control" id="prop_id" placeholder="Prop id: " name="prop_id" value="{{data}}" required></li>
 
-    <li><input class="form-control" type="date" id="posted_date" placeholder="Posted Date:" name="date" required></li>
+    <!-- <li><input class="form-control" type="date" id="posted_date" placeholder="Posted Date:" name="date" value="11-8-2022" required></li>-->
         
-    <li><input class="form-control" id="title" name="title"  placeholder="Title:" required></li>
+    <li><input class="form-control" id="title" name="title"  placeholder="Title:" ></li>
 
-    <li><input class="form-control" id="description" name="description" placeholder="Description:" required></li>
+    <li><input class="form-control" id="description" name="description" placeholder="Description:" ></li>
         
     <li>
         <label for="img">Select image:</label>
-        <input type="file" id="img" name="img" accept="image/*" required></li>
+        <input type="file" id="img" name="img" accept="image/*" ></li>
     <li>
         <!-- 
             <li><input class="form-control" id="img" name="img" placeholder="Image Website" required></li>
@@ -107,13 +107,13 @@
             <input type="image" id="image" alt="Login" src="https://images.thestar.com/pOUnQM5a_MwAR4AjhJMKcAPMDHE=/1280x1024/smart/filters:cb(1659734208642)/https://www.thespec.com/content/dam/thespec/news/hamilton-region/2022/08/04/hamilton-pool-rental-bylaw/pool_rental_255.jpg" width="50" height="70">
         -->
 
-    <li><input class="form-control" id="price" name="price" placeholder="Price:" required></li>
+    <li><input class="form-control" id="price" name="price" placeholder="Price:" ></li>
 
         
-    <li><input class="form-control" id="address" name="address"  placeholder="Address:" required></li>
+    <li><input class="form-control" id="address" name="address"  placeholder="Address:" ></li>
         
     
-    <li><input class="form-control" id="capacity" placeholder="Capacity:" name="capacity" required></li>
+    <li><input class="form-control" id="capacity" placeholder="Capacity:" name="capacity" ></li>
     
 <!--form action="updatelisting_save.html"-->
     <li><input id="submit" type="submit" value="Submit" class="form_1"></li>
@@ -126,5 +126,11 @@
 <div class="bottom-container" style="font-family:verdana">
     <p class="copyright">Copyright © 2022 MINI AIRBNB | Privacy Policy</p>
 </div>
+
+<script>
+    function myFunction() {
+        document.getElementById("posted_date").defaultValue = new Date();
+    }
+</script>
 </body>
 {% endblock %}

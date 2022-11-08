@@ -6,7 +6,7 @@ from qbay.exceptions import InvalidLogin, InvalidRegister, InvalidUserUpdate
 # from qbay.models import Users
 from qbay.login import login_checker, login_saving
 from qbay.register import register, register_format_checker, register_saving
-from qbay.updateListing import updateInfo
+from qbay.updateListing import updateInfo, update_listing_format_checker_1, updating_data
 from qbay.updateUserProfile import update_user_checker, update_user_saving
 # from qbay.exceptions import InvaildRegister  # InvalidLogin
 from qbay.createListing import create_listing_format_checker, createlisting
@@ -339,10 +339,9 @@ def updatelisting_post():
 
     email = session['logged_in']
     prop_id = request.form.get('prop_id')
-    user_id = request.form.get('user_id')
     title = request.form.get('title')
     description = request.form.get('description')
-    img = request.form.get('img')
+    image = request.form.get('img')
     price = request.form.get('price')
     address = request.form.get('address')
     capacity = request.form.get('capacity')
@@ -350,23 +349,22 @@ def updatelisting_post():
     updatelisting = {
         "email": email,
         "prop_id": prop_id,
-        "user_id": user_id,
-        "posted_date": date.today(),
         "title": title,
         "description": description,
-        "img": img,
+        "image": image,
         "price": price,
         "address": address,
         "capacity": capacity,
     }
 
     if prop_id:
-        create_listing_format_checker(updatelisting)
+        update_listing_format_checker_1(updatelisting)
+        new_prop = updating_data(updatelisting)
         print("update")
         try:
-            updateInfo(updatelisting)
+            updateInfo(new_prop)
             return render_template('updatelisting_save.html',
-                                   data=updatelisting)
+                                   data=new_prop)
 
         except Exception:
             return render_template(request, '/updatelisting_save.html',
