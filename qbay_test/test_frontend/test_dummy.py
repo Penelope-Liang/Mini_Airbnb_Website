@@ -5,4 +5,4 @@ def test_dummy():
 
     with pytest.raises(Exception):
 
-        1/0
+        1 / 0

@@ -6,7 +6,8 @@ from qbay.exceptions import InvalidLogin, InvalidRegister, InvalidUserUpdate
 # from qbay.models import Users
 from qbay.login import login_checker, login_saving
 from qbay.register import register, register_format_checker, register_saving
-from qbay.updateListing import updateInfo, update_listing_format_checker_1, updating_data
+from qbay.updateListing import updateInfo, \
+    update_listing_format_checker_1, updating_data
 from qbay.updateUserProfile import update_user_checker, update_user_saving
 # from qbay.exceptions import InvaildRegister  # InvalidLogin
 from qbay.createListing import create_listing_format_checker, createlisting
