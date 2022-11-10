@@ -30,6 +30,10 @@ connection.close()
 class FrontEndHomePageTest(BaseCase):
 
     def test_update_title_and_desciption(self, *_):
+        '''
+        This is a valid change, all input satisfy the 
+        requirements
+        '''
 
         # login first
         self.open(base_url + "/login")
@@ -52,6 +56,11 @@ class FrontEndHomePageTest(BaseCase):
         self.click("#btn-submit")
 
     def test_update_price_capacity_address(self, *_):
+        '''
+        This is a valid change, all input satisfy the 
+        requirements
+        '''
+
         # login first
         self.open(base_url + "/login")
         self.type("#email", "111@111.com")
