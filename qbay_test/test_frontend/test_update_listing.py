@@ -33,8 +33,7 @@ class FrontEndHomePageTest(BaseCase):
             +
             "prop_id=5f1f29182d7e47b094e9f932ef19a976']")
 
-        # start editing
-
+        # start editing and the name and description
         self.type("#title", changed_name)
         self.type("#description", changed_descri)
         self.click("#submit")
