@@ -129,7 +129,7 @@ def register_get():
     '''
     This function is to get the register page for display
     '''
-    return render_template('register.html', message='')
+    return render_template('register.html', message=" ")
 
 
 @app.route('/register', methods=['POST'])
