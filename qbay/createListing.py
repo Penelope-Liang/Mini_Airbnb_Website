@@ -70,7 +70,7 @@ def listing_saving(listing) -> dict:
     if (row is None):
         raise InvalidListing("This user does not exist")
 
-    (email, user_id) = row
+    (_, user_id) = row
     cursor.execute(
         "SELECT title FROM Properties WHERE title = (?)", (listing["title"],))
     row = cursor.fetchone()

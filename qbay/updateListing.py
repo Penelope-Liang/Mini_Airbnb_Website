@@ -37,8 +37,6 @@ def updating_data(proerpty_1) -> dict:
     row = cursor.fetchone()
     connection.close()
 
-    print(row)
-
     old_property = {
         "title": row[3],
         "description": row[4],
@@ -48,21 +46,15 @@ def updating_data(proerpty_1) -> dict:
         "capacity": row[8],
     }
 
-    print(old_property)
-
-    print(proerpty_1)
-
     if (proerpty_1["price"] != ''
 
         and
-            old_property["price"] > proerpty_1["price"]):
+            float(old_property["price"]) > float(proerpty_1["price"])):
         raise InvalidUpdateListing("Price can only go up")
 
     for key in proerpty_1:
         if key != "prop_id" and proerpty_1[key] == '':
             proerpty_1[key] = old_property[key]
-
-    print("the new prop is ", proerpty_1)
 
     # check the property_1
     update_listing_format_checker_2(proerpty_1)
@@ -92,7 +84,8 @@ def update_listing_format_checker_2(proerpty_1):
     if (not (len(proerpty_1["description"]) > len(proerpty_1["title"]))):
         raise InvalidUpdateListing("description have to be longer than title")
 
-    if (not (proerpty_1["price"] > 10 and proerpty_1["price"] < 10000)):
+    if (not (float(proerpty_1["price"]) > 10
+             and float(proerpty_1["price"]) < 10000)):
         raise InvalidUpdateListing("price must between 10 and 10000")
 
     if ("email" not in proerpty_1 or len(proerpty_1["email"]) == 0):
