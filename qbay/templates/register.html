@@ -112,7 +112,8 @@
 {% endblock %}
 
 {% block content %}
-<h4 id='message'>{{message}}</h4>
+<h3 class="err-msg" id="msg">{{message}}</h3>
+<h1 id="mf">{{message}}</h1>
 <div class="card">
   <form class="card-form" method="post">
     <!-- <div class="form-group"> -->
@@ -141,7 +142,7 @@
         <label class="input-label" for="password">Confirm Password</label>
       </div>
       <div class="input reg">
-        <input class="btn btn-primary reg-btn" type="submit" value="Register">
+        <input class="btn btn-primary reg-btn" id="reg-btn" type="submit" value="Register">
       </div>
       <!-- <div class="action">
         <button class="action-button">Register</button>
