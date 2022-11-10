@@ -14,8 +14,10 @@ class RegisterPageTest(BaseCase):
         then the inputs must all satisfy the requirments.
         """
         # delete this row if it already exists
-        path = os.path.dirname(os.path.abspath(__file__))
-        db_path = path + "/../../qbay/data.db"
+        # path = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.abspath(os.getcwd())
+        print(type(path))
+        db_path = path + "/qbay/data.db"
         print(db_path)
         connection = sqlite3.connect(db_path)
         cursor = connection.cursor()
@@ -83,8 +85,9 @@ class RegisterPageTest(BaseCase):
         fails the registration.
         """
         # delete this row if it already exists
-        path = os.path.dirname(os.path.abspath(__file__))
-        db_path = path + "/../../qbay/data.db"
+        # path = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.abspath(os.getcwd())
+        db_path = path + "/qbay/data.db"
         print(db_path)
         connection = sqlite3.connect(db_path)
         cursor = connection.cursor()
