@@ -68,4 +68,4 @@ def test_is_description_changed():
 
     connection.close()
     if (description != changed_descri):
-        raise Exception("title is not updated")
+        raise Exception("description is not updated")
