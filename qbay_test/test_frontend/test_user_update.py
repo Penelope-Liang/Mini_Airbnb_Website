@@ -143,7 +143,7 @@ class Test(BaseCase):
 
     def test_username_bound(self, *_):
         """
-        Testing R1-6: User name has to be longer than 2 characters
+        Testing R3-4: User name has to be longer than 2 characters
         and less than 20 characters.
         Method: Input boundary testing
         Analysis: test boundary value 2 for username length, it should
