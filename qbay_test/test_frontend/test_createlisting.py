@@ -14,12 +14,14 @@ This file defines create listing test for the frontend homepage.
 class FrontEndHomePageTes(BaseCase):
 
     def test_createlisting_success(self, *_):
+
         """
         Testing R4-1 ~ R4-8
         Method: Output partition
         Analysis: If the output successfully creates,
         then the inputs must all satisfy the requirments.
         """
+
         # log in first
         self.open(base_url + "/login")
         self.type("#email", "111@111.com")
@@ -42,6 +44,7 @@ class FrontEndHomePageTes(BaseCase):
         self.click("#submit")
     
     def test_create_title_with_unalphanumeric(self, *_):
+
         '''
         Testing R4-1: The title of the product has to be alphanumeric-only,
         and space allowed only if it is not as prefix and suffix.
@@ -107,6 +110,7 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#btn-submit")
 
     def test_create_description_length_less_20(self, *_):
+
         '''
         Testing R4-3: The description of the product can 
         be arbitrary characters, 
@@ -138,6 +142,7 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#btn-submit")
     
     def test_create_description_over_2000(self, *_):
+
         '''
         Testing R4-3: The description of the product can
         be arbitrary characters, 
@@ -169,6 +174,7 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#btn-submit")
  
     def test_create_description_longer_title(self, *_):
+
         '''
         Testing R4-4: Description has to be longer than the product's title.
         Method: Input boundary testing
@@ -196,12 +202,14 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#btn-submit")
     
     def test_create_price_less_10(self, *_):
+
         '''
         Testing R4-5: Price has to be of range [10, 10000].
         Method: Input boundary testing
         Analysis: test boundary price is less than 10,
         it should fails the creating.
         '''
+
         with pytest.raises(Exception):
             # login first
             self.open(base_url + "/login")
@@ -222,12 +230,14 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#btn-submit")
     
     def test_create_price_over_10000(self, *_):
+
         '''
         Testing R4-5: Price has to be of range [10, 10000].
         Method: Input boundary testing
         Analysis: Here is a case where price_over_10000.
         It should fail the creating process.
         '''
+
         with pytest.raises(Exception):
             # login first
             self.open(base_url + "/login")
@@ -248,12 +258,14 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#btn-submit")
     
     def test_date_before_2021_01_02(self, *_):
+
         '''
         Testing R4-6: last_modified_date must be after 2021-01-02.
         Method: Input boundary testing
         Analysis: test boundary date is before 2021/01/02,
         it should fails the creating.
         '''
+
         with pytest.raises(Exception):  
             # login first
             self.open(base_url + "/login")
@@ -278,13 +290,14 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#btn-submit")
 
     def test_date_after_2025_01_02(self, *_):
+
         '''
         Testing R4-6: last_modified_date must before 2025-01-02.
         Method: Input boundary testing
         Analysis: test boundary date is after 2025/01/02
         it should fails the creating.
-
         '''
+
         with pytest.raises(Exception):  
             # login first
             self.open(base_url + "/login")
@@ -309,6 +322,7 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#btn-submit")
 
     def test_email_empty(self, *_):
+
         '''
         Testing R4-7: owner_email cannot be empty. The owner of the 
         corresponding product must exist in the database.
@@ -316,6 +330,7 @@ class FrontEndHomePageTes(BaseCase):
         Analysis: if the password field is empty,
         registration fails and won't go to login page.
         '''
+
         with pytest.raises(Exception):
             # login first
             self.open(base_url + "/login")
@@ -339,11 +354,13 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#submit")
     
     def test_repeated_title(self, *_):
+
         '''
         Testing R4-8: A user cannot create products that have the same title.
         Method: Input partition
         Analysis: if the title is epeated, createing fails.
         '''
+
         with pytest.raises(Exception):
             # login first
         
@@ -369,11 +386,13 @@ class FrontEndHomePageTes(BaseCase):
             self.click("#btn-submit")
 
     def test_create_listing(self, *_):
+
         '''
         Check to see if the database has changed or not
         Extract all the value first, and then
         examine them ony by one
         '''
+
         path = os.path.abspath(os.getcwd())
         connection = sqlite3.connect(path + "/qbay/data.db")
         cursor = connection.cursor()
