@@ -25,7 +25,7 @@ class LoginTest(BaseCase):
 
     def test_email_wrong_pattern(self, *_):
         """
-        Testing R1-3: email has to follow addr-spec in RFC 5322
+        Testing R2-2: email has to follow addr-spec in RFC 5322
         Method: Input partition
         Analysis: email either follow addr-spec or no,
         here is an test for an email that does not follow.
@@ -43,7 +43,7 @@ class LoginTest(BaseCase):
 
     def test_password_complexity(self, *_):
         """
-        Testing R1-4: Password has to meet the required complexity:
+        Testing R2-2: Password has to meet the required complexity:
         minimum length 6, at least one upper case, at least one lower case,
         and at least one special character.
         Method: Input boundary testing
