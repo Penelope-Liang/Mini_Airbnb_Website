@@ -26,6 +26,9 @@ def create_listing_format_checker(listing):
     Parameter: listing - a dictionary
     Return: None
     '''
+    # set posted date to today
+    # listing["posted_date"] = date.today()
+
     # R4-1
     if (not re.fullmatch(AccNameReg, listing["title"])):
         raise InvalidListing("No title name")
