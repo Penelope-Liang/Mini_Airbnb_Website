@@ -29,6 +29,14 @@ connection.close()
 
 class FrontEndHomePageTest(BaseCase):
 
+    '''
+    Method: Input Partition + Shotgun Testing
+        - test_update_title_and_desciption
+        - test_update_price_capacity_address
+    Use different random value every time, but 
+    is partition into right format category
+    '''
+
     def test_update_title_and_desciption(self, *_):
         '''
         This is a valid change, all input satisfy the 
@@ -82,10 +90,10 @@ class FrontEndHomePageTest(BaseCase):
         self.click("#btn-submit")
 
     '''
-    Exhaustive Input Testing:
+    Input Partition Testing:
         - test_update_with_wrong_title
         - test_update_with_wrong_title2
-    Try all of the possible input of title:
+    Try two differnet fail inputs of title:
     
     '''
 
@@ -137,7 +145,7 @@ class FrontEndHomePageTest(BaseCase):
             self.click("#btn-submit")
 
     '''
-    Output Partition Testing:
+    Input Partition Testing:
         - test_update_with_wrong_description
         - test_update_with_wrong_description2
         - test_update_with_wrong_description3
@@ -220,6 +228,14 @@ class FrontEndHomePageTest(BaseCase):
             self.click("#submit")
             self.click("#btn-submit")
 
+    '''
+    Input Boundary Testing:
+        test_update_with_wrong_price_value
+        test_update_with_wrong_price_value2
+        test_update_with_wrong_price_value3
+    try the lower boundry and the upper boundry of the price
+    '''
+
     def test_update_with_wrong_price_value(self, *_):
         '''
         R5-2: Price can be only increased but cannot be decreased :)
@@ -241,13 +257,6 @@ class FrontEndHomePageTest(BaseCase):
             self.type("#price", changed_price - 0.5)
             self.click("#submit")
             self.click("#btn-submit")
-
-    '''
-    Input Boundary Testing:
-        test_update_with_wrong_price_value2
-        test_update_with_wrong_price_value3
-    try the lower boundry and the upper boundry of the price
-    '''
 
     def test_update_with_wrong_price_value2(self, *_):
         '''
