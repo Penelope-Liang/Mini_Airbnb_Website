@@ -81,12 +81,14 @@
 {% endblock %}
 
 {% block create %}
+<h3 class="err-msg" id="msg">{{message}}</h3>
+<h1 id="mf">{{message}}</h1>
     <div class="book">
 
     <form method="post" id="addlisting" class="addlisting">
     <ul>
     <!-- <li><input class="form-control" id="email" name="email"  placeholder="Email:" required></li>-->
-    <li><input class="form-control" type="date" id="posted_date" placeholder="Posted Date:" name="date" required></li>
+    <li><input class="form-control" id="posted_date" placeholder="Posted Date:" name="date" required></li>
         
     <li><input class="form-control" id="title" name="title"  placeholder="Title:" required></li>
 
@@ -98,9 +100,9 @@
     -->
     <li>
         <label for="img">Select image:</label>
-        <input type="file" id="img" name="img" accept="image/*" required></li>
+        <input type="file" id="img" name="img" accept="image/*"></li>
         
-    <li><input class="form-control" type="number" min="10" id="price" name="price" placeholder="Price:" required></li>
+    <li><input class="form-control" type="number" id="price" name="price" placeholder="Price:" required></li>
 
 
     <li><input class="form-control" id="address" name="address"  placeholder="Address:" required></li>
