@@ -175,7 +175,8 @@ class Test(BaseCase):
         Testing R3-2: postal code should be non-empty,
         alphanumeric-only, and no special characters such as !.
         Method: Input Input partition
-        Analysis: Testing where postal code is not alphanumeric-only and contain !
+        Analysis: Testing where postal code
+        is not alphanumeric-only and contain !
         """
 
         # login first
@@ -203,7 +204,8 @@ class Test(BaseCase):
         Testing R3-3: postal code should be non-empty,
         alphanumeric-only, and no special characters such as !.
         Method: Input Input partition
-        Analysis: Testing where postal code is not alphanumeric-only and contain !
+        Analysis: Testing where postal code
+        is not alphanumeric-only and contain !
         """
 
         # login first
