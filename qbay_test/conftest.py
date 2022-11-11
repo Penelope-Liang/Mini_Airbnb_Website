@@ -7,7 +7,6 @@ from qbay import app
 '''
 This file defines what to do BEFORE running any test cases:
 
-
 '''
 
 
@@ -38,6 +37,7 @@ class ServerThread(threading.Thread):
         threading.Thread.__init__(self)
         # import necessary routes
 
+        from qbay import controllers
         self.srv = make_server('127.0.0.1', 8080, app)
         self.ctx = app.app_context()
         self.ctx.push()

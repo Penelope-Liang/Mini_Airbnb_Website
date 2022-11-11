@@ -107,14 +107,14 @@
 {% block content %}
 <div class="container text-center">
     <h2 class="welcome" id="welcome-header">Welcome {{ user[1] }} ! <a href='/logout' class="link">logout</a></h2><a href='/update_user'>update</a> <a href="/create">create listing</a></h2>
-    <a href='/update_user' class="link">Update your profile</a>
+    <a href='/update_user' class="link" id="updates">Update your profile</a>
     <h2>Here are all available products</h2>
     <a href='' class="link">create product</a>
 </div>
 
 
 <h4 id='message'>{{message}}</h4>
-<a href="/mine">My Properties</a >
+<a id="edit-pro" href="/mine">My Properties</a >
 <div id="products">
     <!-- <ul class="grid"> -->
         {% for product in products %}

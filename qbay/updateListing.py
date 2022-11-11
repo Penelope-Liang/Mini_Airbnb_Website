@@ -16,9 +16,9 @@ def update_listing_format_checker_1(proerpty_1):
     '''
     Check update_lising prop_id format
     '''
-    if "prop_id" in proerpty_1 or "posted_date" in proerpty_1:
+    if "user_id" in proerpty_1 or "posted_date" in proerpty_1:
         raise InvalidUpdateListing(
-            "prop_id or posted date should not be in side the ")
+            "user_id or posted date should not be in side the ")
 
 
 def updating_data(proerpty_1) -> dict:
@@ -31,17 +31,33 @@ def updating_data(proerpty_1) -> dict:
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT price FROM Properties WHERE user_id = (?)",
-        (proerpty_1["user_id"],))
+        "SELECT * FROM Properties WHERE prop_id = (?)",
+        (proerpty_1["prop_id"],))
 
-    (price) = cursor.fetchone()
+    row = cursor.fetchone()
+    connection.close()
 
-    if (price[0] < proerpty_1["price"]):
-        raise InvalidUpdateListing("Price can go up")
+    old_property = {
+        "title": row[3],
+        "description": row[4],
+        "image": row[5],
+        "price": row[6],
+        "address": row[7],
+        "capacity": row[8],
+    }
+
+    if (proerpty_1["price"] != ''
+
+        and
+            float(old_property["price"]) > float(proerpty_1["price"])):
+        raise InvalidUpdateListing("Price can only go up")
+
+    for key in proerpty_1:
+        if key != "prop_id" and proerpty_1[key] == '':
+            proerpty_1[key] = old_property[key]
 
     # check the property_1
     update_listing_format_checker_2(proerpty_1)
-    connection.close()
 
     proerpty_1["posted_date"] = date.today()
 
@@ -68,7 +84,8 @@ def update_listing_format_checker_2(proerpty_1):
     if (not (len(proerpty_1["description"]) > len(proerpty_1["title"]))):
         raise InvalidUpdateListing("description have to be longer than title")
 
-    if (not (proerpty_1["price"] > 10 and proerpty_1["price"] < 10000)):
+    if (not (float(proerpty_1["price"]) > 10
+             and float(proerpty_1["price"]) < 10000)):
         raise InvalidUpdateListing("price must between 10 and 10000")
 
     if ("email" not in proerpty_1 or len(proerpty_1["email"]) == 0):
@@ -79,6 +96,7 @@ def updateInfo(listing_save):
     try:
         import os
         path = os.path.dirname(os.path.abspath(__file__))
+        print("this is the path  ", path)
         connection = sqlite3.connect(path + "/data.db")
         cursor = connection.cursor()
 
@@ -92,7 +110,7 @@ def updateInfo(listing_save):
             listing_save["posted_date"],
             listing_save["title"],
             listing_save["description"],
-            listing_save["img"],
+            listing_save["image"],
             listing_save["price"],
             listing_save["address"],
             listing_save["capacity"],
@@ -124,11 +142,11 @@ if __name__ == "__main__":
     # we don't have last_modify date, but I think you can use posted_date
     proerpty_1 = {
         "title": "A lighted mansion",
-        "user_id": "20a7066e8e844759a99a20ecbd6935fe",
+        "prop_id": "c56340108a134fe9a4882c9190cc5229",
         "description": "This is a mansion sits beside a beach with 16hr+ " +
         "sunshine, beside daily facillities also" +
         "provide with mini swimming pool",
-        "price": 5000,
+        "price": 9999,
         "email": "JimmyMcgill@SGA.com",
         "address": "9800 Montgomery Blvd NE, Albuquerque, New Mexico",
         "image": "building.png",
@@ -136,10 +154,10 @@ if __name__ == "__main__":
     }
 
     proerpty_2 = {
-        "title": "Garbage room",
-        "user_id": "20a7066e8e844759a99a20ecbd6935fe",
+        "title": "Garbage room 2",
+        "prop_id": "c56340108a134fe9a4882c9190cc5229",
         "description": "you wnat to live heree??",
-        "price": 59,
+        "price": 5900,
         "email": "Garbage@SGA.com",
         "address": "9800 Montgomery Blvd NE, Albuquerque, Quebec",
         "image": "building.png",

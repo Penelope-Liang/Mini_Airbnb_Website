@@ -26,6 +26,9 @@ def create_listing_format_checker(listing):
     Parameter: listing - a dictionary
     Return: None
     '''
+    # set posted date to today
+    # listing["posted_date"] = date.today()
+
     # R4-1
     if (not re.fullmatch(AccNameReg, listing["title"])):
         raise InvalidListing("No title name")
@@ -70,7 +73,7 @@ def listing_saving(listing) -> dict:
     if (row is None):
         raise InvalidListing("This user does not exist")
 
-    (email, user_id) = row
+    (_, user_id) = row
     cursor.execute(
         "SELECT title FROM Properties WHERE title = (?)", (listing["title"],))
     row = cursor.fetchone()
