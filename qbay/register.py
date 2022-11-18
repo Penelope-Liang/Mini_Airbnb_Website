@@ -82,6 +82,17 @@ def register_format_checker(reg_user) -> None:
             "and space allowed only if it is not as the " +
             "prefix or suffix.", "account")
 
+    # Additonal, last name and first name should be alphabetic only
+    if (not re.fullmatch(nameReg,
+                         reg_user["first_name"])):
+        raise InvalidRegister(
+            "Name should be only alphbetic")
+
+    if (not re.fullmatch(nameReg,
+                         reg_user["last_name"])):
+        raise InvalidRegister(
+            "Name should be only alphbetic")
+
     print("ALL-pass")
 
 
@@ -133,13 +144,9 @@ def register_saving(reg_user) -> dict:
 def register(saveble_user):
     try:
         import os
-        # saveble_user = register_saving(user)
-        print("hellllooooo")
         path = os.path.dirname(os.path.abspath(__file__))
         connection = sqlite3.connect(path + "/data.db")
-        print("connection failed")
         cursor = connection.cursor()
-        print("here")
         cursor.execute("INSERT INTO Users \
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                        (saveble_user["user_id"],
@@ -153,9 +160,7 @@ def register(saveble_user):
                         saveble_user["about"],
                         saveble_user["address"],
                         saveble_user["postal_code"]))
-        print("before commit")
         connection.commit()
-        print("commit complete")
         connection.close()
     except InvalidRegister:
         raise InvalidRegister("Registration failed:(", "fail to commit")
@@ -169,18 +174,7 @@ if __name__ == '__main__':
     import sys
     path = os.path.abspath(os.getcwd())
     sys.path.append(path)
-    # from qbay.models import Users
-    # from qbay.db import db
 
-    # user2 = {
-    #     "acc_name": "Saul Goodman",
-    #     "first_name": "Jimmy",
-    #     "last_name": "Mcgill",
-    #     "password": "Best_lawer123",
-    #     "email": "JimmyMcgill@SGA.com",
-    #     "profile_photo": "Jimmy_McGill_BCS_S3.png",
-    #     "about": "Hi. I'm Saul Goodman. Did you know that you have rights?",
-    # }
     user = {
         "acc_name": "Gisellesb",
         "first_name": "Dean",
@@ -241,5 +235,6 @@ if __name__ == '__main__':
 
 # not equal to __main__
 else:
-    from qbay.regexRepo import emailReg, AccNameReg, passwordReg
+    from qbay.regexRepo import emailReg, AccNameReg, \
+        passwordReg, nameReg
     from qbay.exceptions import InvalidRegister
