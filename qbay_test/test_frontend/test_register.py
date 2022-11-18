@@ -386,7 +386,6 @@ class RegisterPageTest(BaseCase):
         cursor.execute("SELECT * FROM Users WHERE email = (?)",
                        ("test0@test.com", ))
         row = cursor.fetchone()
-        print("what is " , row)
         balance = row[6]
         # print(row)
         connection.close()
