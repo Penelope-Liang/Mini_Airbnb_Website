@@ -82,17 +82,6 @@ def register_format_checker(reg_user) -> None:
             "and space allowed only if it is not as the " +
             "prefix or suffix.", "account")
 
-    # Additonal, last name and first name should be alphabetic only
-    if (not re.fullmatch(nameReg,
-                         reg_user["first_name"])):
-        raise InvalidRegister(
-            "Name should be only alphbetic")
-
-    if (not re.fullmatch(nameReg,
-                         reg_user["last_name"])):
-        raise InvalidRegister(
-            "Name should be only alphbetic")
-
     print("ALL-pass")
 
 
