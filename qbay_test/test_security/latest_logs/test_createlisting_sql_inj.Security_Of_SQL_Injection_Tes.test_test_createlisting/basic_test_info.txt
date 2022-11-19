@@ -1,12 +1,12 @@
 test_createlisting_sql_inj.py::Security_Of_SQL_Injection_Tes::test_test_createlisting
 --------------------------------------------------------------------
 Last Page: http://127.0.0.1:8080/login
- Duration: 8.37s
+ Duration: 8.27s
   Browser: Chrome 100.0.4896.60
    Driver: chromedriver 100.0.4896.60
-Timestamp: 1668822984  (Unix Timestamp)
+Timestamp: 1668824278  (Unix Timestamp)
      Date: Friday, November 18, 2022
-     Time: 8:56:24 PM  (EDT, UTC-05:00)
+     Time: 9:17:58 PM  (EDT, UTC-05:00)
 --------------------------------------------------------------------
 Traceback: File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/unittest/case.py", line 591, in run
     self._callTestMethod(testMethod)

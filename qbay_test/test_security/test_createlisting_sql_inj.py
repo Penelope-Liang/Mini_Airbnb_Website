@@ -18,7 +18,7 @@ class Security_Of_SQL_Injection_Tes(BaseCase):
         for line in lines:
             correct_createlisting = {
                 "#posted_date": date.today(),
-                "#title": "Nice Cape Town",
+                "#title": "Fine Town",
                 "#description": "Relax with the whole family at this peaceful \
                                 5 Bedroom Villa overlooking Hout Bay Beach",
                 "#price": 1500,
