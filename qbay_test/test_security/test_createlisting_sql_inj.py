@@ -68,18 +68,19 @@ class Security_Of_SQL_Injection_Tes(BaseCase):
                 path = os.path.abspath(os.getcwd())
                 connection = sqlite3.connect(path + "/qbay/data.db")
                 cursor = connection.cursor()
-                cursor.execute("SELECT * FROM Properties WHERE posted_date=? \
-                                         and title=?\
-                                         and description=? \
-                                         and price = ? \
-                                         and address = ?\
-                                         and capacity = ?",
-                                         (listing["posted_date"],
-                                          listing["title"],
-                                          listing["description"],
-                                          listing["price"],
-                                          listing["address"],
-                                          listing["capacity"]))
+                cursor.execute("SELECT * \
+                               FROM Properties WHERE posted_date=? \
+                               and title=?\
+                               and description=? \
+                               and price = ? \
+                               and address = ?\
+                               and capacity = ?", 
+                               (listing["posted_date"],
+                                listing["title"],
+                                listing["description"],
+                                listing["price"],
+                                listing["address"],
+                                listing["capacity"]))
                 row = cursor.fetchone()
                 connection.close()
 
