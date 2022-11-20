@@ -5,6 +5,7 @@ from qbay.createListing import create_listing_format_checker, \
 import os
 import sqlite3
 from datetime import date
+import random
 
 '''
 The file test the sql injection against 
@@ -24,24 +25,19 @@ with open(path) as file:
 
 def test_test_createlisting():
 
-    # log into the user page
-    log_in = {
-        "email": "111@111.com",
-        "password": "123!Abc"
-    }
-
     for line in lines:
-        # print(len(line))
-        if len(line) == 48:
-            print(1)
+        random_int = random.randint(1, 1000)
+        random_int2 = random.randint(1, 1000)
+        random_string = str(random_int) + str(random_int2)
+
         injection_template = {
             "email": "111@111.com",
             "posted_date": date.today(),
-            "title": "Farm stay1",
+            "title": "Farm stay" + random_string,
             "description": "Relax with the whole family at this peaceful \
                             5 Bedroom Villa overlooking Hout Bay Beach",
             "price": 1500,
-            "address": "444 Division Street",
+            "address": "333 Division Street",
             "capacity": 4
         }
     
