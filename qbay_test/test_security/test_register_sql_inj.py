@@ -1,10 +1,7 @@
 import pytest
 import pathlib
-from seleniumbase import BaseCase
-from qbay_test.conftest import base_url
 from qbay.register import register_format_checker, \
     register_saving, register
-from unittest.mock import patch
 import random
 import os
 import sqlite3
