@@ -34,17 +34,11 @@ def test_test_regsiter():
         random_string = str(random_int) + str(random_int2)
 
         injection_template = {
-
             "acc_name": "SaulGOODMAN" + random_string,
-
             "first_name": "Jimmy",
-
             "last_name": "McGill",
-
             "password": "I_loveKIM123!",
-
             "email": random_string + "JimmyBCS@BCS.com",
-
         }
 
         for key in injection_template:
@@ -59,12 +53,16 @@ def test_test_regsiter():
                 user = {**injection_template}
                 user[key] = line
 
-                # most of them raise formate exception
+                # most of them raise format exception
+                # from here
                 register_format_checker(user)
+
+                # some of them passed
                 reg_user = register_saving(user)
                 # register the new user to the database
                 register(reg_user)
 
+                # if pass, check if they in db or not
                 path = os.path.\
                     abspath(os.getcwd())
                 connection = sqlite3.connect(
@@ -83,6 +81,8 @@ def test_test_regsiter():
                                 user["password"]))
                 row = cursor.fetchone()
 
+                # if inside, delete it and help
+                # to rasie an Exception to be true
                 if row is not None:
                     cursor.execute("DELETE FROM \
                                    Users WHERE email=? \
