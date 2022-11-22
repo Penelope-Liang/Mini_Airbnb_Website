@@ -10,19 +10,19 @@ Huilin Xu
 
 **Branch**:
 
-test_user_update2
+ship_meghan
 
 **Progress**:
 
-I have done all the work, first testing that the three web pages from login to update_user work correctly, including changing the user name and postal code. Second I tested that the password and image elements existed, and finally I added two tests to ensure that the user name and zip code were updated in the database. I have completed all the pep8 tests and comments as well.
+I'm trying to ship the whole system and will create the database web interface after successfully running docker, and then everything will be done. But before I do that, I need to solve the difficulties mentioned below.
 
 **Difficulties**:
 
-I struggled for a long time at first because I forgot to introduce the database, and I didn't realize that I couldn't run main and test at the same time because one of the ports would be occupied and therefore report an error. After that I had no more problems because seleniumbase really works well.
+I'm having problems running docker desktop and it keeps saying "Docker Desktop starting...". I have reinstalled it many times and tried every method available on the stackoverflow, but nothing works. I haven't solved it yet, but I believe the dawn is near. 
 
 **Plan**:
 
-The rest of my plan is to keep updating my code as the group encounters problems to make sure we can all fit together in the end. And to do more black box testing to make sure there are no bugs that I've overlooked. I may also continue to update my comments to improve them further.
+Just now I managed to complete everything I needed for the assignment on another computer, but I still want to know why I can't run it on my own. So I will keep trying. Outside of that, I will comment positively on my teammate's pr and hope that this assignment will also wrap up well.
 
 ### Team Member 2:
 
@@ -88,4 +88,4 @@ I used the selenium for testing at first and it is way too slow, and then I real
 
 **Plan**:
 
-My plan is to give out a template about how we testing and then if any vulnerabilities are found, we fix it, and also evaluate the performance as well.
+My plan is to give out a template about how we testing and then if any vulnerabilities are found, we fix it.
