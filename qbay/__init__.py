@@ -22,7 +22,12 @@ templates = os.path.join(
 db_path = pathlib.Path().resolve().joinpath("data.db")
 print("path to the db is %s", db_path)
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path.__str__()
+db_string = os.getenv('db_string')
+print("db_string = " + str(db_string))
+if db_string:
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_string
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path.__str__()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '69cae04b04756f65eabcd2c5a11c8c24'
 app.app_context().push()

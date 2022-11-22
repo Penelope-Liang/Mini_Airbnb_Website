@@ -8,3 +8,4 @@ pytest
 flake8
 seleniumbase
 Werkzeug
+pymysql

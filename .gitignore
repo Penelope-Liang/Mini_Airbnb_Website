@@ -3,3 +3,7 @@ __pycache__
 .venv
 .idea
 .pytest_cache
+mysql_data
+latest_logs
+include
+archived_logs
