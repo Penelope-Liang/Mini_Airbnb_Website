@@ -40,7 +40,7 @@ def test_test_createlisting():
             "address": "333 Division Street",
             "capacity": 4
         }
-    
+
         for key in injection_template:
             with pytest.raises(Exception):
                 listing = {**injection_template}
@@ -49,7 +49,10 @@ def test_test_createlisting():
                     print(1)
 
                 # check listing format and save
+                # most of them raise exception here
                 create_listing_format_checker(listing)
+
+                # if pass, check if they in db or not
                 reg_listing = listing_saving(listing)
                 # create listing to the database
                 createlisting(reg_listing)
@@ -63,7 +66,7 @@ def test_test_createlisting():
                                and description=? \
                                and price = ? \
                                and address = ?\
-                               and capacity = ?", 
+                               and capacity = ?",
                                (listing["posted_date"],
                                 listing["title"],
                                 listing["description"],
@@ -72,6 +75,8 @@ def test_test_createlisting():
                                 listing["capacity"]))
                 row = cursor.fetchone()
 
+                # if inside, delete it and help
+                # to rasie an Exception to be true
                 if row is not None:
                     cursor.execute("DELETE FROM \
                                    Properties WHERE posted_date=? \
@@ -79,7 +84,7 @@ def test_test_createlisting():
                                    and description=? \
                                    and price = ? \
                                    and address = ?\
-                                   and capacity = ?", 
+                                   and capacity = ?",
                                    (listing["posted_date"],
                                     listing["title"],
                                     listing["description"],
@@ -90,4 +95,5 @@ def test_test_createlisting():
                     raise Exception("injection didn't exist")
 
                 # If injection exists, it will be false
+                # As no Expcetion is raise
                 connection.close()
