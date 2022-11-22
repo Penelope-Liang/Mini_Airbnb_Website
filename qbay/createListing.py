@@ -111,7 +111,8 @@ def createlisting(listing_save):
                                                   listing_save["posted_date"],
                                                   listing_save["title"],
                                                   listing_save["description"],
-                                                  listing_save["img"],
+                                                  listing_save.get("img",
+                                                                   'pic.png'),
                                                   listing_save["price"],
                                                   listing_save["address"],
                                                   listing_save["capacity"]))
@@ -119,7 +120,8 @@ def createlisting(listing_save):
         connection.commit()
         print("commit complete")
         connection.close()
-    except Exception:
+    except Exception as e:
+        print(e)
         print("Error")
 
 
