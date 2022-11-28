@@ -48,7 +48,7 @@ def booking_requirement_checking(tsc) -> dict:
 
     row = cursor.fetchone()
 
-    if row != None:
+    if row is not None:
         (check_in_date, check_out_date) = row
         user_check_in_date = datetime.strptime(
             tsc["check_in_date"], "%Y-%m-%dT%H:%M:%S")
@@ -143,7 +143,7 @@ if __name__ == "__main__":
     }
     try:
         booking_requirement_checking(test_tsc)
-        1/0
+        1 / 0
     except InvalidBooking as IB:
         print("pass !")
 
