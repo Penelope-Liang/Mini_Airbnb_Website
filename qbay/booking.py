@@ -31,7 +31,7 @@ def booking_requirement_checking(tsc) -> dict:
         "Properties WHERE prop_id = (?)",
         (tsc["prop_id"],))
     (user_id, price) = cursor.fetchone()
-
+    print("1111")
     user_check_in_date = datetime.strptime(
         tsc["check_in_date"], "%Y-%m-%dT%H:%M")
 
@@ -41,7 +41,7 @@ def booking_requirement_checking(tsc) -> dict:
     total_days = float((user_check_out_date - user_check_in_date).days)
 
     total_price = price * total_days
-
+    print("2222")
     # A user cannot book a listing that
     # costs more than his/her balance.
     if float(balance) < float(total_price):
@@ -57,7 +57,7 @@ def booking_requirement_checking(tsc) -> dict:
         (tsc["prop_id"],))
 
     row = cursor.fetchone()
-
+    print("3333")
     if row is not None:
         (check_in, check_out) = row
         check_in_date = datetime.strptime(
@@ -99,7 +99,7 @@ def booking_requirement_checking(tsc) -> dict:
 
         if Overlap1 or Overlap2 or Overlap3 or Overlap4:
             raise InvalidBooking("the selected date is overlapped")
-
+    print("4444")
     transaction = {
         **tsc
     }

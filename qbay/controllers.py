@@ -413,6 +413,7 @@ def myProperties():
         cursor.execute(sql)
         all_prod = cursor.fetchall()
         connection.close()
+        prop_id = request.args.get('prop_id')
         return render_template('mine.html', user=user,
                                products=all_prod, message="")
 
@@ -439,38 +440,53 @@ def booking_get():
                            message='show properties')
 
 
-@app.route('/Booking', methods=['POST'])
-def booking_save():
-    """
-    This function is used to find all the properties for user to book
-    """
-    print("Hihi")
+@app.route('/conformation', methods=['GET'])
+def conformation_get():
     prop_id = request.args.get('prop_id')
     print(prop_id)
+    return render_template('conformation.html', prop_id=prop_id,
+                           message='Let\'s Start Update Listing')
+
+
+@app.route('/conformation', methods=['POST'])
+def conformation_post():
+    print("hihi")
+    prop_id = request.args.get('prop_id')
     id = session['id']
+    print(id)
     Date = request.form.get('date')
+    Date += "T00:00"
     print(Date)
     Date2 = request.form.get('date2')
+    Date2 += "T00:00"
+    print(Date2)
     number = request.form.get('guest_number')
+    print(number)
+    err_msg = None
     tsc = {
         "user_id": id,
         "prop_id": prop_id,
         "check_in_date": Date,
         "check_out_date": Date2,
-        "guest_number": number,
+        "guest_number": number
     }
 
     try:
-        booking_requirement_checking(tsc)  # check the format
-        save_transaction_record(tsc)
+        tsc_new = booking_requirement_checking(tsc)  # check the format
+        print("PASSSSSSS")
+        save_transaction_record(tsc_new)
+        print("ahhhhhhhhhh book it already!!!!!!!!!")
     except InvalidBooking as IUU:
-        return render_template('Booking.html',
-                               message=IUU.message)
+        err_msg = f"{IUU.message}"
+    if err_msg:
+        return render_template('conformation.html',
+                                   message=err_msg)
+    else:
+        return redirect('/')
 
 
 @app.route('/my_booking', methods=['GET'])
 def booking_get2():
-
     import os
     path = os.path.dirname(os.path.abspath(__file__))
     connection = sqlite3.connect(path + "/data.db")
@@ -480,8 +496,9 @@ def booking_get2():
     # select all the info of the user
     row = cursor.execute("SELECT * FROM 'Transactions' "
                          "WHERE user_id = (?)", (id,))
-    booking = cursor.fetchall()
+    bookings = cursor.fetchall()
     connection.close()
+    prop_id = request.args.get('prop_id')
     # templates are stored in the templates folder
-    return render_template('my_booking.html', booking=booking,
+    return render_template('my_booking.html', bookings=bookings, data=prop_id,
                            message='Please Enter Info')

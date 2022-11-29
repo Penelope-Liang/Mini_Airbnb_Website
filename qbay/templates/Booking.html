@@ -107,54 +107,36 @@
 {% block content %}
 
 <h1>All Properties</h1>
+<h1>{{message}}</h1>
 <form method="post">
-<div id="products">
-    <!-- <ul class="grid"> -->
-    {% for property in properties %}
-    <div class="wsk-cp-product">
-        <div>
-            <p>{{ property[0] }}</p>
-        </div>
-        <div class="img">
-            <img class="img-responsive" />
-        </div>
-        <div class="wsk-cp-text">
-        </div>
-
-        <div class="title-product">
-            <h3>{{ property[3] }}</h3>
-        </div>
-        <div class="description-prod">
-            <p>{{ property[4] }}</p>
-        </div>
-        <div class="card-footer">
-            <div class="wcf-left"><span class="price">${{ property[6] }} CAD</span></div>
+    <div id="products">
+        <!-- <ul class="grid"> -->
+        {% for property in properties %}
+        <div class="wsk-cp-product">
             <div>
-                <label for="date">Check in Date:</label>
-
-                <input type="date" id="date" name="date"
-                       value="2022-07-22" class="title-product"
-                       min="2022-01-01" max="2022-12-31">
+                <p>{{ property[0] }}</p>
             </div>
-             <div>
-                <label for="date2">Check out Date:</label>
-
-                <input type="date" id="date2" name="date2"
-                       value="2022-07-22" class="title-product"
-                       min="2022-01-01" max="2022-12-31">
+            <div class="img">
+                <img class="img-responsive" />
             </div>
-            <div>
-                <label class="input-label" for="guest_number">Guest Number</label>
-                <input class="input-field" name="guest_number" id="guest_number" required>
+            <div class="wsk-cp-text">
             </div>
-            <div class="wcf-right">
 
-                <a href="/my_booking?prop_id={{property[0]}}">
-                    <input class="btn btn-lg btn-primary" type="submit"
-                           id="btn-submit" value="Book"></a></div>
+            <div class="title-product">
+                <h3>{{ property[3] }}</h3>
+            </div>
+            <div class="description-prod">
+                <p>{{ property[4] }}</p>
+            </div>
+            <div class="card-footer">
+                <div class="wcf-left"><span class="price">${{ property[6] }} CAD</span></div>
+                <div class="wcf-right">
+
+                    <a href="/conformation?prop_id={{property[0]}}" class="link">
+                    Book</a></div>
+            </div>
         </div>
     </div>
-</div>
 </form>
 {% endfor %}
 <!-- </ul> -->
