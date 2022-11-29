@@ -130,6 +130,7 @@ def save_transaction_record(tsc):
                         tsc["guest_number"],
                         ))
 
+        # reduce the balance here
         cursor.execute("UPDATE Users SET balance = (?) WHERE user_id = (?)",
                        (tsc["remaining_balance"], tsc["user_id"]))
         connection.commit()
