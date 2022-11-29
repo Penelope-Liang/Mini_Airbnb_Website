@@ -107,6 +107,7 @@
 {% block content %}
 
 <h1>All Properties</h1>
+<form method="post">
 <div id="products">
     <!-- <ul class="grid"> -->
     {% for property in properties %}
@@ -147,11 +148,14 @@
                 <input class="input-field" name="guest_number" id="guest_number" required>
             </div>
             <div class="wcf-right">
-                <a href='/my_booking' class="btn btn-primary" id="btn-submit" >Book</a></div>
+
+                <a href="/my_booking?prop_id={{property[0]}}">
+                    <input class="btn btn-lg btn-primary" type="submit"
+                           id="btn-submit" value="Book"></a></div>
         </div>
     </div>
 </div>
-
+</form>
 {% endfor %}
 <!-- </ul> -->
 

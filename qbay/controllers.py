@@ -434,8 +434,9 @@ def booking_get():
     row = cursor.execute("SELECT * FROM 'Properties'")
     properties = cursor.fetchall()
     connection.close()
+
     return render_template('Booking.html', properties=properties,
-                           message='Let\'s Start Update Listing')
+                           message='show properties')
 
 
 @app.route('/Booking', methods=['POST'])
@@ -444,14 +445,16 @@ def booking_save():
     This function is used to find all the properties for user to book
     """
     print("Hihi")
-    print(property[0])
+    prop_id = request.args.get('prop_id')
+    print(prop_id)
     id = session['id']
     Date = request.form.get('date')
+    print(Date)
     Date2 = request.form.get('date2')
     number = request.form.get('guest_number')
     tsc = {
         "user_id": id,
-        "prop_id": property[0],
+        "prop_id": prop_id,
         "check_in_date": Date,
         "check_out_date": Date2,
         "guest_number": number,
