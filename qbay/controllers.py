@@ -1,7 +1,9 @@
 from datetime import date
 from qbay import app
 from flask import render_template, request, session, redirect
-from qbay.exceptions import InvalidLogin, InvalidRegister, InvalidUserUpdate
+
+from qbay.booking import booking_requirement_checking, save_transaction_record
+from qbay.exceptions import InvalidLogin, InvalidRegister, InvalidUserUpdate, InvalidBooking
 # flask.url_for
 # from qbay.models import Users
 from qbay.login import login_checker, login_saving
@@ -42,7 +44,7 @@ def authenticate(inner_function):
                 connection = sqlite3.connect(path + "/data.db")
                 cursor = connection.cursor()
                 cursor.execute("SELECT * FROM 'Users' "
-                               "WHERE email = (?)", (email, ))
+                               "WHERE email = (?)", (email,))
                 # print(row)  # for testing
                 # if found the email, store into user
                 user = cursor.fetchone()
@@ -337,7 +339,6 @@ def updatelisting_get():
 
 @app.route('/updatelisting', methods=['POST'])
 def updatelisting_post():
-
     email = session['logged_in']
     prop_id = request.form.get('prop_id')
     title = request.form.get('title')
@@ -421,3 +422,63 @@ def myProperties():
         return render_template('index.html', user=user, products=[],
                                message="Soory! There has been \
                                 an error loading the products")
+
+
+@app.route('/Booking', methods=['GET'])
+def booking_get():
+    import os
+    path = os.path.dirname(os.path.abspath(__file__))
+    connection = sqlite3.connect(path + "/data.db")
+    cursor = connection.cursor()
+    # select all the info of the user
+    row = cursor.execute("SELECT * FROM 'Properties'")
+    properties = cursor.fetchall()
+    connection.close()
+    return render_template('Booking.html', properties=properties,
+                           message='Let\'s Start Update Listing')
+
+
+@app.route('/Booking', methods=['POST'])
+def booking_save():
+    """
+    This function is used to find all the properties for user to book
+    """
+    print("Hihi")
+    print(property[0])
+    id = session['id']
+    Date = request.form.get('date')
+    Date2 = request.form.get('date2')
+    number = request.form.get('guest_number')
+    tsc = {
+        "user_id": id,
+        "prop_id": property[0],
+        "check_in_date": Date,
+        "check_out_date": Date2,
+        "guest_number": number,
+    }
+
+    try:
+        booking_requirement_checking(tsc)  # check the format
+        save_transaction_record(tsc)
+    except InvalidBooking as IUU:
+        return render_template('Booking.html',
+                               message=IUU.message)
+
+
+@app.route('/my_booking', methods=['GET'])
+def booking_get2():
+
+    import os
+    path = os.path.dirname(os.path.abspath(__file__))
+    connection = sqlite3.connect(path + "/data.db")
+    cursor = connection.cursor()
+    id = session['id']
+    print(id)
+    # select all the info of the user
+    row = cursor.execute("SELECT * FROM 'Transactions' "
+                         "WHERE user_id = (?)", (id,))
+    booking = cursor.fetchall()
+    connection.close()
+    # templates are stored in the templates folder
+    return render_template('my_booking.html', booking=booking,
+                           message='Please Enter Info')

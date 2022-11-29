@@ -65,7 +65,7 @@ def login_saving(login_user) -> dict:
     print("===testing login saving checker========")
     import pathlib
     path = pathlib.Path().resolve()
-    connection = sqlite3.connect(path.__str__() + "/qbay/data.db")
+    connection = sqlite3.connect(path.__str__() + "/data.db")
     cursor = connection.cursor()
     # R1-7
     # Select email from user, if found, fetch
