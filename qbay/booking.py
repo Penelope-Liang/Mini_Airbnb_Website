@@ -32,9 +32,19 @@ def booking_requirement_checking(tsc) -> dict:
         (tsc["prop_id"],))
     (user_id, price) = cursor.fetchone()
 
+    user_check_in_date = datetime.strptime(
+        tsc["check_in_date"], "%Y-%m-%dT%H:%M")
+
+    user_check_out_date = datetime.strptime(
+        tsc["check_out_date"], "%Y-%m-%dT%H:%M")
+
+    total_days = float((user_check_out_date - user_check_in_date).days)
+
+    total_price = price * total_days
+
     # A user cannot book a listing that
     # costs more than his/her balance.
-    if float(balance) < float(price):
+    if float(balance) < float(total_price):
         raise InvalidBooking("User can't afford the property")
 
     # A user cannot book a listing for his/her listing.
@@ -49,12 +59,12 @@ def booking_requirement_checking(tsc) -> dict:
     row = cursor.fetchone()
 
     if row is not None:
-        (check_in_date, check_out_date) = row
-        user_check_in_date = datetime.strptime(
-            tsc["check_in_date"], "%Y-%m-%dT%H:%M:%S")
+        (check_in, check_out) = row
+        check_in_date = datetime.strptime(
+            check_in, "%Y-%m-%dT%H:%M")
 
-        user_check_out_date = datetime.strptime(
-            tsc["check_out_date"], "%Y-%m-%dT%H:%M:%S")
+        check_out_date = datetime.strptime(
+            check_out, "%Y-%m-%dT%H:%M")
         '''
         check_in_date       check_out_date
              C1----------------------C2
@@ -95,11 +105,14 @@ def booking_requirement_checking(tsc) -> dict:
     }
     transaction["tsc_id"] = uuid.uuid4().hex
     transaction["tsc_date"] = datetime.now()
+    transaction["tsc_price"] = total_price
+    transaction["remaining_balance"] = float(balance) - float(total_price)
 
     return transaction
 
 
 def save_transaction_record(tsc):
+
     try:
         import os
         path = os.path.dirname(os.path.abspath(__file__))
@@ -109,13 +122,16 @@ def save_transaction_record(tsc):
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                        (tsc["tsc_id"],
                         tsc["user_id"],
-                        tsc["property_id"],
+                        tsc["prop_id"],
                         tsc["tsc_date"],
                         tsc["tsc_price"],
                         tsc["check_in_date"],
                         tsc["check_out_date"],
                         tsc["guest_number"],
                         ))
+
+        cursor.execute("UPDATE Users SET balance = (?) WHERE user_id = (?)",
+                       (tsc["remaining_balance"], tsc["user_id"]))
         connection.commit()
         connection.close()
     except InvalidBooking:
@@ -130,15 +146,15 @@ if __name__ == "__main__":
         "user_id": "20a7066e8e844759a99a20ecbd6935fe",
         "prop_id": "ebbc91cdf0f646e9993222418c39c69d",
         "check_in_date": "2022-06-01T08:30",
-        "check_out_date": "2022-08-01T08:30",
+        "check_out_date": "2022-06-04T08:30",
         "guest_number": 2,
     }
 
     test_tsc2 = {
         "user_id": "b36524c626e64b15b3dcebb6d21dd5d8",
         "prop_id": "ebbc91cdf0f646e9993222418c39c69d",
-        "check_in_date": "2022-06-01T08:30",
-        "check_out_date": "2022-08-01T08:30",
+        "check_in_date": "2022-04-02T08:30",
+        "check_out_date": "2022-10-30T08:30",
         "guest_number": 3,
     }
     try:
@@ -147,10 +163,20 @@ if __name__ == "__main__":
     except InvalidBooking as IB:
         print("pass !")
 
-    t = booking_requirement_checking(test_tsc2)
+    return_tsc = booking_requirement_checking(test_tsc2)
+    save_transaction_record(return_tsc)
 
+    import os
+    path = os.path.dirname(os.path.abspath(__file__))
+    connection = sqlite3.connect(path + "/data.db")
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM \
+                    Transactions WHERE tsc_id=(?)",
+                   (return_tsc["tsc_id"],))
+    connection.commit()
+    connection.close()
     # additional line to print the datetime now
-    print(json.dumps(t, indent=4, sort_keys=True, default=str))
+    print(json.dumps(return_tsc, indent=4, sort_keys=True, default=str))
 else:
 
     from qbay.exceptions import InvalidBooking
