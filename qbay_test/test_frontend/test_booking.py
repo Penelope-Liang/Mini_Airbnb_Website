@@ -22,9 +22,11 @@ cursor = connection.cursor()
 cursor.execute("SELECT email FROM Users WHERE user_id=?",
                ("b36524c626e64b15b3dcebb6d21dd5d8",))
 (email,) = cursor.fetchone()
+print(email)
 cursor.execute("SELECT password FROM Users WHERE user_id=?",
                ("b36524c626e64b15b3dcebb6d21dd5d8",))
 (password,) = cursor.fetchone()
+print(password)
 connection.close()
 
 
@@ -44,13 +46,13 @@ class Test(BaseCase):
         connection = sqlite3.connect(db_path)
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM Transactions WHERE property_id = (?)",
-                       ("ebbc91cdf0f646e9993222418c39c69d", ))
+                       ("ebbc91cdf0f646e9993222418c39c69d",))
         row = cursor.fetchone()
         # test email exists
         if row is not None:
             print("------test booking prop target already exists------")
             cursor.execute("DELETE FROM Transactions WHERE property_id = (?)",
-                           ("ebbc91cdf0f646e9993222418c39c69d", ))
+                           ("ebbc91cdf0f646e9993222418c39c69d",))
         else:
             print("------safe to proceed------")
         connection.commit()
@@ -59,9 +61,9 @@ class Test(BaseCase):
         # login first
         self.open(base_url + "/login")
         # fill in user email
-        self.type("#email", email)
+        self.type("#email", "DimDim@HHM.com")
         # fill in user password
-        self.type("#password", password)
+        self.type("#password", "Kim!!123321dsb")
         # click login button to home page
         self.click("#btn-submit")
 
@@ -151,13 +153,13 @@ class Test(BaseCase):
         connection = sqlite3.connect(db_path)
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM Transactions WHERE property_id = (?)",
-                       ("ebbc91cdf0f646e9993222418c39c69d", ))
+                       ("ebbc91cdf0f646e9993222418c39c69d",))
         row = cursor.fetchone()
         # test email exists
         if row is not None:
             print("------test booking prop target already exists------")
             cursor.execute("DELETE FROM Transactions WHERE property_id = (?)",
-                           ("ebbc91cdf0f646e9993222418c39c69d", ))
+                           ("ebbc91cdf0f646e9993222418c39c69d",))
         else:
             print("------safe to proceed------")
         connection.commit()
@@ -194,3 +196,53 @@ class Test(BaseCase):
         # print(self.get_text_content("#msg"))
         # print("^^^^")
         self.assert_text("the selected date is overlapped", "#msg")
+
+    def test_listing_show_success(self, *_):
+        """
+        Testing R6-4
+        Method: Output partition
+        Analysis: If the output page does contain the booking,
+        then the inputs must all satisfy the requirements.
+        """
+
+        # delete the transaction im going to make first if it exists
+        path = os.path.abspath(os.getcwd())
+        print(type(path))
+        db_path = path + "/qbay/data.db"
+        print(db_path)
+        connection = sqlite3.connect(db_path)
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM Transactions WHERE property_id = (?)",
+                       ("ebbc91cdf0f646e9993222418c39c69d",))
+        row = cursor.fetchone()
+        # test email exists
+        if row is not None:
+            print("------test booking prop target already exists------")
+            cursor.execute("DELETE FROM Transactions WHERE property_id = (?)",
+                           ("ebbc91cdf0f646e9993222418c39c69d",))
+        else:
+            print("------safe to proceed------")
+        connection.commit()
+        connection.close()
+
+        self.open(base_url + "/login")
+        # fill in user email
+        self.type("#email", email)
+        # fill in user password
+        self.type("#password", password)
+        # click login button to home page
+        self.click("#btn-submit")
+
+        # click booking
+        self.click("#booking")
+        self.click("#ebbc91cdf0f646e9993222418c39c69d")
+        self.type("#date", "2022-02-01")
+        self.type("#date2", "2022-02-02")
+        self.type("#guest_number", "1")
+        self.click("#click2")
+
+        self.click("#my_bookings")
+        new_page_url = self.get_current_url()
+        print(new_page_url)
+        self.assert_text("ebbc91cdf0f646e9993222418c39c69d", "#meg")
+        self.assert_text("Check in date: 2022-02-01T00:00", "#meg2")

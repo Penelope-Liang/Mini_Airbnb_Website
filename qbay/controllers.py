@@ -505,8 +505,11 @@ def booking_get2():
     path = os.path.dirname(os.path.abspath(__file__))
     connection = sqlite3.connect(path + "/data.db")
     cursor = connection.cursor()
-    id = session['id']
-    print(id)
+    email = session['logged_in']
+    sql = 'select * from Users where email = "%s"' % (email)
+    cursor.execute(sql)
+    user = cursor.fetchone()
+    id = user[0]
     # select all the info of the user
     row = cursor.execute("SELECT * FROM 'Transactions' "
                          "WHERE user_id = (?)", (id,))
