@@ -179,5 +179,4 @@ if __name__ == "__main__":
     # additional line to print the datetime now
     print(json.dumps(return_tsc, indent=4, sort_keys=True, default=str))
 else:
-
     from qbay.exceptions import InvalidBooking
