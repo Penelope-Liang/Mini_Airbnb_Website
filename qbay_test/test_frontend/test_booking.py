@@ -111,7 +111,8 @@ class Test(BaseCase):
         Testing : R6-2 A user cannot book a listing that costs
         more than his/her balance.
         Method: Input partition
-        Analysis: Here is a case where the user book a list cost more than balance.
+        Analysis: Here is a case where the user attempt to book a
+        list cost more than balance.
         """
 
         self.open(base_url + "/login")

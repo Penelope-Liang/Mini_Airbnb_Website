@@ -3,7 +3,8 @@ from qbay import app
 from flask import render_template, request, session, redirect
 
 from qbay.booking import booking_requirement_checking, save_transaction_record
-from qbay.exceptions import InvalidLogin, InvalidRegister, InvalidUserUpdate, InvalidBooking
+from qbay.exceptions import InvalidLogin, InvalidRegister
+from qbay.exceptions import InvalidUserUpdate, InvalidBooking
 # flask.url_for
 # from qbay.models import Users
 from qbay.login import login_checker, login_saving
