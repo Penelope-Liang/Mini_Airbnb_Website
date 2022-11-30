@@ -14,6 +14,16 @@ from datetime import datetime
 
 
 def booking_requirement_checking(tsc) -> dict:
+    '''
+    This function checks if a booking attempt is valid
+    according to the requirements.
+    Parameter: tsc - a dict format info passed by the
+    frontend form inputs
+    Return: a dict format info containing all column
+    info needed to save the valid booking to db
+    Exception: may raise InvalidBooking exception if
+    requirements are violated.
+    '''
     import os
     path = os.path.dirname(os.path.abspath(__file__))
     connection = sqlite3.connect(path + "/data.db")
@@ -114,7 +124,13 @@ def booking_requirement_checking(tsc) -> dict:
 
 
 def save_transaction_record(tsc):
-
+    '''
+    This function saves the valid booking to the db.
+    Parameter: tsc - savable booking in dict format
+    Return: None
+    Exception: may raise InvalidBooking exception if
+    saving fails.
+    '''
     try:
         import os
         path = os.path.dirname(os.path.abspath(__file__))

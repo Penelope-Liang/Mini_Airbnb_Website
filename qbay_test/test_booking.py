@@ -55,8 +55,8 @@ def test_overlapped_dates():
     test_tsc = {
         "user_id": "b36524c626e64b15b3dcebb6d21dd5d8",
         "prop_id": "ebbc91cdf0f646e9993222418c39c69d",
-        "check_in_date": "2022-07-01T08:30",
-        "check_out_date": "2022-08-30T08:30",
+        "check_in_date": "2022-02-05T08:30",
+        "check_out_date": "2022-04-15T08:30",
         "guest_number": 3,
     }
 
@@ -78,8 +78,8 @@ def test_overlapped_dates2():
     test_tsc = {
         "user_id": "b36524c626e64b15b3dcebb6d21dd5d8",
         "prop_id": "ebbc91cdf0f646e9993222418c39c69d",
-        "check_in_date": "2022-05-01T08:30",
-        "check_out_date": "2022-07-20T08:30",
+        "check_in_date": "2022-01-01T08:30",
+        "check_out_date": "2022-02-21T08:30",
         "guest_number": 3,
     }
 
@@ -101,7 +101,7 @@ def test_overlapped_dates3():
     test_tsc = {
         "user_id": "b36524c626e64b15b3dcebb6d21dd5d8",
         "prop_id": "ebbc91cdf0f646e9993222418c39c69d",
-        "check_in_date": "2022-06-20T08:30",
+        "check_in_date": "2022-01-01T08:30",
         "check_out_date": "2022-07-20T08:30",
         "guest_number": 3,
     }
