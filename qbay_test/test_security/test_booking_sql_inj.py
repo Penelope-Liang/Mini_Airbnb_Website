@@ -92,11 +92,13 @@ def test_test_booking():
                                         reg_booking["check_in_date"],
                                         reg_booking["check_out_date"],
                                         reg_booking["guest_number"]))
-                        connection.close()
+                        connection.commit()
+                        connection.close()                        
                         raise Exception("injection didn't exist")
 
                     # If injection exists, it will be false
                     # As no Expcetion is raise
+                    connection.commit()
                     connection.close()
     except Exception as e:
         print(e)

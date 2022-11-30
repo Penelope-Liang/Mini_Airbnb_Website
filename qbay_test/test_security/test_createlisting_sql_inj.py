@@ -91,9 +91,11 @@ def test_test_createlisting():
                                     listing["price"],
                                     listing["address"],
                                     listing["capacity"]))
+                    connection.commit()
                     connection.close()
                     raise Exception("injection didn't exist")
 
                 # If injection exists, it will be false
                 # As no Expcetion is raise
+                connection.commit()
                 connection.close()

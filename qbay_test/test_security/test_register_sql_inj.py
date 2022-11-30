@@ -95,9 +95,11 @@ def test_test_regsiter():
                                     user["first_name"],
                                     user["last_name"],
                                     user["password"]))
+                    connection.commit()
                     connection.close()
                     raise Exception("inject did not happen")
 
                 # injection happen, as it expect an Expcetion
                 # this is a false
+                connection.commit()
                 connection.close()
