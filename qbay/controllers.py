@@ -445,15 +445,28 @@ def conformation_get():
     prop_id = request.args.get('prop_id')
     print(prop_id)
     return render_template('conformation.html', prop_id=prop_id,
-                           message='Let\'s Start Update Listing')
+                           message=" ")
 
 
 @app.route('/conformation', methods=['POST'])
 def conformation_post():
     print("hihi")
     prop_id = request.args.get('prop_id')
-    id = session['id']
+    email = session['logged_in']
+    print(email)
+    print("^^^^^^^^^^^^^^^^^")
+    import os
+    path = os.path.dirname(os.path.abspath(__file__))
+    connection = sqlite3.connect(path + "/data.db")
+    cursor = connection.cursor()
+    sql = 'select * from Users where email = "%s"' % (email)
+    cursor.execute(sql)
+    user = cursor.fetchone()
+    print(user)
+    id = user[0]
     print(id)
+    connection.close()
+
     Date = request.form.get('date')
     Date += "T00:00"
     print(Date)
@@ -480,7 +493,7 @@ def conformation_post():
         err_msg = f"{IUU.message}"
     if err_msg:
         return render_template('conformation.html',
-                                   message=err_msg)
+                               message=err_msg)
     else:
         return redirect('/')
 

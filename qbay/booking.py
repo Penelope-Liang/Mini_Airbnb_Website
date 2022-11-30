@@ -56,49 +56,51 @@ def booking_requirement_checking(tsc) -> dict:
         "check_out_date FROM Transactions WHERE property_id = (?)",
         (tsc["prop_id"],))
 
-    row = cursor.fetchone()
+    rows = cursor.fetchall()
+    print(rows)
     print("3333")
-    if row is not None:
-        (check_in, check_out) = row
-        check_in_date = datetime.strptime(
-            check_in, "%Y-%m-%dT%H:%M")
+    if rows is not None:
+        for row in rows:
+            (check_in, check_out) = row
+            check_in_date = datetime.strptime(
+                check_in, "%Y-%m-%dT%H:%M")
 
-        check_out_date = datetime.strptime(
-            check_out, "%Y-%m-%dT%H:%M")
-        '''
-        check_in_date       check_out_date
-             C1----------------------C2
-        
-                user_check_in_date         user_check_out_date
-                    U1--------------------------------U2
-                    
-                check_in_date       check_out_date
-                     C1----------------------C2
-        
-        user_check_in_date         user_check_out_date
-            U1----------------------------U2
+            check_out_date = datetime.strptime(
+                check_out, "%Y-%m-%dT%H:%M")
+            '''
+            check_in_date       check_out_date
+                C1----------------------C2
             
-        check_in_date                   check_out_date
-         C1-----------------------------------C2
-    
-            user_check_in_date       user_check_out_date
-                U1----------------------U2
-        '''
+                    user_check_in_date         user_check_out_date
+                        U1--------------------------------U2
+                        
+                    check_in_date       check_out_date
+                        C1----------------------C2
+            
+            user_check_in_date         user_check_out_date
+                U1----------------------------U2
+                
+            check_in_date                   check_out_date
+            C1-----------------------------------C2
+        
+                user_check_in_date       user_check_out_date
+                    U1----------------------U2
+            '''
 
-        # maybe buggy
-        Overlap1 = check_out_date >= user_check_in_date \
-            and check_out_date <= user_check_out_date
-        Overlap2 = check_in_date >= user_check_in_date \
-            and check_in_date <= user_check_out_date
+            # maybe buggy
+            Overlap1 = check_out_date >= user_check_in_date \
+                and check_out_date <= user_check_out_date
+            Overlap2 = check_in_date >= user_check_in_date \
+                and check_in_date <= user_check_out_date
 
-        # reverse it,
-        Overlap3 = user_check_out_date >= check_in_date \
-            and user_check_in_date <= check_out_date
-        Overlap4 = user_check_in_date >= check_in_date \
-            and user_check_in_date <= check_out_date
+            # reverse it,
+            Overlap3 = user_check_out_date >= check_in_date \
+                and user_check_in_date <= check_out_date
+            Overlap4 = user_check_in_date >= check_in_date \
+                and user_check_in_date <= check_out_date
 
-        if Overlap1 or Overlap2 or Overlap3 or Overlap4:
-            raise InvalidBooking("the selected date is overlapped")
+            if Overlap1 or Overlap2 or Overlap3 or Overlap4:
+                raise InvalidBooking("the selected date is overlapped")
     print("4444")
     transaction = {
         **tsc
