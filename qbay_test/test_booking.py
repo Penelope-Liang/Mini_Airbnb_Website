@@ -158,5 +158,5 @@ def test_user_balance_changed():
     cursor.execute("UPDATE Users SET \
                     balance = (?) WHERE user_id = (?)",
                    (5000, test_tsc["user_id"]))
-
+    connection.commit()
     connection.close()
