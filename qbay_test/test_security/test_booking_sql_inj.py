@@ -28,77 +28,75 @@ start = time.mktime(a1)
 end = time.mktime(a2)
 
 
-def test_test_booking():
-    try:        
-        for line in lines:
-            t1 = random.randint(start, end)
-            date_to = time.localtime(t1)
-            start_date = datetime.datetime. strptime(
-                time.strftime("%Y-%m-%dT%H:%M",
-                              date_to), "%Y-%m-%dT%H:%M")
-            end_date = start_date + datetime.timedelta(days=10)
+def test_test_booking():       
+    for line in lines:
+        t1 = random.randint(start, end)
+        date_to = time.localtime(t1)
+        start_date = datetime.datetime. strptime(
+            time.strftime("%Y-%m-%dT%H:%M",
+                            date_to), "%Y-%m-%dT%H:%M")
+        end_date = start_date + datetime.timedelta(days=10)
 
-            injection_template = {
-                "user_id": "b36524c626e64b15b3dcebb6d21dd5d8",
-                "prop_id": "ebbc91cdf0f646e9993222418c39c69d",
-                "check_in_date": start_date.strftime("%Y-%m-%dT%H:%M"),
-                "check_out_date": end_date.strftime("%Y-%m-%dT%H:%M"),
-                "guest_number": 6,
-            }
+        injection_template = {
+            "user_id": "b36524c626e64b15b3dcebb6d21dd5d8",
+            "prop_id": "ebbc91cdf0f646e9993222418c39c69d",
+            "check_in_date": start_date.strftime("%Y-%m-%dT%H:%M"),
+            "check_out_date": end_date.strftime("%Y-%m-%dT%H:%M"),
+            "guest_number": 6,
+        }
 
-            for key in injection_template:
+        for key in injection_template:
 
-                '''
-                We select a key to be changed to injection
-                code
-                '''
+            '''
+            We select a key to be changed to injection
+            code
+            '''
 
-                with pytest.raises(Exception):
+            with pytest.raises(Exception):
 
-                    booking = {**injection_template}
-                    booking[key] = line
-                    reg_booking = booking_requirement_checking(booking)
-                    save_transaction_record(reg_booking)
+                booking = {**injection_template}
+                booking[key] = line
+                reg_booking = booking_requirement_checking(booking)
+                save_transaction_record(reg_booking)
 
-                    path = os.path.\
-                        abspath(os.getcwd())
-                    connection = sqlite3.connect(
-                        path + "/qbay/data.db")
-                    cursor = connection.cursor()
+                path = os.path.\
+                    abspath(os.getcwd())
+                connection = sqlite3.connect(
+                    path + "/qbay/data.db")
+                cursor = connection.cursor()
 
+                cursor.execute("SELECT * \
+                                FROM Transactions WHERE user_id = ?\
+                                and prop_id = ? \
+                                and check_in_date=? \
+                                and check_out_date=?\
+                                and guest_number = ?",
+                                (reg_booking["user_id"],
+                                reg_booking["prop_id"],
+                                reg_booking["check_in_date"],
+                                reg_booking["check_out_date"],
+                                reg_booking["guest_number"]))
+
+                row = cursor.fetchone()
+
+                if row is not None:
                     cursor.execute("SELECT * \
-                                   FROM Transactions WHERE user_id = ?\
-                                   and prop_id = ? \
-                                   and check_in_date=? \
-                                   and check_out_date=?\
-                                   and guest_number = ?",
-                                   (reg_booking["user_id"],
+                                    FROM Transactions WHERE user_id = ?\
+                                    and prop_id = ? \
+                                    and check_in_date=? \
+                                    and check_out_date=?\
+                                    and guest_number = ?",
+                                    (reg_booking["user_id"],
                                     reg_booking["prop_id"],
                                     reg_booking["check_in_date"],
                                     reg_booking["check_out_date"],
                                     reg_booking["guest_number"]))
-
-                    row = cursor.fetchone()
-
-                    if row is not None:
-                        cursor.execute("SELECT * \
-                                       FROM Transactions WHERE user_id = ?\
-                                       and prop_id = ? \
-                                       and check_in_date=? \
-                                       and check_out_date=?\
-                                       and guest_number = ?",
-                                       (reg_booking["user_id"],
-                                        reg_booking["prop_id"],
-                                        reg_booking["check_in_date"],
-                                        reg_booking["check_out_date"],
-                                        reg_booking["guest_number"]))
-                        connection.commit()
-                        connection.close()                        
-                        raise Exception("injection didn't exist")
-
-                    # If injection exists, it will be false
-                    # As no Expcetion is raise
                     connection.commit()
-                    connection.close()
-    except Exception as e:
-        print(e)
+                    connection.close()                        
+                    raise Exception("injection didn't exist")
+
+                # If injection exists, it will be false
+                # As no Expcetion is raise
+                connection.commit()
+                connection.close()
+
