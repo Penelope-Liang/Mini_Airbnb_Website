@@ -22,19 +22,21 @@ path = pathlib.Path(__file__)\
 with open(path) as file:
     lines = [line.rstrip() for line in file]
 
-a1=(2021,1,1,0,0,0,0,0,0)
-a2=(2025,12,31,23,59,59,0,0,0)
+a1 = (2021, 1, 1, 0, 0, 0, 0, 0, 0)
+a2 = (2025, 12, 31, 23, 59, 59, 0, 0, 0)
 start = time.mktime(a1)
 end = time.mktime(a2)
+
 
 def test_test_booking():
         
     for line in lines:
         t1 = random.randint(start, end)
         date_to = time.localtime(t1)
-        start_date=datetime.datetime.strptime(time.strftime("%Y-%m-%dT%H:%M", date_to), "%Y-%m-%dT%H:%M")
+        start_date = datetime.datetime.strptime(
+            time.strftime("%Y-%m-%dT%H:%M",
+                          date_to), "%Y-%m-%dT%H:%M")
         end_date = start_date + datetime.timedelta(days=30)
-
 
         injection_template = {
             "user_id": "b36524c626e64b15b3dcebb6d21dd5d8",
@@ -70,7 +72,7 @@ def test_test_booking():
                                 and check_in_date=? \
                                 and check_out_date=?\
                                 and guest_number = ?",
-                                (reg_booking["user_id"],
+                               (reg_booking["user_id"],
                                 reg_booking["prop_id"],
                                 reg_booking["check_in_date"],
                                 reg_booking["check_out_date"],
@@ -80,21 +82,21 @@ def test_test_booking():
 
                 if row is not None:
                     cursor.execute("DELETE \
-                                FROM Transactions WHERE user_id = ?\
-                                and prop_id = ? \
-                                and check_in_date=? \
-                                and check_out_date=?\
-                                and guest_number = ?",
-                                (reg_booking["user_id"],
-                                reg_booking["prop_id"],
-                                reg_booking["check_in_date"],
-                                reg_booking["check_out_date"],
-                                reg_booking["guest_number"]))
-                    connection.commit();
+                                   FROM Transactions WHERE user_id = ?\
+                                   and prop_id = ? \
+                                   and check_in_date=? \
+                                   and check_out_date=?\
+                                   and guest_number = ?",
+                                   (reg_booking["user_id"],
+                                    reg_booking["prop_id"],
+                                    reg_booking["check_in_date"],
+                                    reg_booking["check_out_date"],
+                                    reg_booking["guest_number"]))
+                    connection.commit()
                     connection.close()
                     raise Exception("injection didn't exist")
 
                 # If injection exists, it will be false
                 # As no Expcetion is raise
-                connection.commit();
+                connection.commit()
                 connection.close()
