@@ -34,7 +34,7 @@ def test_test_booking():
         date_to = time.localtime(t1)
         start_date = datetime.datetime. strptime(
             time.strftime("%Y-%m-%dT%H:%M",
-                            date_to), "%Y-%m-%dT%H:%M")
+                          date_to), "%Y-%m-%dT%H:%M")
         end_date = start_date + datetime.timedelta(days=10)
 
         injection_template = {
@@ -66,12 +66,12 @@ def test_test_booking():
                 cursor = connection.cursor()
 
                 cursor.execute("SELECT * \
-                                FROM Transactions WHERE user_id = ?\
-                                and prop_id = ? \
-                                and check_in_date=? \
-                                and check_out_date=?\
-                                and guest_number = ?",
-                                (reg_booking["user_id"],
+                               FROM Transactions WHERE user_id = ?\
+                               and prop_id = ? \
+                               and check_in_date=? \
+                               and check_out_date=?\
+                               and guest_number = ?",
+                               (reg_booking["user_id"],
                                 reg_booking["prop_id"],
                                 reg_booking["check_in_date"],
                                 reg_booking["check_out_date"],
@@ -86,7 +86,7 @@ def test_test_booking():
                                     and check_in_date=? \
                                     and check_out_date=?\
                                     and guest_number = ?",
-                                    (reg_booking["user_id"],
+                                   (reg_booking["user_id"],
                                     reg_booking["prop_id"],
                                     reg_booking["check_in_date"],
                                     reg_booking["check_out_date"],
