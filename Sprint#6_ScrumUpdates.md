@@ -18,7 +18,7 @@ I'm trying to ship the whole system and will create the database web interface a
 
 **Difficulties**:
 
-I'm having problems running docker desktop and it keeps saying "Docker Desktop starting...". I have reinstalled it many times and tried every method available on the stackoverflow, but nothing works. I haven't solved it yet, but I believe the dawn is near. 
+I'm having problems running docker desktop and it keeps saying "Docker Desktop starting...". I have reinstalled it many times and tried every method available on the stackoverflow, but nothing works. I haven't solved it yet, but I believe the dawn is near.
 
 **Plan**:
 
@@ -80,12 +80,12 @@ test_update_listing
 
 **Progress**:
 
-I have finished testing the sql injection of register, but injection for creating list still haven't done, I also switched it from using selenuim to directly calling the backend functions
+I have finished the backend of booking system, two functions are done, and testings are still little behind, and there might be some bugs
 
 **Difficulties**:
 
-I used the selenium for testing at first and it is way too slow, and then I realize directly calling will be much more faster, it took me awhile to realize that
+The previous injection tests have some bugs, and this incur garbage data fluxs into data.db, it make this time hard to finish the test
 
 **Plan**:
 
-My plan is to give out a template about how we testing and then if any vulnerabilities are found, we fix it.
+My plan is to clean up the db file, as the db now is full with garbage data, and also modify the pre-test and post-test session to let the test data in and out smoothly
