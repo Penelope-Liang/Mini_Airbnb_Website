@@ -130,7 +130,7 @@ class Test(BaseCase):
         # print("SCROLLED!!!!!!!!!!")
         self.click("#dfa708de23b541808202133f2dde7c58")
         self.type("#date", "2022-11-03")
-        self.type("#date2", "2022-11-04")
+        self.type("#date2", "8022-11-04")
         self.type("#guest_number", "1")
         self.click("#click2")
         # print(self.assert_element("#msg"))
