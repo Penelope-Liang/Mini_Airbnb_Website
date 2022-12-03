@@ -1,6 +1,6 @@
-# Scrum Board Sprint 5
+# Scrum Board Sprint 6
 
-meeting time: 2022.11.09
+meeting time: 2022.12.03
 
 ###Team Member 1:
 
@@ -32,19 +32,19 @@ Ximing Yu
 
 **Branch**:
 
-template_yu
+mybookingV2.0
 
 **Progress**:
 
-I copied the provided template to our repo and made some changes accroding to our own file structure and configuations. I published a container of our app to the dockerhub following the instructions.
+The frontend development and testing are finished. I have PRed and it is reveiw and approved. 
 
 **Difficulties**:
 
-I did not encounter much difficulties shipping the container, thanks to the detailed instructions given. But I did spend some time figuring out how to setup Docker and Dockerhub and learning how to use Docker. Very fun experience so far.
+I did not encounter much difficulties wrapping up the frontend dev&testing. However, I figured it did take me some time to recall how I programmed controller/tested with SeleniumBase/used Docker commands, even I just used them weeks ago. Practice makes perfect!
 
 **Plan**:
 
-In the coming days, I will test if the application can actually be pulled and run successfully from other machines. I may kindly ask my teammates to help test it lol :)
+Ship the container and the whole system :) Go over the final version to make sure we do not miss anything.
 
 ### Team Member 3:
 
