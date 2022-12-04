@@ -17,7 +17,10 @@
 │   Sprint#4_ScrumUpdates.md
 │   Sprint#5_ScrumBoard_Screenshot.png
 │   Sprint#5_ScrumUpdates.md
-|   Sprint#6_ScrumUpdates.md
+|   Sprint#6_ScrumUpdates_1.md              *A6 submission
+|   Sprint#6_ScrumUpdates_2.md              *A6 submission
+|   Sprint#6_ScrumBoard_Screenshot_1.png    *A6 submission
+|   Sprint#6_ScrumBoard_Screenshot_2.png    *A6 submission
 │   wait-for-it.sh
 │
 ├───.github

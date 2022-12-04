@@ -36,7 +36,7 @@ mybookingV2.0
 
 **Progress**:
 
-The frontend development and testing are finished. I have PRed and it is reveiw and approved. 
+The frontend development and testing are finished. I have PRed and it is reveiw and approved.
 
 **Difficulties**:
 
@@ -80,12 +80,12 @@ test_update_listing
 
 **Progress**:
 
-I have finished the backend of booking system, two functions are done, and testings are still little behind, and there might be some bugs
+I have fix a bug in the currenting booking test, but there are still some bugs in the previous security test, but these bugs are not triggered in previous tests, so I did not notice, but now they become a problem
 
 **Difficulties**:
 
-The previous injection tests have some bugs, and this incur garbage data fluxs into data.db, it make this time hard to finish the test
+After cleaning off the garbage data in the data.db, some tests fail bc the changes in the database, I am still working on the reasons
 
 **Plan**:
 
-My plan is to clean up the db file, as the db now is full with garbage data, and also modify the pre-test and post-test session to let the test data in and out smoothly
+Fix all the tests that fail after the mass change in the data.db
