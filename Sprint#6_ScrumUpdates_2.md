@@ -10,19 +10,19 @@ Huilin Xu
 
 **Branch**:
 
-ship_meghan
+mybookingV2.0
 
 **Progress**:
 
-I'm trying to ship the whole system and will create the database web interface after successfully running docker, and then everything will be done. But before I do that, I need to solve the difficulties mentioned below.
+I've done most of the work and fixed another bug in the middle of the progress where the user booked a different room than the one shows in mybooking. I also finished the testing part and confirmed that the booked listing will show up on the user's home page and a user cannot book a listing that is already booked with the overlapped dates.
 
 **Difficulties**:
 
-I'm having problems running docker desktop and it keeps saying "Docker Desktop starting...". I have reinstalled it many times and tried every method available on the stackoverflow, but nothing works. I haven't solved it yet, but I believe the dawn is near.
+I couldn't test it at first and it kept showing that it couldn't connect to the database, then I realized that I had accidentally changed the code to link to the database when I changed the last bug. After that, everything went smoothly.
 
 **Plan**:
 
-Just now I managed to complete everything I needed for the assignment on another computer, but I still want to know why I can't run it on my own. So I will keep trying. Outside of that, I will comment positively on my teammate's pr and hope that this assignment will also wrap up well.
+My plan now is to relax and get myself a drink because our last assignment is wrapping up! Of course, since the prof gave the extension, we have more time to do a check to make sure we didn't write anything wrong.
 
 ### Team Member 2:
 

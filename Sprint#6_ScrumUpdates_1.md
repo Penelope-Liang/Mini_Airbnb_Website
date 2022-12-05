@@ -10,19 +10,19 @@ Huilin Xu
 
 **Branch**:
 
-ship_meghan
+booking_frontend
 
 **Progress**:
 
-I'm trying to ship the whole system and will create the database web interface after successfully running docker, and then everything will be done. But before I do that, I need to solve the difficulties mentioned below.
+I worked with Ximing to complete the front-end page of booking in the library, which includes three sections, showing all the properties for the user to choose, the user confirmation page, and my_booking, which is the page where the user can view all their bookings. The front-end page now looks perfect and all functions are working properly.
 
 **Difficulties**:
 
-I'm having problems running docker desktop and it keeps saying "Docker Desktop starting...". I have reinstalled it many times and tried every method available on the stackoverflow, but nothing works. I haven't solved it yet, but I believe the dawn is near.
+I couldn't get the program to run, and in the end I found out that I hadn't changed fetchone to fetchall, which resulted in the database only being able to fetch one row. Beyond that, we've been struggling to know exactly which one the user has clicked on in a page with 50 book buttons.After an afternoon of discussion and debugging, we were lucky enough to make it.
 
 **Plan**:
 
-Just now I managed to complete everything I needed for the assignment on another computer, but I still want to know why I can't run it on my own. So I will keep trying. Outside of that, I will comment positively on my teammate's pr and hope that this assignment will also wrap up well.
+The rest of my task is to finish writing the testing part and make sure it can run correctly. After everyone has done their part, we will do another round of checking.
 
 ### Team Member 2:
 
