@@ -54,19 +54,19 @@ Yuanqi Liang
 
 **Branch**:
 
-test_sql_inj_createlisting
+test_booking3.0
 
 **Progress**:
 
-I create the sql injection backend testing for create_listing function of each parameters and store the data in the correct format to the database and check whether there is any exception.
+I create the sql injection backend testing for booking function of each parameters and try to store the data in the correct format to the database and check whether there is any exception.
 
 **Difficulties**:
 
-I had difficulties with saving data to database, I have already finished the code of sql injection, but the data in the correct format did not store to the database.
+I had difficulties with connect to database, I have already finished the code of sql injection, the data did not save in the database in correct format.
 
 **Plan**:
 
-The plan is to continue fixing the problem of accessing to the database, since the function using the method of createlisting.py, it is possible that something wrong in createlisting.py and fix it, and back to sql injection check if it can work.
+The plan is to figure out how to fix the problem, and debug by each line to find the reason why cannot connect to the database.
 
 ### Team Member 4:
 

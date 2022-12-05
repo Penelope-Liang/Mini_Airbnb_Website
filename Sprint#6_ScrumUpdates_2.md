@@ -54,19 +54,19 @@ Yuanqi Liang
 
 **Branch**:
 
-test_sql_inj_createlisting
+test_security4.0
 
 **Progress**:
 
-I create the sql injection backend testing for create_listing function of each parameters and store the data in the correct format to the database and check whether there is any exception.
+I finished the sql injection backend testing for booking function of each parameters and can sucessfully save the data in correct format into the database and check whether there is any exception.
 
 **Difficulties**:
 
-I had difficulties with saving data to database, I have already finished the code of sql injection, but the data in the correct format did not store to the database.
+Even I write delete sql injection to delete the spam data and add connection.commit() to close the database, it doesn't work, the spam data can still save in database. I tested several times but cannot find the error.
 
 **Plan**:
 
-The plan is to continue fixing the problem of accessing to the database, since the function using the method of createlisting.py, it is possible that something wrong in createlisting.py and fix it, and back to sql injection check if it can work.
+The plan is to continue fixing the problem, print the each line of data in databse and check whether it is SQL injection wrong, and fix the data.db.
 
 ### Team Member 4:
 
