@@ -69,35 +69,21 @@ def test_test_regsiter():
                     path + "/qbay/data.db")
                 cursor = connection.cursor()
                 cursor.execute("SELECT * \
-                                FROM Users WHERE email=? \
-                                and acc_name=? \
-                                and first_name = ? \
-                                and last_name = ?\
-                                and password = ?",
-                               (user["email"],
-                                user["acc_name"],
-                                user["first_name"],
-                                user["last_name"],
-                                user["password"]))
+                                FROM Users WHERE user_id = (?)",
+                               (reg_user["user_id"],))
                 row = cursor.fetchone()
 
                 # if inside, delete it and help
                 # to rasie an Exception to be true
                 if row is not None:
                     cursor.execute("DELETE FROM \
-                                   Users WHERE email=? \
-                                    and acc_name=? \
-                                    and first_name = ? \
-                                    and last_name = ?\
-                                    and password = ?",
-                                   (user["email"],
-                                    user["acc_name"],
-                                    user["first_name"],
-                                    user["last_name"],
-                                    user["password"]))
+                                   Users WHERE user_id = (?)",
+                                   (reg_user["user_id"],))
+                    connection.commit()
                     connection.close()
                     raise Exception("inject did not happen")
 
                 # injection happen, as it expect an Expcetion
                 # this is a false
+                connection.commit()
                 connection.close()

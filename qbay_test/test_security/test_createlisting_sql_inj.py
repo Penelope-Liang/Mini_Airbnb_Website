@@ -61,39 +61,21 @@ def test_test_createlisting():
                 connection = sqlite3.connect(path + "/qbay/data.db")
                 cursor = connection.cursor()
                 cursor.execute("SELECT * \
-                               FROM Properties WHERE posted_date=? \
-                               and title=?\
-                               and description=? \
-                               and price = ? \
-                               and address = ?\
-                               and capacity = ?",
-                               (listing["posted_date"],
-                                listing["title"],
-                                listing["description"],
-                                listing["price"],
-                                listing["address"],
-                                listing["capacity"]))
+                               FROM Properties WHERE prop_id = (?)",
+                               (reg_listing["prop_id"],))
                 row = cursor.fetchone()
 
                 # if inside, delete it and help
                 # to rasie an Exception to be true
                 if row is not None:
                     cursor.execute("DELETE FROM \
-                                   Properties WHERE posted_date=? \
-                                   and title=?\
-                                   and description=? \
-                                   and price = ? \
-                                   and address = ?\
-                                   and capacity = ?",
-                                   (listing["posted_date"],
-                                    listing["title"],
-                                    listing["description"],
-                                    listing["price"],
-                                    listing["address"],
-                                    listing["capacity"]))
+                                   Properties WHERE prop_id = (?)",
+                                   (reg_listing["prop_id"],))
+                    connection.commit()
                     connection.close()
                     raise Exception("injection didn't exist")
 
                 # If injection exists, it will be false
                 # As no Expcetion is raise
+                connection.commit()
                 connection.close()

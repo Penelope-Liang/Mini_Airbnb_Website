@@ -49,3 +49,16 @@ class InvalidListing(Exception):
 
     # def message(self) -> str:
     #     return self.message
+
+
+class InvalidBooking(Exception):
+
+    """
+    This class defines an InvalidBooking Exception.
+    """
+
+    def __init__(self, message) -> None:
+        """
+        Exception constructor.
+        """
+        self.message = message
