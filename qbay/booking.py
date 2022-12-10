@@ -11,6 +11,8 @@ A booked listing will show up on the
 import uuid
 import sqlite3
 from datetime import datetime
+import os
+path = os.path.dirname(os.path.abspath(__file__))
 
 
 def booking_requirement_checking(tsc) -> dict:
@@ -24,8 +26,7 @@ def booking_requirement_checking(tsc) -> dict:
     Exception: may raise InvalidBooking exception if
     requirements are violated.
     '''
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
+
     connection = sqlite3.connect(path + "/data.db")
     cursor = connection.cursor()
 
@@ -41,7 +42,7 @@ def booking_requirement_checking(tsc) -> dict:
         "Properties WHERE prop_id = (?)",
         (tsc["prop_id"],))
     (user_id, price) = cursor.fetchone()
-    print("1111")
+
     user_check_in_date = datetime.strptime(
         tsc["check_in_date"], "%Y-%m-%dT%H:%M")
 
@@ -51,7 +52,7 @@ def booking_requirement_checking(tsc) -> dict:
     total_days = float((user_check_out_date - user_check_in_date).days)
 
     total_price = price * total_days
-    print("2222")
+
     # A user cannot book a listing that
     # costs more than his/her balance.
     if float(balance) < float(total_price):
@@ -67,8 +68,7 @@ def booking_requirement_checking(tsc) -> dict:
         (tsc["prop_id"],))
 
     rows = cursor.fetchall()
-    print(rows)
-    print("3333")
+
     if rows is not None:
         for row in rows:
             (check_in, check_out) = row
@@ -111,7 +111,7 @@ def booking_requirement_checking(tsc) -> dict:
 
             if Overlap1 or Overlap2 or Overlap3 or Overlap4:
                 raise InvalidBooking("the selected date is overlapped")
-    print("4444")
+
     transaction = {
         **tsc
     }
@@ -132,8 +132,6 @@ def save_transaction_record(tsc):
     saving fails.
     '''
     try:
-        import os
-        path = os.path.dirname(os.path.abspath(__file__))
         connection = sqlite3.connect(path + "/data.db")
         cursor = connection.cursor()
         cursor.execute("INSERT INTO Transactions \
@@ -185,8 +183,6 @@ if __name__ == "__main__":
     return_tsc = booking_requirement_checking(test_tsc2)
     save_transaction_record(return_tsc)
 
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
     connection = sqlite3.connect(path + "/data.db")
     cursor = connection.cursor()
     cursor.execute("DELETE FROM \

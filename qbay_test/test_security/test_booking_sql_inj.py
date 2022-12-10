@@ -8,10 +8,10 @@ import random
 import time
 
 '''
-The file test the sql injection against 
+The file test the sql injection against
 the booking file.
-The following program read in the injection code, and input the 
-them each line for every input, it only inject when they have 
+The following program read in the injection code, and input the
+them each line for every input, it only inject when they have
 correct format.
 '''
 
@@ -28,14 +28,15 @@ start = time.mktime(a1)
 end = time.mktime(a2)
 
 
-def test_test_booking():       
+def test_test_booking():
+
     for line in lines:
         t1 = random.randint(start, end)
         date_to = time.localtime(t1)
-        start_date = datetime.datetime. strptime(
+        start_date = datetime.datetime.strptime(
             time.strftime("%Y-%m-%dT%H:%M",
                           date_to), "%Y-%m-%dT%H:%M")
-        end_date = start_date + datetime.timedelta(days=10)
+        end_date = start_date + datetime.timedelta(days=30)
 
         injection_template = {
             "user_id": "b36524c626e64b15b3dcebb6d21dd5d8",
@@ -66,37 +67,20 @@ def test_test_booking():
                 cursor = connection.cursor()
 
                 cursor.execute("SELECT * \
-                               FROM Transactions WHERE user_id = ?\
-                               and prop_id = ? \
-                               and check_in_date=? \
-                               and check_out_date=?\
-                               and guest_number = ?",
-                               (reg_booking["user_id"],
-                                reg_booking["prop_id"],
-                                reg_booking["check_in_date"],
-                                reg_booking["check_out_date"],
-                                reg_booking["guest_number"]))
+                                FROM Transactions WHERE tsc_id = (?)",
+                               (reg_booking["tsc_id"],))
 
                 row = cursor.fetchone()
 
                 if row is not None:
-                    cursor.execute("SELECT * \
-                                    FROM Transactions WHERE user_id = ?\
-                                    and prop_id = ? \
-                                    and check_in_date=? \
-                                    and check_out_date=?\
-                                    and guest_number = ?",
-                                   (reg_booking["user_id"],
-                                    reg_booking["prop_id"],
-                                    reg_booking["check_in_date"],
-                                    reg_booking["check_out_date"],
-                                    reg_booking["guest_number"]))
+                    cursor.execute("DELETE \
+                                   FROM Transactions WHERE tsc_id = (?)",
+                                   (reg_booking["tsc_id"],))
                     connection.commit()
-                    connection.close()                        
+                    connection.close()
                     raise Exception("injection didn't exist")
 
                 # If injection exists, it will be false
                 # As no Expcetion is raise
                 connection.commit()
                 connection.close()
-
