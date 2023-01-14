@@ -1,4 +1,19 @@
-# CISC327 - Group Project
+# Mini AirB&b
+
+## Introduction
+The product is to design and build is qB&B, similar to airB&b, for C2C vacation house/appartment rentals.
+
+## Technologies
+* Python
+* HTML
+* SQL
+
+
+## Teammates
+* Yuanqi Liang
+* Huilin Xu
+* Ximing Yu
+* Lu Chen
 
 ![Examples tested with pytest-readme](https://img.shields.io/badge/pytest-passed-green)
 
