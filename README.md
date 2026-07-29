@@ -1,109 +1,91 @@
-# Mini AirB&b
+# StayNest
 
-## Introduction
-The product is to design and build is qB&B, similar to airB&b, for C2C vacation house/appartment rentals.
+StayNest is a small vacation-rental web application built with Flask. It supports account registration, login, profile updates, listing creation, listing updates, bookings, and booking history.
 
-## Technologies
-* Python
-* HTML
-* SQL
+This repository is maintained as a personal project version of a vacation-rental marketplace app.
 
+## Features
 
-## Teammates
-* Yuanqi Liang
-* Huilin Xu
-* Ximing Yu
-* Lu Chen
+- User registration and login
+- Profile editing
+- Property listing creation and updates
+- Booking flow
+- My bookings view
+- Input validation and security tests
+- Docker Compose setup with MySQL and phpMyAdmin
 
-![Examples tested with pytest-readme](https://img.shields.io/badge/pytest-passed-green)
+## Tech Stack
 
-![Examples tested with pytest-readme](https://img.shields.io/badge/style-passed-green)
+- Python
+- Flask
+- SQLite for local development
+- MySQL through Docker Compose
+- HTML and CSS templates
+- Pytest, SeleniumBase, and Flake8 for testing
 
+## Project Structure
+
+```text
+qbay/               Application code and templates
+qbay_test/          Backend, frontend, and security tests
+db_init.sql         Database initialization script
+docker-compose.yml  Docker services for the app and database
+Dockerfile          App container image definition
+pkg.txt             Python dependencies
 ```
-│   .gitignore
-│   A0-contract.md
-│   db_init.sql
-│   docker-compose.yml
-│   Dockerfile
-│   LICENSE
-│   pkg.txt
-│   README.md
-│   Sprint#4_ScrumBoard_Screenshot.png
-│   Sprint#4_ScrumUpdates.md
-│   Sprint#5_ScrumBoard_Screenshot.png
-│   Sprint#5_ScrumUpdates.md
-|   Sprint#6_ScrumUpdates_1.md              *A6 submission
-|   Sprint#6_ScrumUpdates_2.md              *A6 submission
-|   Sprint#6_ScrumBoard_Screenshot_1.png    *A6 submission
-|   Sprint#6_ScrumBoard_Screenshot_2.png    *A6 submission
-│   wait-for-it.sh
-│
-├───.github
-│   │   pull_request_template.md
-│   │
-│   └───workflows
-│           pytest_all.yml
-│           style_check.yml
-│
-├───.vscode
-│       settings.json
-│
-├───qbay
-│   │   booking.py                          *A6 submission
-│   │   controllers.py
-│   │   createListing.py
-│   │   data.db
-│   │   db.py
-│   │   exceptions.py
-│   │   login.py
-│   │   models.py
-│   │   regexRepo.py
-│   │   register.py
-│   │   updateListing.py
-│   │   updateUserProfile.py
-│   │   __init__.py
-│   │   __main__.py
-│   │
-│   └───templates
-│           base.html
-│           Booking.html                    *A6 submission
-│           conformation.html
-│           create.html
-│           createlisting_post.html
-│           index.html
-│           login.html
-│           mine.html
-│           my_booking.html
-│           register.html
-│           updatelisting.html
-│           updatelisting_save.html
-│           update_user.html
-│           update_user_save.html
-│           update_user_style.html
-│
-└───qbay_test
-    │   conftest.py
-    │   pytest.init
-    │   test_booking.py                     *A6 submission
-    │   test_create_listing.py
-    │   test_login.py
-    │   test_register.py
-    │   test_update_listing.py
-    │   test_update_user.py
-    │   __init__.py
-    │
-    ├───test_frontend
-    │       test_booking.py                 *A6 submission
-    │       test_createlisting.py
-    │       test_dummy.py
-    │       test_login.py
-    │       test_register.py
-    │       test_update_listing.py
-    │       test_user_update.py
-    │
-    └───test_security
-            Generic_SQLI.txt
-            test_booking_sql_inj.py         *A6 submission
-            test_createlisting_sql_inj.py
-            test_register_sql_inj.py
+
+## Run Locally
+
+Install dependencies:
+
+```bash
+pip install -r pkg.txt
 ```
+
+Start the Flask app:
+
+```bash
+python3 -m qbay
+```
+
+The app runs on:
+
+```text
+http://localhost:8080
+```
+
+## Run With Docker
+
+```bash
+docker compose up --build
+```
+
+App:
+
+```text
+http://localhost:8080
+```
+
+phpMyAdmin:
+
+```text
+http://localhost:8082
+```
+
+## Tests
+
+Run the test suite:
+
+```bash
+python3 -m pytest
+```
+
+Run style checks:
+
+```bash
+flake8 qbay qbay_test
+```
+
+## License
+
+This project keeps the original MIT license notice included in `LICENSE`.

@@ -38,7 +38,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test0@test.com")
         self.send_keys("#name", "noname")
-        self.send_keys("#first_name", "Huilin")
+        self.send_keys("#first_name", "Alex")
         self.send_keys("#last_name", "Xu")
         self.send_keys("#password", "Qwe456@")
         self.send_keys("#password2", "Qwe456@")
@@ -64,7 +64,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test0@test.com")
         self.type("#name", "noname")
-        self.type("#first_name", "Huilin")
+        self.type("#first_name", "Alex")
         self.type("#last_name", "Xu")
         self.type("#password", "")
         self.type("#password2", "")
@@ -110,7 +110,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test0@test.com")
         self.send_keys("#name", "noname")
-        self.send_keys("#first_name", "Huilin")
+        self.send_keys("#first_name", "Alex")
         self.send_keys("#last_name", "Xu")
         self.send_keys("#password", "Qwe456@")
         self.send_keys("#password2", "Qwe456@")
@@ -149,7 +149,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test0test.com")
         self.type("#name", "noname")
-        self.type("#first_name", "Huilin")
+        self.type("#first_name", "Alex")
         self.type("#last_name", "Xu")
         self.type("#password", "")
         self.type("#password2", "")
@@ -177,7 +177,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test0@test.com")
         self.type("#name", "noname")
-        self.type("#first_name", "Huilin")
+        self.type("#first_name", "Alex")
         self.type("#last_name", "Xu")
         self.type("#password", "Qwe")
         self.type("#password2", "Qwe")
@@ -204,7 +204,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test0@test.com")
         self.type("#name", "non*@%$^@(!")
-        self.type("#first_name", "Huilin")
+        self.type("#first_name", "Alex")
         self.type("#last_name", "Xu")
         self.type("#password", "Qwe123@")
         self.type("#password2", "Qwe123@")
@@ -249,7 +249,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test1@test.com")
         self.type("#name", "aa")
-        self.type("#first_name", "Huilin")
+        self.type("#first_name", "Alex")
         self.type("#last_name", "Xu")
         self.type("#password", "Qwe456@")
         self.type("#password2", "Qwe456@")
@@ -275,7 +275,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test0@test.com")
         self.type("#name", "noname")
-        self.type("#first_name", "Huilin")
+        self.type("#first_name", "Alex")
         self.type("#last_name", "Xu")
         self.type("#password", "Qwe456@")
         self.type("#password2", "Qwe456@")
@@ -319,7 +319,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test0@test.com")
         self.send_keys("#name", "noname")
-        self.send_keys("#first_name", "Huilin")
+        self.send_keys("#first_name", "Alex")
         self.send_keys("#last_name", "Xu")
         self.send_keys("#password", "Qwe456@")
         self.send_keys("#password2", "Qwe456@")
@@ -373,7 +373,7 @@ class RegisterPageTest(BaseCase):
         # fill all fields
         self.send_keys("#email", "test0@test.com")
         self.send_keys("#name", "noname")
-        self.send_keys("#first_name", "Huilin")
+        self.send_keys("#first_name", "Alex")
         self.send_keys("#last_name", "Xu")
         self.send_keys("#password", "Qwe456@")
         self.send_keys("#password2", "Qwe456@")
