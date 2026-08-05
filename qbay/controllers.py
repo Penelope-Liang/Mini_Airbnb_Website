@@ -494,7 +494,7 @@ def conformation_post():
         err_msg = f"{IUU.message}"
     if err_msg:
         return render_template('conformation.html',
-                               message=err_msg)
+                               prop_id=prop_id, message=err_msg)
     else:
         return redirect('/')
 
