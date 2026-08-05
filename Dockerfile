@@ -7,3 +7,4 @@ ADD . /app
 ADD wait-for-it.sh /app
 RUN chmod +x /app/wait-for-it.sh
 EXPOSE 8080 
+CMD ["python", "-m", "qbay"]
