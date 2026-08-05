@@ -43,11 +43,14 @@ def booking_requirement_checking(tsc) -> dict:
         (tsc["prop_id"],))
     (user_id, price) = cursor.fetchone()
 
-    user_check_in_date = datetime.strptime(
-        tsc["check_in_date"], "%Y-%m-%dT%H:%M")
+    try:
+        user_check_in_date = datetime.strptime(
+            tsc["check_in_date"], "%Y-%m-%dT%H:%M")
 
-    user_check_out_date = datetime.strptime(
-        tsc["check_out_date"], "%Y-%m-%dT%H:%M")
+        user_check_out_date = datetime.strptime(
+            tsc["check_out_date"], "%Y-%m-%dT%H:%M")
+    except ValueError:
+        raise InvalidBooking("Invalid date format, please use YYYY-MM-DD")
 
     total_days = float((user_check_out_date - user_check_in_date).days)
 
