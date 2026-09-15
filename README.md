@@ -91,6 +91,17 @@ Run the test suite:
 python3 -m pytest qbay_test
 ```
 
+Run the full test suite and measure application line coverage:
+
+```bash
+python3 -m pytest qbay_test --cov=qbay --cov-report=term-missing --cov-report=html
+```
+
+Open `htmlcov/index.html` to inspect uncovered lines. CI prints coverage and
+uploads `coverage.xml` as the `test-coverage` artifact. Coverage measures
+Python code in `qbay`; it does not measure HTML, CSS, or JavaScript coverage.
+Generated coverage files are ignored by Git.
+
 Run style checks:
 
 ```bash
