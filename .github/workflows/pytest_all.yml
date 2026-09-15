@@ -18,5 +18,10 @@ jobs:
           pip install -r ./pkg.txt
       - name: Test with pytest
         run: |
-          pip install pytest
-          pytest qbay_test
+          pytest qbay_test --cov=qbay --cov-report=term-missing --cov-report=xml
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-coverage
+          path: coverage.xml

@@ -7,3 +7,6 @@ mysql_data
 latest_logs
 include
 archived_logs
+.coverage
+coverage.xml
+htmlcov/

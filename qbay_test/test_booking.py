@@ -3,6 +3,65 @@ import pytest
 from qbay.booking import booking_requirement_checking, save_transaction_record
 
 
+@pytest.fixture
+def booking_db(tmp_path, monkeypatch):
+    import sqlite3
+    from qbay import booking
+
+    monkeypatch.setattr(booking, "path", str(tmp_path))
+    with sqlite3.connect(tmp_path / "data.db") as connection:
+        connection.executescript("""
+            CREATE TABLE Users (user_id TEXT, balance REAL);
+            CREATE TABLE Properties (prop_id TEXT, user_id TEXT, price REAL);
+            CREATE TABLE Transactions (
+                tsc_id TEXT, user_id TEXT, property_id TEXT, tsc_date TEXT,
+                tsc_price REAL, check_in_date TEXT, check_out_date TEXT,
+                guest_number INTEGER
+            );
+            INSERT INTO Users VALUES ('guest', 500);
+            INSERT INTO Properties VALUES ('listing', 'host', 100);
+        """)
+    yield connection
+    connection.close()
+
+
+@pytest.fixture
+def valid_booking():
+    return {
+        "user_id": "guest",
+        "prop_id": "listing",
+        "check_in_date": "2030-06-01T08:30",
+        "check_out_date": "2030-06-03T08:30",
+        "guest_number": 2,
+    }
+
+
+@pytest.mark.parametrize("field", ["check_in_date", "check_out_date"])
+def test_invalid_date_format(booking_db, valid_booking, field):
+    valid_booking[field] = "not-a-date"
+    with pytest.raises(InvalidBooking, match="Invalid date format"):
+        booking_requirement_checking(valid_booking)
+    assert booking_db.execute("SELECT * FROM Transactions").fetchall() == []
+    assert booking_db.execute("SELECT balance FROM Users").fetchone() == (500,)
+
+
+def test_booking_price_and_saved_record(booking_db, valid_booking):
+    transaction = booking_requirement_checking(valid_booking)
+    assert transaction["tsc_price"] == 200
+    assert transaction["remaining_balance"] == 300
+
+    save_transaction_record(transaction)
+
+    assert booking_db.execute(
+        "SELECT user_id, property_id, tsc_price, check_in_date, "
+        "check_out_date, guest_number FROM Transactions WHERE tsc_id = ?",
+        (transaction["tsc_id"],),
+    ).fetchone() == (
+        "guest", "listing", 200, "2030-06-01T08:30", "2030-06-03T08:30", 2,
+    )
+    assert booking_db.execute("SELECT balance FROM Users").fetchone() == (300,)
+
+
 def test_user_book_his_own_listing():
     '''
       A user cannot book a listing for his/her listing.

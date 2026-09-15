@@ -5,6 +5,7 @@ sqlalchemy
 flask-sqlalchemy
 autopep8
 pytest
+pytest-cov
 flake8
 seleniumbase
 Werkzeug
