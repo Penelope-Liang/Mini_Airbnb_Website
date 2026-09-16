@@ -47,9 +47,8 @@ class RegisterPageTest(BaseCase):
         self.click('#reg-btn')
 
         # it checks if successful registration leads to the login page
-        new_page_url = self.get_current_url()
-        # print(new_page_url)
-        self.assert_equal(new_page_url, base_url + '/login')
+        self.wait_for_element_visible('#btn-submit')
+        self.assert_url(base_url + '/login')
 
     def test_password_empty(self, *_):
         """
@@ -117,6 +116,8 @@ class RegisterPageTest(BaseCase):
 
         # click enter button
         self.click('#reg-btn')
+        self.wait_for_element_visible('#btn-submit')
+        self.assert_url(base_url + '/login')
 
         connection = sqlite3.connect(db_path)
         cursor = connection.cursor()
@@ -326,16 +327,18 @@ class RegisterPageTest(BaseCase):
 
         # click enter button
         self.click('#reg-btn')
+        self.wait_for_element_visible('#btn-submit')
+        self.assert_url(base_url + '/login')
 
         connection = sqlite3.connect(db_path)
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM Users WHERE email = (?)",
                        ("test0@test.com", ))
         row = cursor.fetchone()
+        connection.close()
+        assert row is not None, "Registered user was not saved"
         address = row[9]
         postal_code = row[10]
-        # print(row)
-        connection.close()
 
         # there is only one user with such id
         assert (address is None and postal_code is None)
@@ -380,15 +383,17 @@ class RegisterPageTest(BaseCase):
 
         # click enter button
         self.click('#reg-btn')
+        self.wait_for_element_visible('#btn-submit')
+        self.assert_url(base_url + '/login')
 
         connection = sqlite3.connect(db_path)
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM Users WHERE email = (?)",
                        ("test0@test.com", ))
         row = cursor.fetchone()
-        balance = row[6]
-        # print(row)
         connection.close()
+        assert row is not None, "Registered user was not saved"
+        balance = row[6]
 
         # there is only one user with such id
         assert (balance == 100)

@@ -24,8 +24,8 @@ with open(path) as file:
 
 a1 = (2021, 1, 1, 0, 0, 0, 0, 0, 0)
 a2 = (2025, 12, 31, 23, 59, 59, 0, 0, 0)
-start = time.mktime(a1)
-end = time.mktime(a2)
+start = int(time.mktime(a1))
+end = int(time.mktime(a2))
 
 
 def test_test_booking():
