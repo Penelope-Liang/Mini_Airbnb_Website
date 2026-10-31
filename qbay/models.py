@@ -1,7 +1,15 @@
 '''
-This file stores the User model.
+This file stores the database models.
 '''
+from sqlalchemy.dialects import sqlite
 from qbay.db import db
+
+# Check-in/out dates are stored on SQLite as "YYYY-MM-DDTHH:MM", the same
+# format the booking form produces and the existing rows already use.
+StayDateTime = db.DateTime().with_variant(
+    sqlite.DATETIME(storage_format=(
+        "%(year)04d-%(month)02d-%(day)02dT%(hour)02d:%(minute)02d")),
+    "sqlite")
 
 
 class Users(db.Model):
@@ -16,7 +24,7 @@ class Users(db.Model):
     last_name = db.Column(db.String(80), nullable=False)
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    balance = db.Column(db.Float, nullable=False)
+    balance = db.Column(db.Double, nullable=False)
     profile_photo = db.Column(db.String(120))
     about = db.Column(db.String(300))
     address = db.Column(db.String(300))
@@ -65,11 +73,11 @@ class ReviewModel(db.Model):
     title = db.Column(db.Text)
     review_text = db.Column(db.Text)
 
-    def _init_(self, review_id,
-               user_id, comment_id,
-               property_id,
-               rating, review_date,
-               title, review_text) -> None:
+    def __init__(self, review_id,
+                 user_id, comment_id,
+                 property_id,
+                 rating, review_date,
+                 title, review_text) -> None:
         self.review_id = review_id
         self.user_id = user_id
         self.comment_id = comment_id
@@ -148,11 +156,11 @@ class PropertyModel(db.Model):
     # set property id as primary key and String
     prop_id = db.Column(db.String(100), primary_key=True)
     user_id = db.Column(db.String(100), db.ForeignKey("Users.user_id"))
-    posted_date = db.Column(db.DateTime, nullable=False)
+    posted_date = db.Column(db.Date, nullable=False)
     title = db.Column(db.String(150), nullable=False)
     description = db.Column(db.String(3000), nullable=False)
     image = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    price = db.Column(db.Double, nullable=False)
     address = db.Column(db.String(120), nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
 
@@ -187,12 +195,12 @@ class TscModel(db.Model):
     property_id = db.Column(db.String(100),
                             db.ForeignKey('Properties.prop_id'))
     tsc_date = db.Column(db.DateTime)
-    tsc_price = db.Column(db.Float(precision=2))
-    check_in_date = db.Column(db.DateTime)
-    check_out_date = db.Column(db.DateTime)
+    tsc_price = db.Column(db.Double)
+    check_in_date = db.Column(StayDateTime)
+    check_out_date = db.Column(StayDateTime)
     guest_number = db.Column(db.Integer)
 
-    def __init__(self, tsc_id, user_id, property_id, tsc_data,
+    def __init__(self, tsc_id, user_id, property_id, tsc_date,
                  tsc_price, check_in_date, check_out_date,
                  guest_number) -> None:
         '''
@@ -201,16 +209,14 @@ class TscModel(db.Model):
         self.tsc_id = tsc_id
         self.user_id = user_id
         self.property_id = property_id
-        self.tsc_data = tsc_data
+        self.tsc_date = tsc_date
         self.tsc_price = tsc_price
         self.check_in_date = check_in_date
         self.check_out_date = check_out_date
         self.guest_number = guest_number
 
-        db.create_all()
-
     def __repr__(self):
         '''
         This class returns a string as a representation of the Transactions.
         '''
-        return '<Transactions %r>' % self.title
+        return '<Transactions %r>' % self.tsc_id

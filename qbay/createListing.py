@@ -16,7 +16,10 @@ R4-8: A user cannot create products that have the same title.
 from datetime import date
 import uuid
 import re
-import sqlite3
+from qbay.db import db
+from qbay.models import Users, PropertyModel
+from qbay.regexRepo import AccNameReg
+from qbay.exceptions import InvalidListing
 
 
 def create_listing_format_checker(listing):
@@ -60,28 +63,18 @@ def listing_saving(listing) -> dict:
     Parameter: listing - a dictionary
     Return: a dictionary
     '''
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/data.db")
-    cursor = connection.cursor()
-
-    cursor.execute("SELECT email, user_id FROM Users WHERE email = (?)",
-                   (listing["email"],))
-    row = cursor.fetchone()
+    owner = Users.query.filter_by(email=listing["email"]).first()
 
     # check if the owner of the listing exists
-    if (row is None):
+    if (owner is None):
         raise InvalidListing("This user does not exist")
 
-    (_, user_id) = row
-    cursor.execute(
-        "SELECT title FROM Properties WHERE title = (?)", (listing["title"],))
-    row = cursor.fetchone()
+    user_id = owner.user_id
     # R4-8
     # check if the owner has products of the same title
-    if (row is not None):
+    if PropertyModel.query.filter_by(title=listing["title"]).first() \
+            is not None:
         raise InvalidListing("Title is in use")
-    connection.close()
 
     # set the user_id attribute
     listing["user_id"] = user_id
@@ -97,117 +90,18 @@ def listing_saving(listing) -> dict:
 
 def createlisting(listing_save):
     try:
-        import os
-        print("success")
-        path = os.path.dirname(os.path.abspath(__file__))
-        connection = sqlite3.connect(path + "/data.db")
-        print("connection failed")
-        cursor = connection.cursor()
-        print("here")
-
-        cursor.execute("INSERT INTO Properties \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (listing_save["prop_id"],
-                                                  listing_save["user_id"],
-                                                  listing_save["posted_date"],
-                                                  listing_save["title"],
-                                                  listing_save["description"],
-                                                  listing_save.get("img",
-                                                                   'pic.png'),
-                                                  listing_save["price"],
-                                                  listing_save["address"],
-                                                  listing_save["capacity"]))
-        print("before commit")
-        connection.commit()
-        print("commit complete")
-        connection.close()
+        db.session.add(PropertyModel(
+            prop_id=listing_save["prop_id"],
+            user_id=listing_save["user_id"],
+            posted_date=listing_save["posted_date"],
+            title=listing_save["title"],
+            description=listing_save["description"],
+            image=listing_save.get("img", 'pic.png'),
+            price=listing_save["price"],
+            address=listing_save["address"],
+            capacity=listing_save["capacity"]))
+        db.session.commit()
     except Exception as e:
+        db.session.rollback()
         print(e)
         print("Error")
-
-
-if __name__ == "__main__":
-    from regexRepo import AccNameReg
-    from exceptions import InvalidListing
-    import os
-    import sys
-    path = os.path.abspath(os.getcwd())
-    sys.path.append(path)
-    # from models.property import PropertyModel
-    # from db import db
-
-    '''
-    attention, this function requires some pre-stored data
-    in the database, you can run command [in the directory of backend]
-    py ./resources/tools/register.py
-    '''
-
-    proerpty_1 = {
-        "title": "A lighted mansion",
-
-        "description": "This is a mansion sits beside a beach with 16hr+ " +
-        "sunshine, beside daily facillities also" +
-        "provide with mini swimming pool",
-        "price": 5000,
-        "email": "JimmyMcgill@SGA.com",
-        "posted_date": date.today(),
-        "address": "9800 Montgomery Blvd NE, Albuquerque, New Mexico",
-        # "postal_code": "L3S4V8",
-        "image": "building.png",
-        "capacity": 4
-    }
-
-    proerpty_2 = {
-        "title": "Garbage room",
-
-        "description": "you wnat to live heree??",
-        "price": 59,
-        "email": "JimmyMcgill@SGA.com",
-        "posted_date": date.today(),
-        "address": "9800 Montgomery Blvd NE, Albuquerque, Quebec",
-        # "postal_code": "L3S4V8",
-        "image": "building.png",
-        "capacity": 5
-
-    }
-    try:
-        create_listing_format_checker(proerpty_1)
-        proerpty_1 = listing_saving(proerpty_1)
-        path = os.path.dirname(os.path.abspath(__file__))
-        connection = sqlite3.connect(path + "/data.db")
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO Properties \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                       (proerpty_1["prop_id"],
-                        proerpty_1["user_id"],
-                        proerpty_1["posted_date"],
-                        proerpty_1["title"],
-                        proerpty_1["description"],
-                        proerpty_1["image"],
-                        proerpty_1["price"],
-                        proerpty_1["address"],
-                        proerpty_1["capacity"]))
-
-        create_listing_format_checker(proerpty_2)
-        proerpty_2 = listing_saving(proerpty_2)
-        cursor.execute("INSERT INTO Properties \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                       (proerpty_2["prop_id"],
-                        proerpty_2["user_id"],
-                        proerpty_2["posted_date"],
-                        proerpty_2["title"],
-                        proerpty_2["description"],
-                        proerpty_2["image"],
-                        proerpty_2["price"],
-                        proerpty_2["address"],
-                        proerpty_2["capacity"]))
-
-        connection.commit()
-        connection.close()
-
-    except InvalidListing as IL:
-        print(IL.message)
-
-
-else:
-    from .regexRepo import AccNameReg
-    from .exceptions import InvalidListing

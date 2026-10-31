@@ -19,15 +19,20 @@ package_dir = os.path.dirname(
 templates = os.path.join(
     package_dir, "templates"
 )
-db_path = pathlib.Path().resolve().joinpath("data.db")
-print("path to the db is %s", db_path)
+db_path = os.path.join(package_dir, "data.db")
 app = Flask(__name__)
+# Docker Compose sets db_string to a MySQL URL; local runs use SQLite.
 db_string = os.getenv('db_string')
-print("db_string = " + str(db_string))
 if db_string:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_string
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path.__str__()
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '69cae04b04756f65eabcd2c5a11c8c24'
 app.app_context().push()
+
+from qbay.db import db  # noqa: E402
+from qbay import models  # noqa: E402, F401
+
+# Create any missing tables, e.g. on a fresh MySQL database.
+db.create_all()

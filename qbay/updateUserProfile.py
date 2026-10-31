@@ -1,6 +1,7 @@
 import re
-import sqlite3
+from qbay.db import db
 from qbay.exceptions import InvalidUserUpdate
+from qbay.models import Users
 
 
 def update_user_checker(update_user: dict) -> None:
@@ -87,33 +88,12 @@ def update_user_saving(update_user, id) -> None:
     """
     R2-1
     """
-    # Create SQL code
     # Test if user didn't change anything
     if update_user == {}:
         print("dictionary is empty")
         return None
 
-    # form the sql update instruction
-    sql_update = "UPDATE \'Users\' "
-    sql_where = " WHERE user_id = " + "\"" + id + "\""  # Fetch the user id
-    sql_set = "SET "
-
-    # Set is where attribute + index,
-    # ex Name : Alex, so it can update the name to Alex
-    for i in update_user.keys():
-        sql_set += (i + " = " + '\"' + update_user[i] + '\"' + ', ')
-    sql_set = sql_set[:-2]
-
-    # Combine to form a complete SQL code
-    sql = sql_update + sql_set + sql_where
-    print(sql)
-    # connect the database
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/data.db")
-    cursor = connection.cursor()
-
-    # execute the sql = sql_update + sql_set + sql_where code
-    cursor.executescript(sql)
-    connection.commit()
-    connection.close()
+    # update only the attributes the user filled in; the ORM binds every
+    # value as a query parameter
+    Users.query.filter_by(user_id=id).update(update_user)
+    db.session.commit()

@@ -16,6 +16,7 @@ Mini Airbnb Website is a small vacation-rental web application built with Flask.
 
 - Python
 - Flask
+- SQLAlchemy ORM
 - SQLite for local development
 - MySQL through Docker Compose
 - HTML/CSS templates
@@ -81,7 +82,7 @@ http://localhost:8082
 ```
 
 The Docker Compose setup runs the Flask app with MySQL through the `db_string`
-environment variable.
+environment variable. The app creates any missing tables on startup.
 
 ## Testing
 

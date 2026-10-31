@@ -4,8 +4,8 @@ R2-2: The login function should check if the supplied inputs meet the
 same email/password requirements as above, before checking the database.
 """
 import re
-import sqlite3
 from qbay.exceptions import InvalidLogin
+from qbay.models import Users
 
 '''
 Disclaimer:
@@ -61,18 +61,10 @@ def login_saving(login_user) -> dict:
     """
     R2-1
     """
-    # Connection with database
-    print("===testing login saving checker========")
-    import pathlib
-    path = pathlib.Path().resolve()
-    connection = sqlite3.connect(path.__str__() + "/qbay/data.db")
-    cursor = connection.cursor()
     # R1-7
     # Select email from user, if found, fetch
-    cursor.execute("SELECT email, password FROM 'Users' WHERE email = (?)",
-                   (login_user["email"],))
-    rows = cursor.fetchone()
-    connection.close()
+    rows = Users.query.with_entities(Users.email, Users.password) \
+        .filter_by(email=login_user["email"]).first()
 
     # if not found, email is not exist
     if rows is None:

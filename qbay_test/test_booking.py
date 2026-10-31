@@ -3,26 +3,40 @@ import pytest
 from qbay.booking import booking_requirement_checking, save_transaction_record
 
 
-@pytest.fixture
-def booking_db(tmp_path, monkeypatch):
-    import sqlite3
-    from qbay import booking
+def _delete_booking_fixture_rows():
+    from qbay.db import db
+    from qbay.models import Users, PropertyModel, TscModel
 
-    monkeypatch.setattr(booking, "path", str(tmp_path))
-    with sqlite3.connect(tmp_path / "data.db") as connection:
-        connection.executescript("""
-            CREATE TABLE Users (user_id TEXT, balance REAL);
-            CREATE TABLE Properties (prop_id TEXT, user_id TEXT, price REAL);
-            CREATE TABLE Transactions (
-                tsc_id TEXT, user_id TEXT, property_id TEXT, tsc_date TEXT,
-                tsc_price REAL, check_in_date TEXT, check_out_date TEXT,
-                guest_number INTEGER
-            );
-            INSERT INTO Users VALUES ('guest', 500);
-            INSERT INTO Properties VALUES ('listing', 'host', 100);
-        """)
+    TscModel.query.filter_by(property_id="listing").delete()
+    PropertyModel.query.filter_by(prop_id="listing").delete()
+    Users.query.filter(Users.user_id.in_(["guest", "host"])).delete()
+    db.session.commit()
+
+
+@pytest.fixture
+def booking_db():
+    import sqlite3
+    from datetime import date
+    from qbay import package_dir
+    from qbay.db import db
+    from qbay.models import Users, PropertyModel
+
+    _delete_booking_fixture_rows()
+    db.session.add_all([
+        Users("guest", "guest", "Guest", "User", "Guest!123",
+              "guest@booking.test", 500, None, None, None, None),
+        Users("host", "host", "Host", "User", "Host!123",
+              "host@booking.test", 100, None, None, None, None),
+        PropertyModel("listing", "host", date.today(), "Booking test",
+                      "A listing used by the booking tests", "pic.png",
+                      100, "1 Test Street", 2),
+    ])
+    db.session.commit()
+
+    connection = sqlite3.connect(package_dir + "/data.db")
     yield connection
     connection.close()
+    _delete_booking_fixture_rows()
 
 
 @pytest.fixture
@@ -41,8 +55,12 @@ def test_invalid_date_format(booking_db, valid_booking, field):
     valid_booking[field] = "not-a-date"
     with pytest.raises(InvalidBooking, match="Invalid date format"):
         booking_requirement_checking(valid_booking)
-    assert booking_db.execute("SELECT * FROM Transactions").fetchall() == []
-    assert booking_db.execute("SELECT balance FROM Users").fetchone() == (500,)
+    assert booking_db.execute(
+        "SELECT * FROM Transactions WHERE property_id = 'listing'"
+    ).fetchall() == []
+    assert booking_db.execute(
+        "SELECT balance FROM Users WHERE user_id = 'guest'"
+    ).fetchone() == (500,)
 
 
 def test_booking_price_and_saved_record(booking_db, valid_booking):
@@ -59,7 +77,9 @@ def test_booking_price_and_saved_record(booking_db, valid_booking):
     ).fetchone() == (
         "guest", "listing", 200, "2030-06-01T08:30", "2030-06-03T08:30", 2,
     )
-    assert booking_db.execute("SELECT balance FROM Users").fetchone() == (300,)
+    assert booking_db.execute(
+        "SELECT balance FROM Users WHERE user_id = 'guest'"
+    ).fetchone() == (300,)
 
 
 def test_user_book_his_own_listing():
