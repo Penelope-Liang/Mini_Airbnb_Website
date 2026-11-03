@@ -9,10 +9,10 @@ A booked listing will show up on the
 '''
 
 import uuid
-import sqlite3
 from datetime import datetime
-import os
-path = os.path.dirname(os.path.abspath(__file__))
+from qbay.db import db
+from qbay.exceptions import InvalidBooking
+from qbay.models import Users, PropertyModel, TscModel
 
 
 def booking_requirement_checking(tsc) -> dict:
@@ -27,21 +27,12 @@ def booking_requirement_checking(tsc) -> dict:
     requirements are violated.
     '''
 
-    connection = sqlite3.connect(path + "/data.db")
-    cursor = connection.cursor()
+    (balance, ) = Users.query.with_entities(Users.balance) \
+        .filter_by(user_id=tsc["user_id"]).first()
 
-    cursor.execute(
-        "SELECT balance FROM Users "
-        "WHERE user_id = (?)",
-        (tsc["user_id"],))
-
-    (balance, ) = cursor.fetchone()
-
-    cursor.execute(
-        "SELECT user_id, price FROM "
-        "Properties WHERE prop_id = (?)",
-        (tsc["prop_id"],))
-    (user_id, price) = cursor.fetchone()
+    (user_id, price) = PropertyModel.query.with_entities(
+        PropertyModel.user_id, PropertyModel.price
+    ).filter_by(prop_id=tsc["prop_id"]).first()
 
     try:
         user_check_in_date = datetime.strptime(
@@ -65,21 +56,13 @@ def booking_requirement_checking(tsc) -> dict:
     if user_id == tsc["user_id"]:
         raise InvalidBooking("User can't book his own property")
 
-    cursor.execute(
-        "SELECT check_in_date, "
-        "check_out_date FROM Transactions WHERE property_id = (?)",
-        (tsc["prop_id"],))
-
-    rows = cursor.fetchall()
+    rows = TscModel.query.with_entities(
+        TscModel.check_in_date, TscModel.check_out_date
+    ).filter_by(property_id=tsc["prop_id"]).all()
 
     if rows is not None:
         for row in rows:
-            (check_in, check_out) = row
-            check_in_date = datetime.strptime(
-                check_in, "%Y-%m-%dT%H:%M")
-
-            check_out_date = datetime.strptime(
-                check_out, "%Y-%m-%dT%H:%M")
+            (check_in_date, check_out_date) = row
             '''
             check_in_date       check_out_date
                 C1----------------------C2
@@ -131,70 +114,24 @@ def save_transaction_record(tsc):
     This function saves the valid booking to the db.
     Parameter: tsc - savable booking in dict format
     Return: None
-    Exception: may raise InvalidBooking exception if
-    saving fails.
+    Exception: rolls back and re-raises the database
+    error if saving fails.
     '''
     try:
-        connection = sqlite3.connect(path + "/data.db")
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO Transactions \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                       (tsc["tsc_id"],
-                        tsc["user_id"],
-                        tsc["prop_id"],
-                        tsc["tsc_date"],
-                        tsc["tsc_price"],
-                        tsc["check_in_date"],
-                        tsc["check_out_date"],
-                        tsc["guest_number"],
-                        ))
+        db.session.add(TscModel(
+            tsc_id=tsc["tsc_id"],
+            user_id=tsc["user_id"],
+            property_id=tsc["prop_id"],
+            tsc_date=tsc["tsc_date"],
+            tsc_price=tsc["tsc_price"],
+            check_in_date=datetime.fromisoformat(tsc["check_in_date"]),
+            check_out_date=datetime.fromisoformat(tsc["check_out_date"]),
+            guest_number=tsc["guest_number"]))
 
         # reduce the balance here
-        cursor.execute("UPDATE Users SET balance = (?) WHERE user_id = (?)",
-                       (tsc["remaining_balance"], tsc["user_id"]))
-        connection.commit()
-        connection.close()
-    except InvalidBooking:
-        raise InvalidBooking("Transcation failed:(")
-
-
-if __name__ == "__main__":
-    import json
-    from exceptions import InvalidBooking
-
-    test_tsc = {
-        "user_id": "20a7066e8e844759a99a20ecbd6935fe",
-        "prop_id": "ebbc91cdf0f646e9993222418c39c69d",
-        "check_in_date": "2022-06-01T08:30",
-        "check_out_date": "2022-06-04T08:30",
-        "guest_number": 2,
-    }
-
-    test_tsc2 = {
-        "user_id": "b36524c626e64b15b3dcebb6d21dd5d8",
-        "prop_id": "ebbc91cdf0f646e9993222418c39c69d",
-        "check_in_date": "2022-04-02T08:30",
-        "check_out_date": "2022-10-30T08:30",
-        "guest_number": 3,
-    }
-    try:
-        booking_requirement_checking(test_tsc)
-        1 / 0
-    except InvalidBooking as IB:
-        print("pass !")
-
-    return_tsc = booking_requirement_checking(test_tsc2)
-    save_transaction_record(return_tsc)
-
-    connection = sqlite3.connect(path + "/data.db")
-    cursor = connection.cursor()
-    cursor.execute("DELETE FROM \
-                    Transactions WHERE tsc_id=(?)",
-                   (return_tsc["tsc_id"],))
-    connection.commit()
-    connection.close()
-    # additional line to print the datetime now
-    print(json.dumps(return_tsc, indent=4, sort_keys=True, default=str))
-else:
-
-    from qbay.exceptions import InvalidBooking
+        Users.query.filter_by(user_id=tsc["user_id"]).update(
+            {"balance": tsc["remaining_balance"]})
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        raise

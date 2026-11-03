@@ -9,7 +9,10 @@ it follows the same requirements as above.
 '''
 from datetime import date
 import re
-import sqlite3
+from qbay.db import db
+from qbay.models import PropertyModel
+from qbay.regexRepo import AccNameReg
+from qbay.exceptions import InvalidUpdateListing
 
 
 def update_listing_format_checker_1(proerpty_1):
@@ -25,25 +28,18 @@ def updating_data(proerpty_1) -> dict:
     '''
     Update property data
     '''
-    import pathlib
-    path = pathlib.Path(__file__).parent.joinpath("data.db")
-    connection = sqlite3.connect(path)
-    cursor = connection.cursor()
-
-    cursor.execute(
-        "SELECT * FROM Properties WHERE prop_id = (?)",
-        (proerpty_1["prop_id"],))
-
-    row = cursor.fetchone()
-    connection.close()
+    row = PropertyModel.query.with_entities(
+        PropertyModel.title, PropertyModel.description, PropertyModel.image,
+        PropertyModel.price, PropertyModel.address, PropertyModel.capacity
+    ).filter_by(prop_id=proerpty_1["prop_id"]).first()
 
     old_property = {
-        "title": row[3],
-        "description": row[4],
-        "image": row[5],
-        "price": row[6],
-        "address": row[7],
-        "capacity": row[8],
+        "title": row[0],
+        "description": row[1],
+        "image": row[2],
+        "price": row[3],
+        "address": row[4],
+        "capacity": row[5],
     }
 
     if (proerpty_1["price"] != ''
@@ -94,85 +90,16 @@ def update_listing_format_checker_2(proerpty_1):
 
 def updateInfo(listing_save):
     try:
-        import os
-        path = os.path.dirname(os.path.abspath(__file__))
-        print("this is the path  ", path)
-        connection = sqlite3.connect(path + "/data.db")
-        cursor = connection.cursor()
-
-        print("data: {}".format(listing_save))
-
-        update_sql = 'update Properties set posted_date=?,' \
-                     'title=?,description=?,' \
-                     'image=?, price=?,address=?,capacity=? where prop_id=?'
-
-        cursor.execute(update_sql, (
-            listing_save["posted_date"],
-            listing_save["title"],
-            listing_save["description"],
-            listing_save["image"],
-            listing_save["price"],
-            listing_save["address"],
-            listing_save["capacity"],
-            listing_save["prop_id"]
-        ))
-
-        connection.commit()
-        connection.close()
+        PropertyModel.query.filter_by(prop_id=listing_save["prop_id"]).update({
+            "posted_date": listing_save["posted_date"],
+            "title": listing_save["title"],
+            "description": listing_save["description"],
+            "image": listing_save["image"],
+            "price": listing_save["price"],
+            "address": listing_save["address"],
+            "capacity": listing_save["capacity"],
+        })
+        db.session.commit()
     except Exception:
+        db.session.rollback()
         print("Error")
-
-
-if __name__ == "__main__":
-    from regexRepo import AccNameReg
-    from exceptions import InvalidUpdateListing
-    import os
-    import sys
-    path = os.path.abspath(os.getcwd())
-    sys.path.append(path)
-    # from models.property import PropertyModel
-    # from db import db
-
-    '''
-    attention, this function requires some pre-stored data
-    in the database, you can run command [in the directory of backend]
-    py ./resources/tools/register.py
-    '''
-
-    # we don't have last_modify date, but I think you can use posted_date
-    proerpty_1 = {
-        "title": "A lighted mansion",
-        "prop_id": "c56340108a134fe9a4882c9190cc5229",
-        "description": "This is a mansion sits beside a beach with 16hr+ " +
-        "sunshine, beside daily facillities also" +
-        "provide with mini swimming pool",
-        "price": 9999,
-        "email": "JimmyMcgill@SGA.com",
-        "address": "9800 Montgomery Blvd NE, Albuquerque, New Mexico",
-        "image": "building.png",
-        "capacity": 4
-    }
-
-    proerpty_2 = {
-        "title": "Garbage room 2",
-        "prop_id": "c56340108a134fe9a4882c9190cc5229",
-        "description": "you wnat to live heree??",
-        "price": 5900,
-        "email": "Garbage@SGA.com",
-        "address": "9800 Montgomery Blvd NE, Albuquerque, Quebec",
-        "image": "building.png",
-        "capacity": 5
-
-    }
-
-    update_listing_format_checker_1(proerpty_1)
-    updating_data(proerpty_1)
-
-    update_listing_format_checker_1(proerpty_2)
-    updating_data(proerpty_2)
-
-
-else:
-    from .regexRepo import AccNameReg
-    from .exceptions import InvalidUpdateListing
-    import os

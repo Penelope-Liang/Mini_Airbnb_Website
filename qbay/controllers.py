@@ -15,8 +15,7 @@ from qbay.updateUserProfile import update_user_checker, update_user_saving
 # from qbay.exceptions import InvaildRegister  # InvalidLogin
 from qbay.createListing import create_listing_format_checker, createlisting
 from qbay.createListing import listing_saving
-# from qbay.db import db
-import sqlite3
+from qbay.models import Users, PropertyModel, TscModel
 
 
 def authenticate(inner_function):
@@ -39,17 +38,8 @@ def authenticate(inner_function):
             email = session['logged_in']
             print(email)  # for testing
             try:
-                # link the database to select user's email
-                import os
-                path = os.path.dirname(os.path.abspath(__file__))
-                connection = sqlite3.connect(path + "/data.db")
-                cursor = connection.cursor()
-                cursor.execute("SELECT * FROM 'Users' "
-                               "WHERE email = (?)", (email,))
-                # print(row)  # for testing
                 # if found the email, store into user
-                user = cursor.fetchone()
-                connection.close()
+                user = Users.query.filter_by(email=email).first()
                 if user:
                     # if the user exists, call the inner_function
                     # with user as parameter
@@ -109,15 +99,8 @@ def home(user):
     '''
     print(user)
     try:
-        # link the database to fetch all properties
-        import os
-        path = os.path.dirname(os.path.abspath(__file__))
-        connection = sqlite3.connect(path + "/data.db")
-        cursor = connection.cursor()
-        cursor.execute(
-            "SELECT * FROM 'Properties' WHERE user_id = (?);", (user[0],))
-        all_prod = cursor.fetchall()
-        connection.close()
+        # fetch all properties of the user
+        all_prod = PropertyModel.query.filter_by(user_id=user.user_id).all()
         return render_template('index.html', user=user,
                                products=all_prod, message="")
     except Exception:
@@ -187,21 +170,13 @@ def update_user_get():
 
     email = session['logged_in']  # get the email from session stored above
     print(email)  # for testing
-    # connect the database
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/data.db")
-    cursor = connection.cursor()
 
     # select all the info of the user
-    row = cursor.execute("SELECT * FROM 'Users' WHERE email = (?)", (email,))
-    print(row)  # for testing
-    user = cursor.fetchone()
-    connection.close()
+    user = Users.query.filter_by(email=email).first()
     print(user)
 
     # store another session which is id
-    session['id'] = user[0]
+    session['id'] = user.user_id
 
     # if fetch success, return user info on the web
     if user:
@@ -252,18 +227,8 @@ def update_user_save():
         update_user_checker(user)  # check the format
         update_user_saving(user, id)  # check the database
 
-        # connect the database
-        import os
-        path = os.path.dirname(os.path.abspath(__file__))
-        connection = sqlite3.connect(path + "/data.db")
-        cursor = connection.cursor()
-
         # select all the info based on user id
-        row = cursor.execute("SELECT * FROM 'Users' "
-                             "WHERE user_id = (?)", (id,))
-        print(row)  # for testing
-        user = cursor.fetchone()  # store info fetch into user
-        connection.close()
+        user = Users.query.filter_by(user_id=id).first()
         if user:
             return render_template('update_user.html', user=user,
                                    message='Hi!Below is your Information')
@@ -394,26 +359,12 @@ def myProperties():
         email = session['logged_in']
         print('current_user {}'.format(email))
         # get the email from session stored above
-        # connect the database
-        import os
-        path = os.path.dirname(os.path.abspath(__file__))
-        connection = sqlite3.connect(path + "/data.db")
-        cursor = connection.cursor()
-
-        sql = 'select * from Users where email = "%s"' % (email)
-        cursor.execute(sql)
-        user = cursor.fetchone()
+        user = Users.query.filter_by(email=email).first()
         print(user)
-        user_id = user[0]
-        connection.close()
+        user_id = user.user_id
 
         # use user_id to check properties
-        connection = sqlite3.connect(path + "/data.db")
-        cursor = connection.cursor()
-        sql = 'select * from Properties where user_id="%s"' % (user_id)
-        cursor.execute(sql)
-        all_prod = cursor.fetchall()
-        connection.close()
+        all_prod = PropertyModel.query.filter_by(user_id=user_id).all()
         prop_id = request.args.get('prop_id')
         return render_template('mine.html', user=user,
                                products=all_prod, message="")
@@ -428,14 +379,8 @@ def myProperties():
 
 @app.route('/Booking', methods=['GET'])
 def booking_get():
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/data.db")
-    cursor = connection.cursor()
-    # select all the info of the user
-    row = cursor.execute("SELECT * FROM 'Properties'")
-    properties = cursor.fetchall()
-    connection.close()
+    # select all the properties
+    properties = PropertyModel.query.all()
 
     return render_template('Booking.html', properties=properties,
                            message='show properties')
@@ -456,17 +401,10 @@ def conformation_post():
     email = session['logged_in']
     print(email)
     print("^^^^^^^^^^^^^^^^^")
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/data.db")
-    cursor = connection.cursor()
-    sql = 'select * from Users where email = "%s"' % (email)
-    cursor.execute(sql)
-    user = cursor.fetchone()
+    user = Users.query.filter_by(email=email).first()
     print(user)
-    id = user[0]
+    id = user.user_id
     print(id)
-    connection.close()
 
     Date = request.form.get('date')
     Date += "T00:00"
@@ -501,20 +439,11 @@ def conformation_post():
 
 @app.route('/my_booking', methods=['GET'])
 def booking_get2():
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/data.db")
-    cursor = connection.cursor()
     email = session['logged_in']
-    sql = 'select * from Users where email = "%s"' % (email)
-    cursor.execute(sql)
-    user = cursor.fetchone()
-    id = user[0]
-    # select all the info of the user
-    row = cursor.execute("SELECT * FROM 'Transactions' "
-                         "WHERE user_id = (?)", (id,))
-    bookings = cursor.fetchall()
-    connection.close()
+    user = Users.query.filter_by(email=email).first()
+    id = user.user_id
+    # select all the bookings of the user
+    bookings = TscModel.query.filter_by(user_id=id).all()
     prop_id = request.args.get('prop_id')
     # templates are stored in the templates folder
     return render_template('my_booking.html', bookings=bookings, data=prop_id,

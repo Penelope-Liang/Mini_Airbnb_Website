@@ -106,7 +106,7 @@
 
 {% block content %}
 <!--<div class="container text-center">-->
-<!--    <h2 class="welcome" id="welcome-header">Welcome {{ user[1] }} ! <a href='/logout' class="link">logout</a></h2><a href='/update_user'>update</a> <a href="/create">create listing</a></h2>-->
+<!--    <h2 class="welcome" id="welcome-header">Welcome {{ user.acc_name }} ! <a href='/logout' class="link">logout</a></h2><a href='/update_user'>update</a> <a href="/create">create listing</a></h2>-->
 <!--    <a href='/update_user' class="link">Update your profile</a>-->
 <!--    <h2>Here are all available products</h2>-->
 <!--    <a href='' class="link">create product</a>-->
@@ -118,7 +118,7 @@
     {% for product in products %}
     <div class="wsk-cp-product">
         <div>
-            <p>{{ product[0] }}</p>
+            <p>{{ product.prop_id }}</p>
         </div>
         <div class="img">
             <img class="img-responsive" />
@@ -127,14 +127,14 @@
         </div>
 
         <div class="title-product">
-            <h3>{{ product[3] }}</h3>
+            <h3>{{ product.title }}</h3>
         </div>
         <div class="description-prod">
-            <p>{{ product[4] }}</p>
+            <p>{{ product.description }}</p>
         </div>
         <div class="card-footer">
-            <div class="wcf-left"><span class="price">${{ product[6] }} CAD</span></div>
-            <div class="wcf-right"><a href="/updatelisting?prop_id={{product[0]}}" class="link">Update Listing</a></div>
+            <div class="wcf-left"><span class="price">${{ product.price }} CAD</span></div>
+            <div class="wcf-right"><a href="/updatelisting?prop_id={{product.prop_id}}" class="link">Update Listing</a></div>
         </div>
     </div>
 </div>

@@ -22,7 +22,10 @@ R1-10: Balance should be initialized as 100 at the time of registration.
 import json
 import uuid
 import re
-import sqlite3
+from qbay.db import db
+from qbay.models import Users
+from qbay.regexRepo import emailReg, AccNameReg, passwordReg
+from qbay.exceptions import InvalidRegister
 
 
 def register_format_checker(reg_user) -> None:
@@ -93,18 +96,8 @@ def register_saving(reg_user) -> dict:
     R1-8
     R1-9
     '''
-    import os
-    path = os.path.dirname(os.path.abspath(__file__))
-    connection = sqlite3.connect(path + "/data.db")
-    cursor = connection.cursor()
-
     # R1-7
-    cursor.execute("SELECT email FROM Users WHERE email = (?)",
-                   (reg_user["email"], ))
-    rows = cursor.fetchone()
-    connection.close()
-
-    if (rows is not None):
+    if Users.query.filter_by(email=reg_user["email"]).first() is not None:
         raise InvalidRegister("Email has been used!", "Email-used")
 
     # R1-2
@@ -132,98 +125,8 @@ def register_saving(reg_user) -> dict:
 
 def register(saveble_user):
     try:
-        import os
-        path = os.path.dirname(os.path.abspath(__file__))
-        connection = sqlite3.connect(path + "/data.db")
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO Users \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                       (saveble_user["user_id"],
-                        saveble_user["acc_name"],
-                        saveble_user["first_name"],
-                        saveble_user["last_name"],
-                        saveble_user["password"],
-                        saveble_user["email"],
-                        saveble_user["balance"],
-                        saveble_user["profile_photo"],
-                        saveble_user["about"],
-                        saveble_user["address"],
-                        saveble_user["postal_code"]))
-        connection.commit()
-        connection.close()
-    except InvalidRegister:
-        raise InvalidRegister("Registration failed:(", "fail to commit")
-
-
-if __name__ == '__main__':
-
-    from regexRepo import emailReg, AccNameReg, passwordReg
-    from exceptions import InvalidRegister
-    import os
-    import sys
-    path = os.path.abspath(os.getcwd())
-    sys.path.append(path)
-
-    user = {
-        "acc_name": "Gisellesb",
-        "first_name": "Dean",
-        "last_name": "Wexler",
-        "password": "Kim!!123321dsb",
-        "email": "DimDim@HHM.com",
-        # "profile_photo": "Kim_Wexler_BCS_S5.png",
-        "about": "Hello, I am stupid!",
-    }
-
-    register_format_checker(user)
-    # register_format_checker(user2)
-
-    try:
-        saveble_user1 = register_saving(user)
-        # reg_user = Users(**saveble_user1)
-        print("hellllooooo")
-        # db.session.add(userM1)
-        # db.session.commit()
-        # import os
-        path = os.path.dirname(os.path.abspath(__file__))
-        connection = sqlite3.connect(path + "/data.db")
-        cursor = connection.cursor()
-        print("here")
-        cursor.execute("INSERT INTO Users \
-        (user_id, acc_name, first_name, last_name, password, \
-            email, balance, profile_photo, about, address, postal_code)\
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-                       (saveble_user1["user_id"],
-                        saveble_user1["acc_name"],
-                        saveble_user1["first_name"],
-                        saveble_user1["last_name"],
-                        saveble_user1["password"],
-                        saveble_user1["email"],
-                        saveble_user1["balance"],
-                        saveble_user1["profile_photo"],
-                        saveble_user1["about"],
-                        saveble_user1["address"],
-                        saveble_user1["postal_code"]))
-        print("before commit")
-        connection.commit()
-        print("commit complete")
-        connection.close()
+        db.session.add(Users(**saveble_user))
+        db.session.commit()
     except Exception:
-        print("Data has stored inside!")
-
-    # try:
-    #     saveble_user2 = register_saving(user2)
-    #     print("hellllooooo")
-    #     userM2 = Users(**saveble_user2)
-    #     print("show up plz")
-    #     db.session.add(userM2)
-    #     print("here?")
-    #     db.session.commit()
-    #     print("wtf!!!")
-    # except Exception:
-    #     print("Data has stored inside!")
-
-# not equal to __main__
-else:
-    from qbay.regexRepo import emailReg, AccNameReg, \
-        passwordReg, nameReg
-    from qbay.exceptions import InvalidRegister
+        db.session.rollback()
+        raise InvalidRegister("Registration failed:(", "fail to commit")
